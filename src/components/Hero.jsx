@@ -1,5 +1,10 @@
 import React from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
+import Lottie from 'lottie-react'
+import { useEffect, useState } from 'react'
+
+// Placeholder Lottie JSON URL (public). You can replace this with your own file or import a local JSON.
+const LOTTIE_URL = 'https://assets10.lottiefiles.com/packages/lf20_touohxv0.json'
 
 const titleVariant = {
   hidden: { opacity: 0, y: 12 },
@@ -60,6 +65,20 @@ export default function Hero(){
             </motion.a>
           </motion.div>
 
+          {/* Lottie animation (decorative) - loads a placeholder JSON from LottieFiles
+              Disabled when user requests reduced motion. Replace `LOTTIE_URL` with your own JSON or
+              import local JSON and pass to the `animationData` prop. */}
+          <div className="mt-10 flex justify-center">
+            <div className="w-full max-w-xl hidden md:block" aria-hidden>
+              {/* Lazy-load animationData from a public Lottie JSON URL */}
+              {shouldReduce ? (
+                <div className="h-48" />
+              ) : (
+                <LottieWrapper url={LOTTIE_URL} />
+              )}
+            </div>
+          </div>
+
           {/* logos / trust row */}
           <motion.div initial={shouldReduce ? {} : { opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.9 }} className="mt-14 flex items-center justify-center gap-8 opacity-80">
             <div className="text-xs text-zinc-500">Clients :</div>
@@ -92,4 +111,22 @@ export default function Hero(){
       </div>
     </section>
   )
+}
+
+function LottieWrapper({ url }){
+  const [data, setData] = useState(null)
+  useEffect(()=>{
+    let mounted = true
+    fetch(url).then(r=>r.json()).then(json=>{
+      if(mounted) setData(json)
+    }).catch(err=>{
+      // swallow error; animation is decorative
+      console.error('Lottie load error', err)
+    })
+    return ()=> { mounted = false }
+  }, [url])
+
+  if(!data) return <div className="h-48" />
+
+  return <Lottie animationData={data} autoplay loop style={{ height: 240 }} />
 }

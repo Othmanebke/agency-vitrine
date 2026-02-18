@@ -49,3 +49,13 @@ Form / contact notes:
   3. Le frontend enverra les données vers `/api/contact` et la function utilisera SendGrid pour envoyer le mail.
 
   Remarque : si tu préfères ne pas utiliser SendGrid, on peut adapter la function pour utiliser Mailgun, Nodemailer (SMTP) ou un autre fournisseur.
+
+Lottie / animations:
+
+- Le `Hero` intègre maintenant une animation Lottie décorative chargée depuis une URL publique. Si tu veux remplacer par une animation locale (meilleur contrôle), place le JSON dans `src/assets/hero-animation.json` et dans `src/components/Hero.jsx` remplace la constante `LOTTIE_URL` par an import:
+
+	import heroAnim from '../assets/hero-animation.json'
+
+	puis passe `animationData={heroAnim}` au composant `Lottie` ou utilise `LottieWrapper`.
+
+- L'animation respecte la préférence reduced-motion de l'utilisateur.
