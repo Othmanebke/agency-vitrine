@@ -60,6 +60,15 @@ export default function Packages(){
       </div>
 
       <p className="text-xs text-zinc-500 mt-6">Les tarifs sont indicatifs et peuvent varier selon la taille du projet. Contacte-nous pour un devis précis.</p>
+      <section className="max-w-6xl mx-auto px-6 pb-16 text-center">
+        <a
+          href="#contact"
+          onClick={(e)=>{e.preventDefault(); window.history.pushState({},'', '/about#contact'); window.dispatchEvent(new PopStateEvent('popstate'))}}
+          className="inline-block mt-6 bg-gradient-to-r from-violet-600 to-pink-500 text-black px-6 py-3 rounded-full font-semibold shadow-lg"
+        >
+          Demander un devis
+        </a>
+      </section>
     </section>
   )
 }

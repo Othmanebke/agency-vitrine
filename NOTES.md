@@ -59,3 +59,9 @@ Lottie / animations:
 	puis passe `animationData={heroAnim}` au composant `Lottie` ou utilise `LottieWrapper`.
 
 - L'animation respecte la préférence reduced-motion de l'utilisateur.
+
+Vercel quick notes
+
+- `vercel.json` est présent pour guider les builds et exposer les functions sous `/api/`.
+- Avant de déployer, ajoute les variables d'environnement dans Project Settings (voir README).
+- Si tu veux, je peux aussi créer un alias Vercel et préparer les scripts de déploiement.

@@ -41,3 +41,14 @@ Notes
 - The Hero uses a decorative Lottie animation (lazy-loaded). Replace the URL or import a local JSON in `src/components/Hero.jsx` to use a specific animation.
 
 If you want, I can: add unit tests, tune mobile spacing, or set up the Vercel project & environment variables for you.
+Deployment checklist & quick steps
+
+- Create a project on Vercel and link the GitHub repository.
+- In Vercel project settings, add these Environment Variables (if you plan to use serverless email):
+  - `VITE_USE_SERVERLESS` = true
+  - `SENDGRID_API_KEY` = <your_sendgrid_api_key>
+  - `SENDGRID_TO` = <your_email>
+  - `SENDGRID_FROM` = <optional_from_address>
+
+After adding variables, trigger a deploy from the Vercel dashboard or push a new commit to `NOVAWEB`.
+If you prefer, I can prepare the Vercel project and provide the exact variable values to set.
