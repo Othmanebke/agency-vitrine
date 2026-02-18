@@ -5,16 +5,16 @@ import Footer from '../components/Footer'
 import { useSEO } from '../hooks/useSEO'
 
 const projects = [
-  { title: 'Site vitrine — La Boulangerie', desc: 'Design & intégration CMS sur-mesure', tag: 'Site vitrine', color: 'from-amber-500/20 to-orange-600/10', img: '/src/assets/portfolio/p1.svg' },
-  { title: 'Refonte — ShopEase', desc: 'UX audit, optimisation conversion & SEO', tag: 'Refonte', color: 'from-violet-500/20 to-pink-600/10', img: '/src/assets/portfolio/p2.svg' },
-  { title: 'Campagne print — Summer Promo', desc: 'Flyers, affiches et visuels print', tag: 'Print', color: 'from-sky-500/20 to-blue-600/10', img: '/src/assets/portfolio/p3.svg' },
-  { title: 'Landing — Mobile App', desc: 'Landing page haute conversion', tag: 'Landing', color: 'from-emerald-500/20 to-teal-600/10', img: '/src/assets/portfolio/p4.svg' },
-  { title: 'Branding — Café Local', desc: 'Logo, charte graphique & supports', tag: 'Branding', color: 'from-rose-500/20 to-pink-600/10', img: '/src/assets/portfolio/p5.svg' },
-  { title: 'Landing — Service Local', desc: 'Acquisition locale & référencement', tag: 'SEO', color: 'from-indigo-500/20 to-violet-600/10', img: '/src/assets/portfolio/p6.svg' },
-  { title: 'E-commerce — BioShop', desc: 'Boutique en ligne Shopify + SEO', tag: 'E-commerce', color: 'from-lime-500/20 to-green-600/10', img: '/src/assets/portfolio/p7.svg' },
-  { title: 'Dashboard — SaaS Analytics', desc: 'Interface admin React & data viz', tag: 'App Web', color: 'from-cyan-500/20 to-sky-600/10', img: '/src/assets/portfolio/p8.svg' },
-  { title: 'Portfolio — Studio Photo', desc: 'Galerie fullscreen & booking', tag: 'Site vitrine', color: 'from-fuchsia-500/20 to-purple-600/10', img: '/src/assets/portfolio/p9.svg' },
-  { title: 'Refonte — Cabinet Conseil', desc: 'Modernisation & génération de leads', tag: 'Refonte', color: 'from-yellow-500/20 to-amber-600/10', img: '/src/assets/portfolio/p10.svg' },
+  { title: 'Site vitrine — La Boulangerie', desc: 'Création de site vitrine moderne avec menu & prise de contact en ligne', tag: 'Site vitrine', color: 'from-amber-500/20 to-orange-600/10', img: new URL('../assets/portfolio/p1.png', import.meta.url).href },
+  { title: 'Site vitrine — Restaurant', desc: 'Design épuré, carte interactive et réservation en ligne', tag: 'Site vitrine', color: 'from-rose-500/20 to-red-600/10', img: new URL('../assets/portfolio/p2.png', import.meta.url).href },
+  { title: 'Site vitrine — Thai Food', desc: 'Site restaurant cuisine thaïlandaise, design immersif & SEO local', tag: 'Site vitrine', color: 'from-orange-500/20 to-yellow-600/10', img: new URL('../assets/portfolio/p3.png', import.meta.url).href },
+  { title: 'Site vitrine — Brows Creative', desc: 'Studio de beauté : galerie avant/après, booking & branding complet', tag: 'Branding', color: 'from-pink-500/20 to-fuchsia-600/10', img: new URL('../assets/portfolio/p4.png', import.meta.url).href },
+  { title: 'E-commerce — Montres Design', desc: 'Boutique en ligne haut de gamme, fiches produit & tunnel de vente', tag: 'E-commerce', color: 'from-zinc-500/20 to-slate-600/10', img: new URL('../assets/portfolio/p5.png', import.meta.url).href },
+  { title: 'Landing — Service Local', desc: 'Landing page acquisition locale, formulaire de devis & SEO ciblé', tag: 'Landing', color: 'from-indigo-500/20 to-violet-600/10', img: new URL('../assets/portfolio/p6.png', import.meta.url).href },
+  { title: 'App Web — Dashboard', desc: 'Interface de gestion moderne, tableaux de bord & données en temps réel', tag: 'App Web', color: 'from-sky-500/20 to-blue-600/10', img: new URL('../assets/portfolio/p7.png', import.meta.url).href },
+  { title: 'Site vitrine — Projet Web', desc: 'Conception & développement front-end sur-mesure', tag: 'Site vitrine', color: 'from-emerald-500/20 to-teal-600/10', img: new URL('../assets/portfolio/p8.png', import.meta.url).href },
+  { title: 'Refonte — Projet Web', desc: 'Refonte UX/UI complète, performance & accessibilité améliorées', tag: 'Refonte', color: 'from-violet-500/20 to-purple-600/10', img: new URL('../assets/portfolio/p9.png', import.meta.url).href },
+  { title: 'Portfolio — Atelier Créatif', desc: 'Portfolio fullscreen, galerie de projets & présentation artistique', tag: 'Site vitrine', color: 'from-lime-500/20 to-green-600/10', img: new URL('../assets/portfolio/p10.png', import.meta.url).href },
 ]
 
 function Lightbox({ project, onClose }) {
@@ -38,8 +38,13 @@ function Lightbox({ project, onClose }) {
         onClick={e => e.stopPropagation()}
       >
         <button aria-label="Fermer" onClick={onClose} className="absolute top-4 right-4 z-10 w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors">✕</button>
-        <div className={`h-64 bg-gradient-to-br ${project.color} flex items-center justify-center`}>
-          <span className="text-7xl opacity-30">🖼️</span>
+        <div className={`h-64 bg-gradient-to-br ${project.color} flex items-center justify-center overflow-hidden`}>
+          <img
+            src={project.img}
+            alt={project.title}
+            className="w-full h-full object-cover object-top"
+            onError={e => { e.currentTarget.style.display = 'none' }}
+          />
         </div>
         <div className="p-6">
           <span className="text-xs font-semibold text-violet-400 uppercase tracking-widest">{project.tag}</span>
@@ -89,7 +94,7 @@ export default function Portfolio() {
           <p className="text-xs uppercase tracking-widest text-violet-400 mb-3 font-semibold">Nos réalisations</p>
           <h1 className="text-4xl md:text-5xl font-black">Portfolio</h1>
           <p className="text-zinc-400 mt-4 max-w-xl mx-auto text-sm md:text-base">
-            Des projets concrets, livrés avec soin. Visuels à venir — les vraies captures seront intégrées prochainement.
+            Des projets concrets, livrés avec soin.
           </p>
         </motion.header>
 
@@ -134,7 +139,12 @@ export default function Portfolio() {
                 >
                   {/* image area */}
                   <div className={`h-52 md:h-60 bg-gradient-to-br ${p.color} flex items-center justify-center relative overflow-hidden`}>
-                    <span className="text-6xl opacity-20">🖼️</span>
+                    <img
+                      src={p.img}
+                      alt={p.title}
+                      className="absolute inset-0 w-full h-full object-cover object-top"
+                      onError={e => { e.currentTarget.style.display = 'none' }}
+                    />
                     {isCenter && (
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                     )}
