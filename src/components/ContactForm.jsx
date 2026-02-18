@@ -5,7 +5,19 @@ const DEFAULT_ENDPOINT = import.meta.env.VITE_FORMSPREE || 'https://formspree.io
 const USE_SERVERLESS = import.meta.env.VITE_USE_SERVERLESS === 'true'
 
 export default function ContactForm(){
-  const [values, setValues] = useState({ name: '', email: '', phone: '', subject: '', message: '' })
+  // Pré-remplissage depuis les params URL (chatbot)
+  const [values, setValues] = useState(() => {
+    const sp      = new URLSearchParams(window.location.search)
+    const projet  = sp.get('projet')  || ''
+    const type    = sp.get('type')    || ''
+    const urgence = sp.get('urgence') || ''
+    let message = ''
+    if (projet) {
+      message = `Bonjour, je souhaite un devis pour : ${projet}${type ? ` — ${type}` : ''}.\n${urgence ? `Urgence : ${urgence}.` : ''}\n\n`
+    }
+    return { name: '', email: '', phone: '', subject: projet, message }
+  })
+  const fromBot = new URLSearchParams(window.location.search).has('projet')
   const [status, setStatus] = useState('')
 
   function handleChange(e){
@@ -35,6 +47,14 @@ export default function ContactForm(){
   return (
     <form onSubmit={handleSubmit} className="space-y-5" role="form" aria-labelledby="contact-form-title">
       <h3 id="contact-form-title" className="sr-only">Formulaire de contact</h3>
+
+      {/* Bannière pré-rempli (chatbot) */}
+      {fromBot && (
+        <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-violet-500/10 border border-violet-500/30 text-sm text-violet-300">
+          <span className="text-lg flex-shrink-0">🎉</span>
+          <span>Formulaire pré-rempli d'après notre échange — vérifie et complète !</span>
+        </div>
+      )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         <label className="block">
