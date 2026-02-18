@@ -18,3 +18,15 @@ npm run dev
 ```
 
 Si tu veux que je pousse d'autres commits, je peux continuer et tu pulls ensuite.
+
+Form / contact notes:
+
+- Le formulaire dans `src/components/ContactForm.jsx` peut utiliser une variable d'environnement Vite nommée `VITE_FORMSPREE` qui doit contenir ton endpoint Formspree, par exemple `https://formspree.io/f/xxxxxx`.
+- Pour le développement local, crée un fichier `.env` à la racine contenant:
+
+	VITE_FORMSPREE=https://formspree.io/f/your-form-id
+
+	(Vite lit les `.env` au démarrage local; ne commits pas ce fichier si tu mets des secrets.)
+
+- Sur Vercel: ajoute la variable d'environnement `VITE_FORMSPREE` dans Project Settings → Environment Variables pour la build et le runtime.
+- Alternative: si tu préfères une solution serverless (Vercel function) qui envoie via SendGrid, dis-le moi et je l'ajoute — il faudra la clé SendGrid dans les vars d'env.

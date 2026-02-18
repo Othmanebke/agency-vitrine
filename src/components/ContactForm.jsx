@@ -1,5 +1,8 @@
 import React, { useState } from 'react'
 
+// Use Vite env var VITE_FORMSPREE for the Formspree endpoint (e.g. https://formspree.io/f/xxxxx)
+const DEFAULT_ENDPOINT = import.meta.env.VITE_FORMSPREE || 'https://formspree.io/f/YOUR_FORMSPREE_ENDPOINT'
+
 export default function ContactForm(){
   const [values, setValues] = useState({name:'', email:'', message:''})
   const [status, setStatus] = useState('')
@@ -12,14 +15,17 @@ export default function ContactForm(){
     e.preventDefault()
     setStatus('sending')
 
-    // Placeholder: replace `YOUR_FORMSPREE_ENDPOINT` with your Formspree form endpoint
-    const endpoint = 'https://formspree.io/f/YOUR_FORMSPREE_ENDPOINT'
+    const endpoint = DEFAULT_ENDPOINT
 
     try{
       const res = await fetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(values)
+        body: JSON.stringify({
+          name: values.name,
+          email: values.email,
+          message: values.message
+        })
       })
 
       if(res.ok){
@@ -57,7 +63,7 @@ export default function ContactForm(){
         {status==='error' && <span className="text-sm text-rose-400">Erreur, réessaye.</span>}
       </div>
 
-      <p className="text-xs text-zinc-500 mt-2">Remarque : pour recevoir réellement les messages, remplace l'endpoint par Formspree ou implémente une serverless function connectée à SendGrid. Nous configurerons ça au déploiement sur Vercel si tu veux.</p>
+      <p className="text-xs text-zinc-500 mt-2">Remarque : pour recevoir réellement les messages, remplace l'endpoint Vite (VITE_FORMSPREE) par ton endpoint Formspree ou configure une serverless function sur Vercel pour envoyer via SendGrid.</p>
     </form>
   )
 }
