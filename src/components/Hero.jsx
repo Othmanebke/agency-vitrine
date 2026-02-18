@@ -1,132 +1,196 @@
-import React from 'react'
-import { motion, useReducedMotion } from 'framer-motion'
-import Lottie from 'lottie-react'
-import { useEffect, useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
+import { motion, useReducedMotion, AnimatePresence, useMotionValue, useSpring, useInView } from 'framer-motion'
 
-// Placeholder Lottie JSON URL (public). You can replace this with your own file or import a local JSON.
-const LOTTIE_URL = 'https://assets10.lottiefiles.com/packages/lf20_touohxv0.json'
+const WORDS = ['convertissent', 'sur-mesure', 'performants', 'mémorables', 'visibles']
 
-const titleVariant = {
-  hidden: { opacity: 0, y: 12 },
-  visible: (i = 1) => ({ opacity: 1, y: 0, transition: { delay: i * 0.15, duration: 0.6 } })
+function CyclingWord() {
+  const [index, setIndex] = useState(0)
+  const shouldReduce = useReducedMotion()
+
+  useEffect(() => {
+    const id = setInterval(() => setIndex(i => (i + 1) % WORDS.length), 2400)
+    return () => clearInterval(id)
+  }, [])
+
+  if (shouldReduce) {
+    return <span className="text-gradient">{WORDS[0]}</span>
+  }
+
+  return (
+    <span
+      className="inline-block relative"
+      style={{ minWidth: '0' }}
+      aria-live="polite"
+      aria-atomic="true"
+    >
+      <AnimatePresence mode="wait">
+        <motion.span
+          key={WORDS[index]}
+          initial={{ opacity: 0, y: 16, filter: 'blur(6px)' }}
+          animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          exit={{ opacity: 0, y: -16, filter: 'blur(6px)' }}
+          transition={{ duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
+          className="text-gradient inline-block"
+        >
+          {WORDS[index]}
+        </motion.span>
+      </AnimatePresence>
+    </span>
+  )
 }
 
-const mockups = [
-  { title: 'Automate repetitive tasks', text: 'Interfaces simples et tableaux de bord clairs.' },
-  { title: 'Delegate Daily Tasks', text: "Externalise les tâches répétitives pour gagner du temps." },
-  { title: 'Accelerate Sales Growth', text: 'Optimisations UX et funnels adaptés aux conversions.' }
+function CountUp({ value }) {
+  const ref = useRef(null)
+  const isInView = useInView(ref, { once: true })
+  const [display, setDisplay] = useState(value)
+  useEffect(() => {
+    if (!isInView) return
+    const match = value.match(/\d+/)
+    if (!match) return
+    const end = parseInt(match[0])
+    const prefix = value.slice(0, match.index)
+    const suffix = value.slice(match.index + match[0].length)
+    let start = 0
+    const step = 1000 / 60
+    const increment = end / (1200 / step)
+    const timer = setInterval(() => {
+      start += increment
+      if (start >= end) { setDisplay(value); clearInterval(timer) }
+      else setDisplay(`${prefix}${Math.floor(start)}${suffix}`)
+    }, step)
+    return () => clearInterval(timer)
+  }, [isInView, value])
+  return <span ref={ref}>{display}</span>
+}
+
+function MagneticButton({ href, className, children, onClick }) {
+  const ref = useRef(null)
+  const shouldReduce = useReducedMotion()
+  const x = useMotionValue(0)
+  const y = useMotionValue(0)
+  const springX = useSpring(x, { stiffness: 250, damping: 18 })
+  const springY = useSpring(y, { stiffness: 250, damping: 18 })
+  const handleMouseMove = (e) => {
+    if (shouldReduce || !ref.current) return
+    const rect = ref.current.getBoundingClientRect()
+    x.set((e.clientX - rect.left - rect.width / 2) * 0.35)
+    y.set((e.clientY - rect.top - rect.height / 2) * 0.35)
+  }
+  const handleMouseLeave = () => { x.set(0); y.set(0) }
+  return (
+    <motion.a
+      ref={ref}
+      href={href}
+      style={{ x: springX, y: springY }}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      whileHover={shouldReduce ? {} : { scale: 1.04, boxShadow: '0 0 44px rgba(139,92,246,0.55)' }}
+      whileTap={{ scale: 0.97 }}
+      onClick={onClick}
+      className={className}
+    >
+      {children}
+    </motion.a>
+  )
+}
+
+const stats = [
+  { value: '+10', label: 'Clients accompagnés' },
+  { value: '100%', label: 'Satisfaction client' },
+  { value: '48h', label: 'Délai de réponse max' },
 ]
+
+const badges = ['React', 'Next.js', 'SEO', 'Tailwind', 'Framer', 'Vercel', 'WordPress', 'IA']
 
 export default function Hero(){
   const shouldReduce = useReducedMotion()
 
-  return (
-    <section className="relative overflow-hidden">
-      <div aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-br from-black via-zinc-900 to-[#0b0226]" />
+  const fadeUp = (delay = 0) => ({
+    initial: { opacity: 0, y: 24 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: 0.6, delay, ease: [0.22, 1, 0.36, 1] }
+  })
 
-      {/* animated blob */}
+  return (
+    <section className="relative min-h-screen flex flex-col justify-center overflow-hidden pt-24 pb-20">
+
+      {/* extra hero glow */}
       <motion.div
         aria-hidden
-        initial={shouldReduce ? false : { scale: 0.95, opacity: 0.6 }}
-        animate={shouldReduce ? {} : { scale: [0.95, 1.05, 0.95], rotate: [0, 1, -1, 0] }}
-        transition={{ duration: 8, repeat: Infinity }}
-        className="pointer-events-none absolute left-1/2 top-20 -translate-x-1/2 w-[520px] h-[520px] rounded-full bg-gradient-to-br from-[#5b21b6] via-[#7c3aed] to-[#0b0226] blur-3xl opacity-40 mix-blend-screen"
+        animate={shouldReduce ? {} : { scale: [1, 1.08, 1], opacity: [0.5, 0.7, 0.5] }}
+        transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+        className="pointer-events-none absolute left-1/2 top-1/3 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px] rounded-full bg-violet-600/20 blur-[80px]"
       />
 
-  <div className="max-w-6xl mx-auto px-6 py-16 md:py-28">
+      <div className="max-w-6xl mx-auto px-6 w-full">
         <div className="text-center">
-          <motion.p variants={titleVariant} initial="hidden" animate="visible" custom={0} className="text-sm uppercase tracking-widest text-zinc-400">NovaWeb — Agence digitale</motion.p>
 
-          <motion.h1 variants={titleVariant} initial="hidden" animate="visible" custom={1} className="mt-6 text-3xl md:text-6xl font-extrabold leading-tight">Sites web sur-mesure, identité visuelle & présence</motion.h1>
+          {/* badge */}
+          <motion.div {...(shouldReduce ? {} : fadeUp(0))} className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-violet-500/30 bg-violet-500/10 text-violet-300 text-xs font-medium mb-8">
+            <span className="w-1.5 h-1.5 rounded-full bg-violet-400 animate-pulse" />
+            Agence digitale — Sites, Identité & SEO
+          </motion.div>
 
-          <motion.p variants={titleVariant} initial="hidden" animate="visible" custom={2} className="mt-6 text-base md:text-lg text-zinc-300 max-w-2xl mx-auto">Site sur-mesure (responsive, SEO, CMS / no-code), refonte et supports print — on crée des expériences qui convertissent et mettent ta marque en avant.</motion.p>
+          {/* headline */}
+          <motion.h1 {...(shouldReduce ? {} : fadeUp(0.1))} className="text-4xl sm:text-6xl md:text-7xl font-black leading-[1.1] tracking-tight">
+            <span className="block">On crée des sites</span>
+            <span className="block mt-1"><CyclingWord /></span>
+          </motion.h1>
 
-          <motion.div initial={shouldReduce ? {} : { opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.7 }} className="mt-8 flex justify-center gap-4">
-            <motion.a
-              href="#contact"
-              role="button"
-              aria-label="Demander un devis"
-              whileHover={shouldReduce ? {} : { scale: 1.03 }}
-              whileTap={shouldReduce ? {} : { scale: 0.97 }}
-              className="bg-gradient-to-r from-violet-600 to-pink-500 text-black px-6 py-3 rounded-full font-semibold shadow-sm focus:outline-none focus:ring-2 focus:ring-violet-500"
+          <motion.p {...(shouldReduce ? {} : fadeUp(0.25))} className="mt-6 text-base md:text-xl text-zinc-400 max-w-2xl mx-auto leading-relaxed">
+            Sites sur-mesure, refonte, SEO et supports print — des expériences digitales pensées pour faire grandir ta marque.
+          </motion.p>
+
+          {/* CTAs */}
+          <motion.div {...(shouldReduce ? {} : fadeUp(0.35))} className="mt-10 flex flex-wrap justify-center gap-4">
+            <MagneticButton
+              href="/contact"
+              onClick={(e) => { e.preventDefault(); history.pushState({}, '', '/contact'); window.dispatchEvent(new PopStateEvent('popstate')) }}
+              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-semibold text-white bg-gradient-to-r from-violet-600 to-pink-500 shadow-lg shadow-violet-500/30 transition-shadow"
             >
               Demander un devis
-            </motion.a>
-
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+            </MagneticButton>
             <motion.a
               href="#services"
-              role="button"
-              aria-label="Voir nos services"
-              whileHover={shouldReduce ? {} : { scale: 1.02 }}
-              whileTap={shouldReduce ? {} : { scale: 0.98 }}
-              className="px-6 py-3 rounded-full border border-zinc-700 focus:outline-none focus:ring-2 focus:ring-zinc-600"
+              whileHover={shouldReduce ? {} : { scale: 1.03 }}
+              whileTap={shouldReduce ? {} : { scale: 0.97 }}
+              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-semibold border border-white/15 text-white/80 hover:text-white hover:border-white/30 transition-colors"
             >
               Nos services
             </motion.a>
           </motion.div>
 
-          {/* Lottie animation (decorative) - loads a placeholder JSON from LottieFiles
-              Disabled when user requests reduced motion. Replace `LOTTIE_URL` with your own JSON or
-              import local JSON and pass to the `animationData` prop. */}
-          <div className="mt-10 flex justify-center">
-            <div className="w-full max-w-xl hidden md:block" aria-hidden>
-              {/* Lazy-load animationData from a public Lottie JSON URL */}
-              {shouldReduce ? (
-                <div className="h-48" />
-              ) : (
-                <LottieWrapper url={LOTTIE_URL} />
-              )}
-            </div>
-          </div>
+          {/* tech badges */}
+          <motion.div {...(shouldReduce ? {} : fadeUp(0.45))} className="mt-12 flex flex-wrap justify-center gap-2">
+            {badges.map((b) => (
+              <span key={b} className="px-3 py-1 rounded-full text-xs font-medium bg-white/5 border border-white/10 text-zinc-400">{b}</span>
+            ))}
+          </motion.div>
 
-          {/* logos / trust row */}
-          <motion.div initial={shouldReduce ? {} : { opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.9 }} className="mt-14 flex items-center justify-center gap-8 opacity-80">
-            <div className="text-xs text-zinc-500">Clients :</div>
-            <div className="flex items-center gap-6">
-              <div className="h-6 w-24 bg-zinc-800 rounded flex items-center justify-center text-xs text-zinc-400">Logo1</div>
-              <div className="h-6 w-24 bg-zinc-800 rounded flex items-center justify-center text-xs text-zinc-400">Logo2</div>
-              <div className="h-6 w-24 bg-zinc-800 rounded flex items-center justify-center text-xs text-zinc-400">Logo3</div>
+          {/* stats */}
+          <motion.div {...(shouldReduce ? {} : fadeUp(0.55))} className="mt-16 grid grid-cols-3 gap-4 max-w-lg mx-auto">
+            {stats.map((s) => (
+              <div key={s.label} className="text-center">
+                <div className="text-2xl md:text-3xl font-black text-gradient"><CountUp value={s.value} /></div>
+                <div className="text-xs text-zinc-500 mt-1">{s.label}</div>
+              </div>
+            ))}
+          </motion.div>
+
+          {/* scroll indicator */}
+          <motion.div
+            {...(shouldReduce ? {} : { animate: { y: [0, 8, 0] }, transition: { duration: 2, repeat: Infinity } })}
+            className="mt-16 flex justify-center"
+          >
+            <div className="flex flex-col items-center gap-1 text-zinc-600">
+              <div className="w-px h-8 bg-gradient-to-b from-transparent to-zinc-600" />
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
             </div>
           </motion.div>
 
         </div>
-
-        {/* mockup cards */}
-        <motion.div initial={shouldReduce ? {} : { opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.0 }} className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
-          {mockups.map((m, i) => (
-            <motion.article
-              key={m.title}
-              whileHover={shouldReduce ? {} : { y: -6 }}
-              whileTap={shouldReduce ? {} : { scale: 0.995 }}
-              transition={{ type: 'spring', stiffness: 200, damping: 20 }}
-              className="p-6 bg-zinc-900 rounded-lg shadow-lg"
-            >
-              <div className="h-40 bg-gradient-to-br from-zinc-800 to-zinc-700 rounded mb-4" aria-hidden />
-              <h4 className="font-semibold">{m.title}</h4>
-              <p className="text-sm text-zinc-400">{m.text}</p>
-            </motion.article>
-          ))}
-        </motion.div>
-
       </div>
     </section>
   )
-}
-
-function LottieWrapper({ url }){
-  const [data, setData] = useState(null)
-  useEffect(()=>{
-    let mounted = true
-    fetch(url).then(r=>r.json()).then(json=>{
-      if(mounted) setData(json)
-    }).catch(err=>{
-      // swallow error; animation is decorative
-      console.error('Lottie load error', err)
-    })
-    return ()=> { mounted = false }
-  }, [url])
-
-  if(!data) return <div className="h-48" />
-
-  return <Lottie animationData={data} autoplay loop style={{ height: 240 }} />
 }

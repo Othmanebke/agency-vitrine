@@ -5,13 +5,14 @@ import Footer from '../components/Footer'
 
 export default function Pricing(){
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen text-white">
       <Nav />
 
-      <main role="main">
+      <main role="main" className="pt-24">
         <header className="max-w-6xl mx-auto px-6 py-16 text-center">
-          <h1 className="text-3xl md:text-4xl font-extrabold">Tarifs & offres — NovaWeb</h1>
-          <p className="text-zinc-400 mt-4 max-w-2xl mx-auto">Découvrez nos offres pour sites sur‑mesure, refontes et packs réseaux sociaux. Les prix indiqués sont des fourchettes; nous fournissons un devis précis après brief.</p>
+          <p className="text-xs uppercase tracking-widest text-violet-400 mb-3 font-semibold">Transparent & sans surprise</p>
+          <h1 className="text-4xl md:text-5xl font-black">Tarifs & offres</h1>
+          <p className="text-zinc-400 mt-4 max-w-2xl mx-auto">Des fourchettes claires — on te fournit un devis précis après un bref échange.</p>
         </header>
 
         <script dangerouslySetInnerHTML={{__html: "" }} />

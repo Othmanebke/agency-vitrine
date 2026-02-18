@@ -1,44 +1,146 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 
-export default function Nav(){
+function navigate(path) {
+  history.pushState({}, '', path)
+  window.dispatchEvent(new PopStateEvent('popstate'))
+}
+
+const links = [
+  { label: 'Accueil', path: '/' },
+  { label: 'Services', path: '/#services', hash: true },
+  { label: 'Tarifs', path: '/pricing' },
+  { label: 'Portfolio', path: '/portfolio' },
+  { label: 'À propos', path: '/about' },
+  { label: 'Contact', path: '/contact' },
+]
+
+export default function Nav() {
   const [open, setOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
+  const [current, setCurrent] = useState(window.location.pathname)
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 20)
+    const onPop = () => { setCurrent(window.location.pathname); setOpen(false) }
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('popstate', onPop)
+    return () => { window.removeEventListener('scroll', onScroll); window.removeEventListener('popstate', onPop) }
+  }, [])
+
+  const handleNav = (e, link) => {
+    if (link.hash) { setOpen(false); return }
+    e.preventDefault()
+    navigate(link.path)
+    setOpen(false)
+  }
+
+  const isActive = (link) => {
+    if (link.hash) return false
+    return current === link.path
+  }
 
   return (
-    <header className="border-b border-zinc-800">
+    <motion.header
+      initial={{ y: -80, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.5, ease: 'easeOut' }}
+      className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${
+        scrolled
+          ? 'bg-black/70 backdrop-blur-xl border-b border-white/10 shadow-lg shadow-black/40'
+          : 'bg-transparent'
+      }`}
+    >
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-          <div className="font-bold text-lg">NovaWeb</div>
-        </div>
+        {/* Logo */}
+        <a
+          href="/"
+          onClick={(e) => handleNav(e, { path: '/' })}
+          className="flex items-center gap-2 group"
+        >
+          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-500 to-pink-500 flex items-center justify-center text-white font-black text-sm shadow-md shadow-violet-500/30 group-hover:shadow-violet-500/60 transition-shadow duration-300">N</div>
+          <span className="font-extrabold text-lg tracking-tight bg-gradient-to-r from-white to-zinc-400 bg-clip-text text-transparent">NovaWeb</span>
+        </a>
 
-        <nav className="hidden md:flex items-center gap-6">
-          <a href="/" onClick={(e)=>{e.preventDefault(); history.pushState({}, '', '/'); window.dispatchEvent(new PopStateEvent('popstate'))}} className="text-sm opacity-80 hover:opacity-100">Accueil</a>
-          <a href="/#services" className="text-sm opacity-80 hover:opacity-100">Services</a>
-          <a href="/pricing" onClick={(e)=>{e.preventDefault(); history.pushState({}, '', '/pricing'); window.dispatchEvent(new PopStateEvent('popstate'))}} className="text-sm opacity-80 hover:opacity-100">Tarifs</a>
-          <a href="/portfolio" onClick={(e)=>{e.preventDefault(); history.pushState({}, '', '/portfolio'); window.dispatchEvent(new PopStateEvent('popstate'))}} className="text-sm opacity-80 hover:opacity-100">Portfolio</a>
-          <a href="/about" onClick={(e)=>{e.preventDefault(); history.pushState({}, '', '/about'); window.dispatchEvent(new PopStateEvent('popstate'))}} className="text-sm opacity-80 hover:opacity-100">À propos</a>
-          <a href="#contact" className="text-sm opacity-80 hover:opacity-100">Contact</a>
-          <a href="#contact" className="ml-4 inline-block bg-gradient-to-r from-violet-600 to-pink-500 text-black px-4 py-2 rounded-full text-sm font-semibold">Demander un devis</a>
+        {/* Desktop links */}
+        <nav className="hidden md:flex items-center gap-1">
+          {links.map((link) => (
+            <a
+              key={link.label}
+              href={link.path}
+              onClick={(e) => handleNav(e, link)}
+              className={`relative px-4 py-2 text-sm font-medium rounded-full transition-colors duration-200 ${
+                isActive(link)
+                  ? 'text-white'
+                  : 'text-zinc-400 hover:text-white'
+              }`}
+            >
+              {isActive(link) && (
+                <motion.span
+                  layoutId="nav-pill"
+                  className="absolute inset-0 rounded-full bg-white/10 border border-white/10"
+                  transition={{ type: 'spring', stiffness: 400, damping: 35 }}
+                />
+              )}
+              <span className="relative z-10">{link.label}</span>
+            </a>
+          ))}
+          <a
+            href="/contact"
+            onClick={(e) => { e.preventDefault(); navigate('/contact') }}
+            className="ml-3 relative inline-flex items-center gap-1 px-5 py-2 rounded-full text-sm font-semibold text-white bg-gradient-to-r from-violet-600 to-pink-500 shadow-md shadow-violet-500/30 hover:shadow-violet-500/60 hover:scale-105 active:scale-95 transition-all duration-200"
+          >
+            Devis gratuit
+            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+          </a>
         </nav>
 
-        <div className="md:hidden">
-          <button aria-label="Menu" onClick={()=>setOpen(o=>!o)} className="p-2 rounded bg-zinc-900">
-            {open ? '✕' : '☰'}
-          </button>
-        </div>
+        {/* Burger */}
+        <button
+          aria-label={open ? 'Fermer le menu' : 'Ouvrir le menu'}
+          onClick={() => setOpen(o => !o)}
+          className="md:hidden flex flex-col gap-1.5 p-2 rounded-lg hover:bg-white/5 transition-colors"
+        >
+          <motion.span animate={{ rotate: open ? 45 : 0, y: open ? 8 : 0 }} className="block w-6 h-0.5 bg-white origin-center transition-all" />
+          <motion.span animate={{ opacity: open ? 0 : 1, scaleX: open ? 0 : 1 }} className="block w-6 h-0.5 bg-white" />
+          <motion.span animate={{ rotate: open ? -45 : 0, y: open ? -8 : 0 }} className="block w-6 h-0.5 bg-white origin-center transition-all" />
+        </button>
       </div>
 
-      {open && (
-        <div className="md:hidden bg-zinc-900 border-t border-zinc-800">
-          <div className="px-6 py-4 space-y-3">
-            <a href="/" onClick={(e)=>{e.preventDefault(); history.pushState({}, '', '/'); window.dispatchEvent(new PopStateEvent('popstate')); setOpen(false)}} className="block">Accueil</a>
-            <a href="#services" onClick={()=>setOpen(false)} className="block">Services</a>
-            <a href="/pricing" onClick={(e)=>{e.preventDefault(); history.pushState({}, '', '/pricing'); window.dispatchEvent(new PopStateEvent('popstate')); setOpen(false)}} className="block">Tarifs</a>
-            <a href="/portfolio" onClick={(e)=>{e.preventDefault(); history.pushState({}, '', '/portfolio'); window.dispatchEvent(new PopStateEvent('popstate')); setOpen(false)}} className="block">Portfolio</a>
-            <a href="/about" onClick={(e)=>{e.preventDefault(); history.pushState({}, '', '/about'); window.dispatchEvent(new PopStateEvent('popstate')); setOpen(false)}} className="block">À propos</a>
-            <a href="#contact" onClick={()=>setOpen(false)} className="block">Contact</a>
-          </div>
-        </div>
-      )}
-    </header>
+      {/* Mobile menu */}
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            key="mobile-menu"
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.25, ease: 'easeInOut' }}
+            className="md:hidden overflow-hidden bg-black/90 backdrop-blur-xl border-t border-white/10"
+          >
+            <div className="px-6 py-5 space-y-1">
+              {links.map((link, i) => (
+                <motion.a
+                  key={link.label}
+                  href={link.path}
+                  onClick={(e) => handleNav(e, link)}
+                  initial={{ opacity: 0, x: -12 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: i * 0.05 }}
+                  className={`block px-4 py-3 rounded-xl text-sm font-medium transition-colors ${
+                    isActive(link) ? 'bg-white/10 text-white' : 'text-zinc-400 hover:text-white hover:bg-white/5'
+                  }`}
+                >
+                  {link.label}
+                </motion.a>
+              ))}
+              <a href="/contact" onClick={(e) => { e.preventDefault(); navigate('/contact'); setOpen(false) }} className="mt-3 w-full flex items-center justify-center gap-2 px-5 py-3 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-violet-600 to-pink-500 shadow shadow-violet-500/30">
+                Devis gratuit
+              </a>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.header>
   )
 }

@@ -1,20 +1,15 @@
 # scripts/setup-and-deploy.ps1
-# Usage: from repo root run: .\scripts\setup-and-deploy.ps1
-# Interactive helper to checkout the NOVAWEB branch, install deps, create a local .env and
-# start the dev server or prepare a Vercel deployment.
+# Usage: Ouvre PowerShell en tant qu'utilisateur et lance:
+#   .\scripts\setup-and-deploy.ps1
+# (Assure-toi d'être dans le dossier racine du repo : C:\agency-vitrine)
 
 Write-Host "== NovaWeb: Setup & Deploy helper ==" -ForegroundColor Cyan
 
 # 1) Git: fetch & checkout NOVAWEB
 Write-Host "-> Git: fetch and checkout branch NOVAWEB" -ForegroundColor Yellow
 git fetch origin
-try {
-  git rev-parse --verify --quiet NOVAWEB > $null 2>&1
-  $hasBranch = $LASTEXITCODE -eq 0
-} catch {
-  $hasBranch = $false
-}
-if (-not $hasBranch) {
+# Try to checkout NOVAWEB (create local if missing)
+if (-not (git rev-parse --verify --quiet NOVAWEB)) {
   git checkout -b NOVAWEB origin/NOVAWEB
 } else {
   git checkout NOVAWEB
@@ -36,7 +31,8 @@ if (Test-Path $envPath) {
   Copy-Item $envPath ".env.local.bak" -Force
 }
 
-Write-Host ""; Write-Host "Configuration du formulaire : choisis le mode de test:" -ForegroundColor Cyan
+Write-Host ""
+Write-Host "Configuration du formulaire : choisis le mode de test:" -ForegroundColor Cyan
 Write-Host "  1) Test rapide (Formspree) - pas de serverless nécessaire"
 Write-Host "  2) Serverless (SendGrid) - nécessite clés SendGrid et test en local via vercel dev ou déploiement"
 $mode = Read-Host "Choix (1 or 2). Tape 1 ou 2 puis Enter"
@@ -90,7 +86,8 @@ $envContents | Out-File -FilePath $envPath -Encoding utf8
 Write-Host ".env.local créé/écrasé (ne pas committer)." -ForegroundColor Green
 
 # 4) Choix: démarrer le dev server ou vercel dev
-Write-Host ""; Write-Host "Que veux-tu faire maintenant ?" -ForegroundColor Cyan
+Write-Host ""
+Write-Host "Que veux-tu faire maintenant ?" -ForegroundColor Cyan
 Write-Host "  a) Lancer le dev server Vite (rapide, front-end) -> npm run dev"
 Write-Host "  b) Lancer vercel dev (émule serverless /api/local) -> vercel dev (nécessite vercel CLI et login)"
 Write-Host "  c) Finir / préparer le déploiement sur Vercel (préparer variables et push)"
