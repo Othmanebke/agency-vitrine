@@ -2,8 +2,14 @@ import React from 'react'
 import Packages from '../components/Packages'
 import Nav from '../components/Nav'
 import Footer from '../components/Footer'
+import { useSEO } from '../hooks/useSEO'
 
 export default function Pricing(){
+  useSEO({
+    title: 'Tarifs & Offres — NovaWeb | Site Vitrine, E-commerce, Réseaux Sociaux',
+    description: 'Découvrez les tarifs NovaWeb : site vitrine dès 500 €, e-commerce, refonte, SEO et packs réseaux sociaux. Devis précis après un bref échange.',
+    path: '/pricing',
+  })
   return (
     <div className="min-h-screen text-white">
       <Nav />

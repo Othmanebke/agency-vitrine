@@ -3,13 +3,92 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>NovaWeb — Agence digitale</title>
-    <meta name="description" content="NovaWeb — création de sites sur-mesure, refonte, SEO et supports print. Agence digitale pour PME. Devis rapide." />
-    <meta name="theme-color" content="#050510" />
+
+    <!-- ── Titre & description ───────────────────────────────────────────── -->
+    <title>NovaWeb — Agence Digitale | Création de Sites Web Sur-Mesure</title>
+    <meta name="description" content="NovaWeb — agence digitale spécialisée en création de sites web sur-mesure, refonte, SEO et supports print. Devis gratuit en 48 h. Sites rapides, accessibles et pensés pour convertir." />
+    <meta name="author" content="Othmane Bouakline — NovaWeb" />
+    <meta name="keywords" content="agence web, création site internet, site vitrine, site sur-mesure, refonte site web, SEO, agence digitale, e-commerce, identité visuelle, flyers, supports print, NovaWeb" />
+
+    <!-- ── Indexation ────────────────────────────────────────────────────── -->
     <meta name="robots" content="index, follow" />
-    <meta property="og:title" content="NovaWeb — Agence digitale" />
-    <meta property="og:description" content="Sites performants, design & stratégie. Devis personnalisé — NovaWeb." />
-    <meta property="og:type" content="website" />
+    <link rel="canonical" href="https://novaweb.vercel.app/" />
+
+    <!-- ── Open Graph (partage réseaux sociaux) ─────────────────────────── -->
+    <meta property="og:type"        content="website" />
+    <meta property="og:site_name"   content="NovaWeb" />
+    <meta property="og:locale"      content="fr_FR" />
+    <meta property="og:url"         content="https://novaweb.vercel.app/" />
+    <meta property="og:title"       content="NovaWeb — Agence Digitale | Création de Sites Web Sur-Mesure" />
+    <meta property="og:description" content="Sites performants, design soigné et stratégie SEO. Devis personnalisé sous 48 h — NovaWeb, agence digitale." />
+
+    <!-- ── Twitter Card ─────────────────────────────────────────────────── -->
+    <meta name="twitter:card"        content="summary_large_image" />
+    <meta name="twitter:title"       content="NovaWeb — Agence Digitale | Création de Sites Web Sur-Mesure" />
+    <meta name="twitter:description" content="Sites performants, design soigné et stratégie SEO. Devis personnalisé sous 48 h." />
+
+    <!-- ── Thème ─────────────────────────────────────────────────────────── -->
+    <meta name="theme-color" content="#050510" />
+
+    <!-- ── JSON-LD — Données structurées ───────────────────────────────── -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": "https://novaweb.vercel.app/#website",
+          "name": "NovaWeb",
+          "url": "https://novaweb.vercel.app",
+          "description": "Agence digitale — création de sites web sur-mesure, refonte, SEO et supports print.",
+          "inLanguage": "fr-FR",
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://novaweb.vercel.app/?q={search_term_string}",
+            "query-input": "required name=search_term_string"
+          }
+        },
+        {
+          "@type": "ProfessionalService",
+          "@id": "https://novaweb.vercel.app/#business",
+          "name": "NovaWeb",
+          "url": "https://novaweb.vercel.app",
+          "email": "onovaweb.pro@gmail.com",
+          "telephone": "+33660805337",
+          "description": "Agence digitale spécialisée en création de sites web sur-mesure, refonte, SEO, identité visuelle et supports print pour TPE et PME.",
+          "areaServed": {
+            "@type": "Country",
+            "name": "France"
+          },
+          "priceRange": "€€",
+          "founder": {
+            "@type": "Person",
+            "name": "Othmane Bouakline",
+            "jobTitle": "Fondateur & Développeur",
+            "url": "https://linkedin.com/in/othmanebouakline"
+          },
+          "sameAs": [
+            "https://tiktok.com/@n0vaweb",
+            "https://instagram.com/novaaa.web",
+            "https://linkedin.com/in/othmanebouakline"
+          ],
+          "hasOfferCatalog": {
+            "@type": "OfferCatalog",
+            "name": "Services NovaWeb",
+            "itemListElement": [
+              { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Création de site web sur-mesure" } },
+              { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Refonte de site web" } },
+              { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Optimisation SEO" } },
+              { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Création de flyers et supports print" } },
+              { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Gestion des réseaux sociaux" } }
+            ]
+          }
+        }
+      ]
+    }
+    </script>
+
+    <!-- ── Polices ────────────────────────────────────────────────────────── -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />

@@ -1,5 +1,6 @@
 import React, { useRef } from 'react'
 import { motion, useReducedMotion, useMotionValue, useSpring } from 'framer-motion'
+import { useSEO } from '../hooks/useSEO'
 import Nav from '../components/Nav'
 import Hero from '../components/Hero'
 import Process from '../components/Process'
@@ -10,17 +11,11 @@ import Footer from '../components/Footer'
 
 export default function Home(){
   const shouldReduce = useReducedMotion()
-    React.useEffect(()=>{
-      document.title = 'NovaWeb — Agence digitale'
-      const meta = document.querySelector('meta[name="description"]')
-      if(meta) meta.setAttribute('content', 'NovaWeb crée des sites sur-mesure, performants et accessibles pour PME et indépendants. Contactez-nous pour un devis.')
-      else {
-        const m = document.createElement('meta')
-        m.name = 'description'
-        m.content = 'NovaWeb crée des sites sur-mesure, performants et accessibles pour PME et indépendants. Contactez-nous pour un devis.'
-        document.head.appendChild(m)
-      }
-    }, [])
+  useSEO({
+    title: 'NovaWeb — Agence Digitale | Création de Sites Web Sur-Mesure',
+    description: 'NovaWeb crée des sites web sur-mesure, rapides et accessibles pour PME et indépendants. Refonte, SEO, identité visuelle — devis gratuit en 48 h.',
+    path: '/',
+  })
 
   function ServiceCard({ title, desc, index, icon }){
     const ref = useRef(null)

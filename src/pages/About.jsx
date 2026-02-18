@@ -4,6 +4,7 @@ import Team from "../components/Team";
 import ContactForm from "../components/ContactForm";
 import Footer from "../components/Footer";
 import { motion } from "framer-motion";
+import { useSEO } from "../hooks/useSEO";
 
 const values = [
   { icon: '🎯', title: 'Pragmatisme', desc: 'Des solutions axées sur les résultats, sans complexité inutile.' },
@@ -27,17 +28,11 @@ const fadeUp = (delay = 0) => ({
 })
 
 export default function About() {
-  React.useEffect(()=>{
-    document.title = 'À propos — NovaWeb'
-    const meta = document.querySelector('meta[name="description"]')
-    if(meta) meta.setAttribute('content', 'NovaWeb — création de sites sur-mesure, refonte, SEO et supports print pour PME.')
-    else {
-      const m = document.createElement('meta')
-      m.name = 'description'
-      m.content = 'NovaWeb — création de sites sur-mesure, refonte, SEO et supports print pour PME.'
-      document.head.appendChild(m)
-    }
-  }, [])
+  useSEO({
+    title: 'À propos — NovaWeb | Agence Digitale',
+    description: 'Othmane Bouakline, fondateur de NovaWeb — agence digitale Bac+5 spécialisée en création de sites sur-mesure, refonte, SEO et supports print pour TPE et PME.',
+    path: '/about',
+  })
 
   return (
     <div className="min-h-screen text-white">

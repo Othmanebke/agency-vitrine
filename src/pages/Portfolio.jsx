@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react'
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import Nav from '../components/Nav'
 import Footer from '../components/Footer'
+import { useSEO } from '../hooks/useSEO'
 
 const projects = [
   { title: 'Site vitrine — La Boulangerie', desc: 'Design & intégration CMS sur-mesure', tag: 'Site vitrine', color: 'from-amber-500/20 to-orange-600/10', img: '/src/assets/portfolio/p1.svg' },
@@ -59,17 +60,11 @@ export default function Portfolio() {
   const shouldReduce = useReducedMotion()
   const dragX = useRef(0)
 
-  React.useEffect(() => {
-    document.title = 'Portfolio — NovaWeb'
-    const meta = document.querySelector('meta[name="description"]')
-    if (meta) meta.setAttribute('content', 'Réalisations NovaWeb — sites, refontes, branding & SEO.')
-    else {
-      const m = document.createElement('meta')
-      m.name = 'description'
-      m.content = 'Réalisations NovaWeb — sites, refontes, branding & SEO.'
-      document.head.appendChild(m)
-    }
-  }, [])
+  useSEO({
+    title: 'Portfolio — NovaWeb | Sites, Refontes, Branding & SEO',
+    description: 'Découvrez les réalisations NovaWeb : sites vitrines, e-commerce, refontes, branding et campagnes SEO. Des projets concrets livrés avec soin.',
+    path: '/portfolio',
+  })
 
   const go = (dir) => {
     setDirection(dir)

@@ -3,19 +3,14 @@ import { motion } from 'framer-motion'
 import Nav from '../components/Nav'
 import ContactForm from '../components/ContactForm'
 import Footer from '../components/Footer'
+import { useSEO } from '../hooks/useSEO'
 
 export default function Contact(){
-  React.useEffect(()=>{
-    document.title = 'Contact — NovaWeb'
-    const meta = document.querySelector('meta[name="description"]')
-    if(meta) meta.setAttribute('content', 'Contactez NovaWeb pour un devis gratuit — réponse en moins de 48h.')
-    else {
-      const m = document.createElement('meta')
-      m.name = 'description'
-      m.content = 'Contactez NovaWeb pour un devis gratuit — réponse en moins de 48h.'
-      document.head.appendChild(m)
-    }
-  }, [])
+  useSEO({
+    title: 'Contact — NovaWeb | Devis Gratuit en 48 h',
+    description: 'Demandez un devis gratuit à NovaWeb — réponse garantie en moins de 48 h. Création de site, refonte, SEO ou print : décrivez votre projet.',
+    path: '/contact',
+  })
 
   return (
     <div className="min-h-screen text-white">
