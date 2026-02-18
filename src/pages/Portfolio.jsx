@@ -25,6 +25,17 @@ function Lightbox({ src, onClose }){
 
 export default function Portfolio(){
   const [lightbox, setLightbox] = useState(null)
+  React.useEffect(()=>{
+    document.title = 'Portfolio — NovaWeb'
+    const meta = document.querySelector('meta[name="description"]')
+    if(meta) meta.setAttribute('content', 'Exemples de réalisations NovaWeb — sites vitrines, refontes, supports print et landing pages.')
+    else {
+      const m = document.createElement('meta')
+      m.name = 'description'
+      m.content = 'Exemples de réalisations NovaWeb — sites vitrines, refontes, supports print et landing pages.'
+      document.head.appendChild(m)
+    }
+  }, [])
 
   return (
     <div className="min-h-screen bg-black text-white">

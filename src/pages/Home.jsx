@@ -11,6 +11,17 @@ import Footer from '../components/Footer'
 
 export default function Home(){
   const shouldReduce = useReducedMotion()
+    React.useEffect(()=>{
+      document.title = 'NovaWeb — Agence digitale'
+      const meta = document.querySelector('meta[name="description"]')
+      if(meta) meta.setAttribute('content', 'NovaWeb crée des sites sur-mesure, performants et accessibles pour PME et indépendants. Contactez-nous pour un devis.')
+      else {
+        const m = document.createElement('meta')
+        m.name = 'description'
+        m.content = 'NovaWeb crée des sites sur-mesure, performants et accessibles pour PME et indépendants. Contactez-nous pour un devis.'
+        document.head.appendChild(m)
+      }
+    }, [])
 
   function ServiceCard({ title, desc, index }){
     return (

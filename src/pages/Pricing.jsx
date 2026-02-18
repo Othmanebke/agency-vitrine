@@ -11,8 +11,10 @@ export default function Pricing(){
       <main role="main">
         <header className="max-w-6xl mx-auto px-6 py-16 text-center">
           <h1 className="text-3xl md:text-4xl font-extrabold">Tarifs & offres — NovaWeb</h1>
-          <p className="text-zinc-400 mt-4 max-w-2xl mx-auto">Découvrez nos offres pour les sites sur-mesure, refontes et packs réseaux sociaux. Tous les tarifs sont indicatifs et un devis personnalisé est envoyé après brief.</p>
+          <p className="text-zinc-400 mt-4 max-w-2xl mx-auto">Découvrez nos offres pour sites sur‑mesure, refontes et packs réseaux sociaux. Les prix indiqués sont des fourchettes; nous fournissons un devis précis après brief.</p>
         </header>
+
+        <script dangerouslySetInnerHTML={{__html: "" }} />
 
         <Packages />
 

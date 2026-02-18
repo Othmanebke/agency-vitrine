@@ -4,6 +4,18 @@ import ContactForm from "../components/ContactForm";
 import { motion } from "framer-motion";
 
 export default function About() {
+  React.useEffect(()=>{
+    document.title = 'À propos — NovaWeb'
+    const meta = document.querySelector('meta[name="description"]')
+    if(meta) meta.setAttribute('content', 'NovaWeb — création de sites sur-mesure, refonte, SEO et supports print pour PME.')
+    else {
+      const m = document.createElement('meta')
+      m.name = 'description'
+      m.content = 'NovaWeb — création de sites sur-mesure, refonte, SEO et supports print pour PME.'
+      document.head.appendChild(m)
+    }
+  }, [])
+
   return (
     <main className="min-h-screen px-6 py-16 max-w-6xl mx-auto">
       <motion.header
