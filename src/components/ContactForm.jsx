@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 
 // Use Vite env var VITE_FORMSPREE for the Formspree endpoint (e.g. https://formspree.io/f/xxxxx)
 const DEFAULT_ENDPOINT = import.meta.env.VITE_FORMSPREE || 'https://formspree.io/f/YOUR_FORMSPREE_ENDPOINT'
+// If VITE_USE_SERVERLESS is 'true', the form will POST to the serverless function at /api/contact
+const USE_SERVERLESS = import.meta.env.VITE_USE_SERVERLESS === 'true'
 
 export default function ContactForm(){
   const [values, setValues] = useState({name:'', email:'', message:''})
@@ -15,7 +17,7 @@ export default function ContactForm(){
     e.preventDefault()
     setStatus('sending')
 
-    const endpoint = DEFAULT_ENDPOINT
+  const endpoint = USE_SERVERLESS ? '/api/contact' : DEFAULT_ENDPOINT
 
     try{
       const res = await fetch(endpoint, {

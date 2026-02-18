@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "framer-motion": "^10.12.16",
+    "@sendgrid/mail": "^8.9.0",
     "lottie-react": "^2.4.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"

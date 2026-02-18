@@ -28,5 +28,24 @@ Form / contact notes:
 
 	(Vite lit les `.env` au démarrage local; ne commits pas ce fichier si tu mets des secrets.)
 
-- Sur Vercel: ajoute la variable d'environnement `VITE_FORMSPREE` dans Project Settings → Environment Variables pour la build et le runtime.
-- Alternative: si tu préfères une solution serverless (Vercel function) qui envoie via SendGrid, dis-le moi et je l'ajoute — il faudra la clé SendGrid dans les vars d'env.
+ - Sur Vercel: ajoute la variable d'environnement `VITE_FORMSPREE` dans Project Settings → Environment Variables pour la build et le runtime.
+ - Serverless option (SendGrid): une function est ajoutée dans `api/contact.js`.
+
+  Pour activer la solution serverless sur Vercel :
+
+  1. Dans Project Settings → Environment Variables, ajoute :
+	  - SENDGRID_API_KEY = <ta_clé_sendgrid>
+	  - SENDGRID_TO = <ton_email_de_réception>
+	  - SENDGRID_FROM = <adresse_from_si_necessaire> (optionnel)
+	  - VITE_USE_SERVERLESS = true
+
+  2. Ou en local, crée un fichier `.env` (ne pas committer) :
+
+	  VITE_USE_SERVERLESS=true
+	  SENDGRID_API_KEY=your_sendgrid_api_key
+	  SENDGRID_TO=you@domain.com
+	  SENDGRID_FROM=no-reply@yourdomain.com
+
+  3. Le frontend enverra les données vers `/api/contact` et la function utilisera SendGrid pour envoyer le mail.
+
+  Remarque : si tu préfères ne pas utiliser SendGrid, on peut adapter la function pour utiliser Mailgun, Nodemailer (SMTP) ou un autre fournisseur.
