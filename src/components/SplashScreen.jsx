@@ -103,7 +103,7 @@ function Corner({ pos, delay, isOut }) {
   const tl = pos === 'tl', tr = pos === 'tr', bl = pos === 'bl', br = pos === 'br'
   return (
     <motion.div
-      className="absolute w-8 h-8 pointer-events-none"
+      className="absolute w-6 h-6 sm:w-8 sm:h-8 pointer-events-none hidden sm:block"
       style={{
         top:    (tl || tr) ? '2rem' : undefined,
         bottom: (bl || br) ? '2rem' : undefined,
@@ -279,14 +279,14 @@ export default function SplashScreen({ onDone }) {
             </motion.div>
 
             {/* Top-right label */}
-            <motion.div className="absolute top-8 right-16 z-[3] text-[10px] font-mono tracking-widest uppercase"
+            <motion.div className="absolute top-8 right-8 sm:right-16 z-[3] text-[10px] font-mono tracking-widest uppercase hidden sm:block"
               style={{ color: 'rgba(255,255,255,0.14)' }}
               initial={{ opacity: 0 }} animate={isOut ? { opacity: 0 } : { opacity: 1 }}
               transition={{ delay: 1.6, duration: 0.5 }}
             >v1.0</motion.div>
 
             {/* Bottom-left copyright */}
-            <motion.div className="absolute bottom-9 left-16 z-[3] text-[10px] font-mono tracking-widest"
+            <motion.div className="absolute bottom-9 left-8 sm:left-16 z-[3] text-[10px] font-mono tracking-widest hidden sm:block"
               style={{ color: 'rgba(255,255,255,0.11)' }}
               initial={{ opacity: 0 }} animate={isOut ? { opacity: 0 } : { opacity: 1 }}
               transition={{ delay: 1.7, duration: 0.5 }}

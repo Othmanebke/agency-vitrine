@@ -92,12 +92,19 @@ function CursorGlow() {
   const springY = useSpring(y, { stiffness: 120, damping: 18 })
   const dotX = useSpring(x, { stiffness: 400, damping: 30 })
   const dotY = useSpring(y, { stiffness: 400, damping: 30 })
+  const [isTouch, setIsTouch] = useState(false)
 
   useEffect(() => {
+    // Hide on touch devices (mobile/tablet)
+    const hasTouch = window.matchMedia('(pointer: coarse)').matches
+    setIsTouch(hasTouch)
+    if (hasTouch) return
     const move = (e) => { x.set(e.clientX); y.set(e.clientY) }
     window.addEventListener('mousemove', move)
     return () => window.removeEventListener('mousemove', move)
   }, [x, y])
+
+  if (isTouch) return null
 
   return (
     <>
@@ -167,7 +174,7 @@ function FloatingCTA() {
           whileHover={{ scale: 1.06, boxShadow: '0 0 32px rgba(139,92,246,0.55)' }}
           whileTap={{ scale: 0.97 }}
           onClick={handleClick}
-          className="fixed bottom-8 right-8 z-[9997] flex items-center gap-2.5 px-5 py-3 rounded-full font-semibold text-sm text-white bg-gradient-to-r from-violet-600 to-pink-500 shadow-lg shadow-violet-500/40 cursor-pointer"
+          className="fixed bottom-6 right-4 md:bottom-8 md:right-8 z-[9997] flex items-center gap-2.5 px-4 py-2.5 md:px-5 md:py-3 rounded-full font-semibold text-sm text-white bg-gradient-to-r from-violet-600 to-pink-500 shadow-lg shadow-violet-500/40 cursor-pointer"
           aria-label="Demander un devis gratuit"
         >
           <span className="w-2 h-2 rounded-full bg-white/80 animate-pulse" />

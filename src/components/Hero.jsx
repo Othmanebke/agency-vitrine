@@ -169,11 +169,11 @@ export default function Hero(){
           </motion.div>
 
           {/* stats */}
-          <motion.div {...(shouldReduce ? {} : fadeUp(0.55))} className="mt-16 grid grid-cols-3 gap-4 max-w-lg mx-auto">
+          <motion.div {...(shouldReduce ? {} : fadeUp(0.55))} className="mt-16 grid grid-cols-3 gap-2 sm:gap-4 max-w-lg mx-auto">
             {stats.map((s) => (
-              <div key={s.label} className="text-center">
-                <div className="text-2xl md:text-3xl font-black text-gradient"><CountUp value={s.value} /></div>
-                <div className="text-xs text-zinc-500 mt-1">{s.label}</div>
+              <div key={s.label} className="text-center px-1">
+                <div className="text-xl sm:text-2xl md:text-3xl font-black text-gradient"><CountUp value={s.value} /></div>
+                <div className="text-[10px] sm:text-xs text-zinc-500 mt-1 leading-tight">{s.label}</div>
               </div>
             ))}
           </motion.div>
