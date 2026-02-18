@@ -5,16 +5,16 @@ import Footer from '../components/Footer'
 import { useSEO } from '../hooks/useSEO'
 
 const projects = [
-  { title: 'Site vitrine — La Boulangerie', desc: 'Création de site vitrine moderne avec menu & prise de contact en ligne', tag: 'Site vitrine', color: 'from-amber-500/20 to-orange-600/10', img: new URL('../assets/portfolio/p1.jpg', import.meta.url).href },
-  { title: 'Site vitrine — Restaurant', desc: 'Design épuré, carte interactive et réservation en ligne', tag: 'Site vitrine', color: 'from-rose-500/20 to-red-600/10', img: new URL('../assets/portfolio/p2.jpg', import.meta.url).href },
-  { title: 'Site vitrine — Thai Food', desc: 'Site restaurant cuisine thaïlandaise, design immersif & SEO local', tag: 'Site vitrine', color: 'from-orange-500/20 to-yellow-600/10', img: new URL('../assets/portfolio/p3.jpg', import.meta.url).href },
-  { title: 'Site vitrine — Brows Creative', desc: 'Studio de beauté : galerie avant/après, booking & branding complet', tag: 'Branding', color: 'from-pink-500/20 to-fuchsia-600/10', img: new URL('../assets/portfolio/p4.jpg', import.meta.url).href },
-  { title: 'E-commerce — Montres Design', desc: 'Boutique en ligne haut de gamme, fiches produit & tunnel de vente', tag: 'E-commerce', color: 'from-zinc-500/20 to-slate-600/10', img: new URL('../assets/portfolio/p5.jpg', import.meta.url).href },
-  { title: 'Landing — Service Local', desc: 'Landing page acquisition locale, formulaire de devis & SEO ciblé', tag: 'Landing', color: 'from-indigo-500/20 to-violet-600/10', img: new URL('../assets/portfolio/p6.jpg', import.meta.url).href },
-  { title: 'App Web — Dashboard', desc: 'Interface de gestion moderne, tableaux de bord & données en temps réel', tag: 'App Web', color: 'from-sky-500/20 to-blue-600/10', img: new URL('../assets/portfolio/p7.jpg', import.meta.url).href },
-  { title: 'Site vitrine — Projet Web', desc: 'Conception & développement front-end sur-mesure', tag: 'Site vitrine', color: 'from-emerald-500/20 to-teal-600/10', img: new URL('../assets/portfolio/p8.jpg', import.meta.url).href },
-  { title: 'Refonte — Projet Web', desc: 'Refonte UX/UI complète, performance & accessibilité améliorées', tag: 'Refonte', color: 'from-violet-500/20 to-purple-600/10', img: new URL('../assets/portfolio/p9.jpg', import.meta.url).href },
-  { title: 'Portfolio — Atelier Créatif', desc: 'Portfolio fullscreen, galerie de projets & présentation artistique', tag: 'Site vitrine', color: 'from-lime-500/20 to-green-600/10', img: new URL('../assets/portfolio/p10.jpg', import.meta.url).href },
+  { title: 'Site vitrine — La Boulangerie', desc: 'Création de site vitrine moderne avec menu, horaires & prise de contact en ligne', tag: 'Site vitrine', color: 'from-amber-500/20 to-orange-600/10', img: new URL('../assets/portfolio/p1.jpg', import.meta.url).href },
+  { title: 'Refonte — Restaurant Gastronomique', desc: 'Refonte complète : nouveau design, réservation en ligne & optimisation mobile', tag: 'Refonte', color: 'from-rose-500/20 to-red-600/10', img: new URL('../assets/portfolio/p2.jpg', import.meta.url).href },
+  { title: 'SEO Local — Thai Food', desc: 'Stratégie SEO local, fiche Google Business, pages ciblées par quartier', tag: 'SEO', color: 'from-orange-500/20 to-yellow-600/10', img: new URL('../assets/portfolio/p3.jpg', import.meta.url).href },
+  { title: 'Branding — Brows Creative', desc: 'Identité visuelle complète : logo, charte, supports & site de booking', tag: 'Branding', color: 'from-pink-500/20 to-fuchsia-600/10', img: new URL('../assets/portfolio/p4.jpg', import.meta.url).href },
+  { title: 'E-commerce — Montres Design', desc: 'Boutique en ligne haut de gamme, fiches produit & tunnel de vente optimisé', tag: 'E-commerce', color: 'from-zinc-500/20 to-slate-600/10', img: new URL('../assets/portfolio/p5.jpg', import.meta.url).href },
+  { title: 'Landing — Artisan Local', desc: 'Landing page haute conversion, formulaire de devis & tracking Google Ads', tag: 'Landing', color: 'from-indigo-500/20 to-violet-600/10', img: new URL('../assets/portfolio/p6.jpg', import.meta.url).href },
+  { title: 'SaaS — Dashboard Analytics', desc: 'Interface admin React avec tableaux de bord, graphiques & gestion utilisateurs', tag: 'SaaS', color: 'from-sky-500/20 to-blue-600/10', img: new URL('../assets/portfolio/p7.jpg', import.meta.url).href },
+  { title: 'Full Stack — Plateforme Web', desc: 'Application full stack : authentification, base de données & API REST', tag: 'App Web', color: 'from-emerald-500/20 to-teal-600/10', img: new URL('../assets/portfolio/p8.jpg', import.meta.url).href },
+  { title: 'E-commerce — Mode & Lifestyle', desc: 'Boutique Shopify sur-mesure, intégration paiement & gestion des stocks', tag: 'E-commerce', color: 'from-violet-500/20 to-purple-600/10', img: new URL('../assets/portfolio/p9.jpg', import.meta.url).href },
+  { title: 'Portfolio — Studio Créatif', desc: 'Portfolio interactif fullscreen, galerie filtrable & formulaire de contact', tag: 'Site vitrine', color: 'from-lime-500/20 to-green-600/10', img: new URL('../assets/portfolio/p10.jpg', import.meta.url).href },
 ]
 
 function Lightbox({ project, onClose }) {
