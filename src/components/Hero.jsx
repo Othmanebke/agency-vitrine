@@ -35,11 +35,11 @@ export default function Hero(){
 
   <div className="max-w-6xl mx-auto px-6 py-16 md:py-28">
         <div className="text-center">
-          <motion.p variants={titleVariant} initial="hidden" animate="visible" custom={0} className="text-sm uppercase tracking-widest text-zinc-400">Agence digitale</motion.p>
+          <motion.p variants={titleVariant} initial="hidden" animate="visible" custom={0} className="text-sm uppercase tracking-widest text-zinc-400">NovaWeb — Agence digitale</motion.p>
 
-          <motion.h1 variants={titleVariant} initial="hidden" animate="visible" custom={1} className="mt-6 text-3xl md:text-6xl font-extrabold leading-tight">Création de sites & identité visuelle</motion.h1>
+          <motion.h1 variants={titleVariant} initial="hidden" animate="visible" custom={1} className="mt-6 text-3xl md:text-6xl font-extrabold leading-tight">Sites web sur-mesure, identité visuelle & présence</motion.h1>
 
-          <motion.p variants={titleVariant} initial="hidden" animate="visible" custom={2} className="mt-6 text-base md:text-lg text-zinc-300 max-w-2xl mx-auto">Nous créons des sites vitrines modernes, flyers et campagnes d'influence pour mettre en lumière ta marque.</motion.p>
+          <motion.p variants={titleVariant} initial="hidden" animate="visible" custom={2} className="mt-6 text-base md:text-lg text-zinc-300 max-w-2xl mx-auto">Site sur-mesure (responsive, SEO, CMS / no-code), refonte et supports print — on crée des expériences qui convertissent et mettent ta marque en avant.</motion.p>
 
           <motion.div initial={shouldReduce ? {} : { opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.7 }} className="mt-8 flex justify-center gap-4">
             <motion.a

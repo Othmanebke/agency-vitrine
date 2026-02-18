@@ -5,6 +5,7 @@ import Hero from '../components/Hero'
 import Process from '../components/Process'
 import Testimonials from '../components/Testimonials'
 import FAQ from '../components/FAQ'
+import Packages from '../components/Packages'
 import ContactForm from '../components/ContactForm'
 import Footer from '../components/Footer'
 
@@ -47,9 +48,9 @@ export default function Home(){
             aria-label="Nos services"
           >
             {[
-              { title: 'Création de sites web', desc: 'Sites vitrines modernes, responsive et optimisés pour la conversion.' },
-              { title: 'Flyers & print', desc: 'Design print : flyers, cartes, brochures et supports commerciaux.' },
-              { title: 'Identité visuelle & influence', desc: 'Logo, guidelines et campagnes d\'influence pour développer ta marque.' }
+              { title: 'Site web sur-mesure', desc: 'Sur-mesure, responsive, optimisé SEO; CMS ou no-code selon besoin.' },
+              { title: 'Refonte & optimisation', desc: 'Audit, optimisation UX/SEO et refonte pour améliorer les conversions.' },
+              { title: 'Flyers & supports print', desc: 'Création de flyers, cartes, brochures et visuels print professionnels.' }
             ].map((s, i) => (
               <ServiceCard key={s.title} title={s.title} desc={s.desc} index={i} />
             ))}
@@ -61,6 +62,8 @@ export default function Home(){
   <Testimonials />
 
   <FAQ />
+
+  <Packages />
 
         <section id="contact" className="max-w-3xl mx-auto px-6 py-20">
           <h2 className="text-2xl font-bold mb-6">Contact</h2>
