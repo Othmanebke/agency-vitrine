@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Home from './pages/Home'
 import Pricing from './pages/Pricing'
 import Portfolio from './pages/Portfolio'
+import About from './pages/About'
 
 export default function App(){
   const [path, setPath] = useState(window.location.pathname)
@@ -14,5 +15,6 @@ export default function App(){
 
   if(path === '/pricing') return <Pricing />
   if(path === '/portfolio') return <Portfolio />
+  if(path === '/about') return <About />
   return <Home />
 }
