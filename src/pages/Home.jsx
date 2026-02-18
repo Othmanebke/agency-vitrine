@@ -32,7 +32,7 @@ export default function Home(){
     <div className="min-h-screen bg-black text-white">
       <Nav />
 
-      <main>
+      <main role="main">
         <Hero />
 
         <section id="services" className="max-w-6xl mx-auto px-6 py-20">
