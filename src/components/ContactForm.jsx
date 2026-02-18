@@ -17,17 +17,13 @@ export default function ContactForm(){
     e.preventDefault()
     setStatus('sending')
 
-  const endpoint = USE_SERVERLESS ? '/api/contact' : DEFAULT_ENDPOINT
+    const endpoint = USE_SERVERLESS ? '/api/contact' : DEFAULT_ENDPOINT
 
     try{
       const res = await fetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: values.name,
-          email: values.email,
-          message: values.message
-        })
+        body: JSON.stringify({ name: values.name, email: values.email, message: values.message })
       })
 
       if(res.ok){
@@ -43,26 +39,28 @@ export default function ContactForm(){
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 bg-zinc-900 p-6 rounded-lg">
-      <label className="block">
+    <form onSubmit={handleSubmit} className="space-y-4 bg-zinc-900 p-6 rounded-lg" role="form" aria-labelledby="contact-form-title">
+      <h3 id="contact-form-title" className="sr-only">Formulaire de contact</h3>
+
+      <label htmlFor="contact-name" className="block">
         <span className="text-sm text-zinc-300">Nom</span>
-        <input name="name" value={values.name} onChange={handleChange} required className="w-full mt-1 p-3 bg-black border border-zinc-800 rounded" />
+        <input id="contact-name" name="name" value={values.name} onChange={handleChange} required className="w-full mt-1 p-3 bg-black border border-zinc-800 rounded" />
       </label>
 
-      <label className="block">
+      <label htmlFor="contact-email" className="block">
         <span className="text-sm text-zinc-300">Email</span>
-        <input name="email" value={values.email} onChange={handleChange} required type="email" className="w-full mt-1 p-3 bg-black border border-zinc-800 rounded" />
+        <input id="contact-email" name="email" value={values.email} onChange={handleChange} required type="email" className="w-full mt-1 p-3 bg-black border border-zinc-800 rounded" />
       </label>
 
-      <label className="block">
+      <label htmlFor="contact-message" className="block">
         <span className="text-sm text-zinc-300">Message</span>
-        <textarea name="message" value={values.message} onChange={handleChange} required rows="5" className="w-full mt-1 p-3 bg-black border border-zinc-800 rounded" />
+        <textarea id="contact-message" name="message" value={values.message} onChange={handleChange} required rows="5" className="w-full mt-1 p-3 bg-black border border-zinc-800 rounded" />
       </label>
 
       <div className="flex items-center gap-4">
-        <button type="submit" className="bg-violet-600 px-5 py-3 rounded font-semibold">{status==='sending' ? 'Envoi...' : 'Envoyer'}</button>
-        {status==='success' && <span className="text-sm text-emerald-400">Merci, message envoyé !</span>}
-        {status==='error' && <span className="text-sm text-rose-400">Erreur, réessaye.</span>}
+        <button type="submit" className="bg-violet-600 px-5 py-3 rounded font-semibold" aria-live="polite">{status==='sending' ? 'Envoi...' : 'Envoyer'}</button>
+        {status==='success' && <span className="text-sm text-emerald-400" role="status">Merci, message envoyé !</span>}
+        {status==='error' && <span className="text-sm text-rose-400" role="alert">Erreur, réessaye.</span>}
       </div>
 
       <p className="text-xs text-zinc-500 mt-2">Remarque : pour recevoir réellement les messages, remplace l'endpoint Vite (VITE_FORMSPREE) par ton endpoint Formspree ou configure une serverless function sur Vercel pour envoyer via SendGrid.</p>
