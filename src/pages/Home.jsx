@@ -4,6 +4,7 @@ import Hero from '../components/Hero'
 import Process from '../components/Process'
 import ContactForm from '../components/ContactForm'
 import Footer from '../components/Footer'
+import Testimonials from '../components/Testimonials'
 
 export default function Home(){
   return (
@@ -34,6 +35,8 @@ export default function Home(){
         </section>
 
   <Process />
+
+  <Testimonials />
 
         <section id="contact" className="max-w-3xl mx-auto px-6 py-20">
           <h2 className="text-2xl font-bold mb-6">Contact</h2>
