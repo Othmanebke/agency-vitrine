@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { motion, AnimatePresence, useMotionValue, useSpring, useScroll, useReducedMotion } from 'framer-motion'
+import SplashScreen from './components/SplashScreen'
 
 function ShootingStars() {
   const canvasRef = useRef(null)
@@ -236,6 +237,7 @@ function GlobalBackground() {
 
 export default function App(){
   const [path, setPath] = useState(window.location.pathname)
+  const [showSplash, setShowSplash] = useState(() => sessionStorage.getItem('nw_loaded') !== '1')
 
   useEffect(()=>{
     const onPop = ()=> setPath(window.location.pathname)
@@ -251,6 +253,7 @@ export default function App(){
 
   return (
     <>
+      {showSplash && <SplashScreen onDone={() => setShowSplash(false)} />}
       <ScrollProgressBar />
       <CursorGlow />
       <GlobalBackground />
