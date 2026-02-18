@@ -83,7 +83,7 @@ export default function Home(){
             aria-label="Nos services"
           >
             {[
-              { title: 'Site web sur-mesure', desc: 'Sur-mesure, responsive, optimisé SEO; CMS ou no-code selon besoin.', icon: '🌐' },
+              { title: 'Site web sur-mesure', desc: 'Responsive, optimisé SEO — CMS ou no-code selon tes besoins.', icon: '🌐' },
               { title: 'Refonte & optimisation', desc: 'Audit, optimisation UX/SEO et refonte pour améliorer les conversions.', icon: '⚡' },
               { title: 'Flyers & supports print', desc: 'Création de flyers, cartes, brochures et visuels print professionnels.', icon: '🎨' }
             ].map((s, i) => (

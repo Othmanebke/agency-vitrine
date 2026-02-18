@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 
 const faqs = [
-  { q: 'Comment commencer un projet avec votre agence ?', a: 'Tu peux nous contacter via le formulaire ou booker un appel. On fera un brief rapide, puis on envoie un devis.' },
+  { q: 'Comment commencer un projet avec votre agence ?', a: 'Tu peux nous contacter via le formulaire ou fixer un appel découverte. On fait un brief rapide, puis on t\'envoie un devis sous 48 h.' },
   { q: 'Combien de temps pour un site vitrine ?', a: 'Généralement 1 à 3 semaines selon le contenu et les validations.' },
   { q: 'Offrez-vous la gestion des réseaux sociaux ?', a: 'Oui — nous proposons des packs de community management et des campagnes d’influence sur demande.' },
   { q: 'Proposez-vous des options de support/maintenance ?', a: 'Oui, maintenance mensuelle, mises à jour et monitoring sont disponibles en option.' },

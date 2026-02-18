@@ -6,7 +6,7 @@ import Footer from "../components/Footer";
 import { motion } from "framer-motion";
 
 const values = [
-  { icon: '🎯', title: 'Pragmatisme', desc: 'Des solutions axées résultats, sans complexité inutile.' },
+  { icon: '🎯', title: 'Pragmatisme', desc: 'Des solutions axées sur les résultats, sans complexité inutile.' },
   { icon: '🔍', title: 'Transparence', desc: 'Budget et planning clairs dès le départ, zéro mauvaise surprise.' },
   { icon: '✨', title: 'Qualité', desc: 'Performance, accessibilité et design au cœur de chaque livrable.' },
   { icon: '🤝', title: 'Partenariat', desc: 'On travaille avec toi, pas juste pour toi — relation durable.' },
