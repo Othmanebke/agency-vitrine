@@ -1,6 +1,7 @@
 import React from 'react'
 import Nav from '../components/Nav'
 import Hero from '../components/Hero'
+import Process from '../components/Process'
 import ContactForm from '../components/ContactForm'
 import Footer from '../components/Footer'
 
@@ -31,6 +32,8 @@ export default function Home(){
             </article>
           </div>
         </section>
+
+  <Process />
 
         <section id="contact" className="max-w-3xl mx-auto px-6 py-20">
           <h2 className="text-2xl font-bold mb-6">Contact</h2>
