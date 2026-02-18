@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-const BASE_URL = 'https://novaweb.vercel.app'
+const BASE_URL = 'https://novaweb-agence.vercel.app'
 
 function setMeta(key, keyVal, content) {
   let el = document.querySelector(`meta[${key}="${keyVal}"]`)
