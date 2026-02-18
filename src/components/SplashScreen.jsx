@@ -45,13 +45,17 @@ function useCounter(to, { startDelay = 0, duration = 1800, enabled = true } = {}
 /* ── Glitch letter ── */
 const GLITCH_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&'
 function GlitchLetter({ letter, delay, isOut, gradient = false }) {
-  const [displayed, setDisplayed] = useState('')
+  const [displayed, setDisplayed] = useState(GLITCH_CHARS[0])
   const [ready, setReady] = useState(false)
+  const [visible, setVisible] = useState(false)
+
   useEffect(() => {
-    if (isOut) return
+    // Show letter (trigger CSS fade-in) after delay
+    const t0 = setTimeout(() => setVisible(true), delay)
+    // Glitch frames
     let frame = 0
-    const totalFrames = 8
-    const t = setTimeout(() => {
+    const totalFrames = 7
+    const t1 = setTimeout(() => {
       const iv = setInterval(() => {
         frame++
         if (frame >= totalFrames) {
@@ -61,33 +65,36 @@ function GlitchLetter({ letter, delay, isOut, gradient = false }) {
         } else {
           setDisplayed(GLITCH_CHARS[Math.floor(Math.random() * GLITCH_CHARS.length)])
         }
-      }, 40)
+      }, 45)
       return () => clearInterval(iv)
     }, delay)
-    return () => clearTimeout(t)
-  }, [letter, delay, isOut])
+    return () => { clearTimeout(t0); clearTimeout(t1) }
+  }, [letter, delay])
+
+  const baseStyle = {
+    display: 'inline-block',
+    lineHeight: 1,
+    opacity: isOut ? 0 : (visible ? 1 : 0),
+    transform: isOut
+      ? `translateY(${gradient ? '60px' : '-60px'})`
+      : visible ? 'translateY(0px)' : `translateY(${gradient ? '40px' : '-40px'})`,
+    filter: isOut ? 'blur(12px)' : (ready ? 'blur(0px)' : 'blur(4px)'),
+    transition: isOut
+      ? 'opacity 0.4s ease, transform 0.4s ease, filter 0.4s ease'
+      : 'opacity 0.5s cubic-bezier(0.22,1,0.36,1), transform 0.6s cubic-bezier(0.22,1,0.36,1), filter 0.3s ease',
+  }
+
+  const colorStyle = gradient ? {
+    background: 'linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%)',
+    WebkitBackgroundClip: 'text',
+    WebkitTextFillColor: 'transparent',
+    backgroundClip: 'text',
+  } : { color: '#ffffff' }
+
   return (
-    <motion.span
-      initial={{ opacity: 0, y: gradient ? 60 : -60, filter: 'blur(12px)' }}
-      animate={isOut
-        ? { opacity: 0, y: gradient ? 100 : -100, filter: 'blur(20px)' }
-        : { opacity: 1, y: 0, filter: ready ? 'blur(0px)' : 'blur(2px)' }
-      }
-      transition={{
-        delay: isOut ? delay / 3000 : delay / 1000,
-        duration: isOut ? 0.45 : 0.6,
-        ease: [0.22, 1, 0.36, 1],
-      }}
-      className="inline-block leading-none"
-      style={gradient ? {
-        background: 'linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%)',
-        WebkitBackgroundClip: 'text',
-        WebkitTextFillColor: 'transparent',
-        backgroundClip: 'text',
-      } : { color: '#ffffff' }}
-    >
-      {displayed || '\u00A0'}
-    </motion.span>
+    <span style={{ ...baseStyle, ...colorStyle }}>
+      {displayed}
+    </span>
   )
 }
 
