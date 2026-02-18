@@ -33,13 +33,13 @@ export default function Hero(){
         className="pointer-events-none absolute left-1/2 top-20 -translate-x-1/2 w-[520px] h-[520px] rounded-full bg-gradient-to-br from-[#5b21b6] via-[#7c3aed] to-[#0b0226] blur-3xl opacity-40 mix-blend-screen"
       />
 
-      <div className="max-w-6xl mx-auto px-6 py-28">
+  <div className="max-w-6xl mx-auto px-6 py-16 md:py-28">
         <div className="text-center">
           <motion.p variants={titleVariant} initial="hidden" animate="visible" custom={0} className="text-sm uppercase tracking-widest text-zinc-400">Agence digitale</motion.p>
 
-          <motion.h1 variants={titleVariant} initial="hidden" animate="visible" custom={1} className="mt-6 text-4xl md:text-6xl font-extrabold leading-tight">Création de sites & identité visuelle</motion.h1>
+          <motion.h1 variants={titleVariant} initial="hidden" animate="visible" custom={1} className="mt-6 text-3xl md:text-6xl font-extrabold leading-tight">Création de sites & identité visuelle</motion.h1>
 
-          <motion.p variants={titleVariant} initial="hidden" animate="visible" custom={2} className="mt-6 text-lg text-zinc-300 max-w-2xl mx-auto">Nous créons des sites vitrines modernes, flyers et campagnes d'influence pour mettre en lumière ta marque.</motion.p>
+          <motion.p variants={titleVariant} initial="hidden" animate="visible" custom={2} className="mt-6 text-base md:text-lg text-zinc-300 max-w-2xl mx-auto">Nous créons des sites vitrines modernes, flyers et campagnes d'influence pour mettre en lumière ta marque.</motion.p>
 
           <motion.div initial={shouldReduce ? {} : { opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.7 }} className="mt-8 flex justify-center gap-4">
             <motion.a

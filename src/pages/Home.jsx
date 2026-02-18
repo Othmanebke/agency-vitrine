@@ -18,12 +18,12 @@ export default function Home(){
         variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0, transition: { delay: (index+1) * 0.08, duration: 0.45 } } }}
         whileHover={shouldReduce ? {} : { y: -6 }}
         whileTap={shouldReduce ? {} : { scale: 0.995 }}
-        className="p-6 bg-zinc-900 rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-violet-500"
+        className="p-5 md:p-6 bg-zinc-900 rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-violet-500"
         tabIndex={0}
         role="listitem"
         aria-label={title}
       >
-        <h3 className="font-semibold mb-2">{title}</h3>
+        <h3 className="font-semibold mb-2 text-lg">{title}</h3>
         <p className="text-zinc-400 text-sm">{desc}</p>
       </motion.article>
     )

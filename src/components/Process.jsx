@@ -12,12 +12,12 @@ export default function Process(){
 
   return (
     <section id="process" className="max-w-7xl mx-auto px-6 py-20">
-      <h2 className="text-3xl md:text-4xl font-extrabold mb-8 text-center">Our Simple, Smart, and Scalable Process</h2>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+      <h2 className="text-2xl md:text-3xl font-extrabold mb-6 text-center">Our Simple, Smart, and Scalable Process</h2>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-8 md:mb-12">
         {cards.map((c, i) => (
           <motion.div
             key={c.title}
-            className="p-6 bg-zinc-900 rounded-lg"
+            className="p-5 md:p-6 bg-zinc-900 rounded-lg"
             initial={shouldReduce ? {} : { opacity: 0, y: 12 }}
             whileInView={shouldReduce ? {} : { opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.2 }}
@@ -28,8 +28,8 @@ export default function Process(){
             role="article"
             aria-label={c.title}
           >
-            <h3 className="font-semibold mb-2">{c.title}</h3>
-            <p className="text-sm text-zinc-400">{c.text}</p>
+            <h3 className="font-semibold mb-2 text-lg md:text-base">{c.title}</h3>
+            <p className="text-sm md:text-sm text-zinc-400">{c.text}</p>
           </motion.div>
         ))}
       </div>
