@@ -15,7 +15,7 @@ export default function Testimonials(){
 
   return (
     <section id="testimonials" className="max-w-7xl mx-auto px-6 py-16 md:py-20">
-      <h2 className="text-2xl md:text-3xl font-extrabold mb-6 md:mb-8 text-center">Why Businesses Love Our Solutions</h2>
+  <h2 className="text-2xl md:text-3xl font-extrabold mb-6 md:mb-8 text-center">Ce que disent nos clients</h2>
 
       <motion.div
         className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6"

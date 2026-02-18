@@ -5,14 +5,14 @@ export default function Process(){
   const shouldReduce = useReducedMotion()
 
   const cards = [
-    {title: 'Smart Analyzing', text: "Analyse des besoins et définition d'une stratégie claire et mesurable."},
-    {title: 'AI Development', text: "Développement d'automatisations et d'interfaces simples pour l'utilisateur."},
-    {title: 'Seamless Integration', text: "Intégration fluide avec les outils existants et mise en production rapide."}
+    {title: 'Analyse stratégique', text: "Audit & définition des objectifs, cible et messages clés."},
+    {title: 'Développement sur-mesure', text: "Conception et intégration (responsive, SEO, CMS / no-code)."},
+    {title: 'Intégration & déploiement', text: "Tests, optimisation et mise en production rapide et sécurisée."}
   ]
 
   return (
     <section id="process" className="max-w-7xl mx-auto px-6 py-20">
-      <h2 className="text-2xl md:text-3xl font-extrabold mb-6 text-center">Our Simple, Smart, and Scalable Process</h2>
+  <h2 className="text-2xl md:text-3xl font-extrabold mb-6 text-center">Notre méthode simple et efficace</h2>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-8 md:mb-12">
         {cards.map((c, i) => (
           <motion.div
@@ -43,10 +43,10 @@ export default function Process(){
           whileHover={shouldReduce ? {} : { y: -6 }}
           tabIndex={0}
           role="article"
-          aria-label="Case study"
+          aria-label="Étude de cas"
         >
-          <h4 className="font-semibold mb-2">See How Smart AI Automation Transforms Businesses</h4>
-          <p className="text-sm text-zinc-400">Étude de cas et retours concrets sur la réduction du temps de traitement et l'amélioration du ROI.</p>
+          <h4 className="font-semibold mb-2">Étude de cas : automation & ROI</h4>
+          <p className="text-sm text-zinc-400">Retours concrets : réduction des tâches manuelles et amélioration du ROI.</p>
         </motion.div>
 
         <motion.div className="bg-zinc-900 p-6 rounded-lg"
@@ -57,13 +57,13 @@ export default function Process(){
           whileHover={shouldReduce ? {} : { y: -6 }}
           tabIndex={0}
           role="article"
-          aria-label="Key benefits"
+          aria-label="Bénéfices clés"
         >
-          <h4 className="font-semibold mb-2">The Key Benefits of AI for Your Business Growth</h4>
+          <h4 className="font-semibold mb-2">Bénéfices clés pour votre activité</h4>
           <ul className="text-sm text-zinc-400 list-disc ml-5 space-y-1">
-            <li>Increased Productivity</li>
-            <li>Better Customer Experience</li>
-            <li>24/7 Availability</li>
+            <li>Gains de productivité</li>
+            <li>Meilleure expérience client</li>
+            <li>Disponibilité & automatisation</li>
           </ul>
         </motion.div>
       </div>
