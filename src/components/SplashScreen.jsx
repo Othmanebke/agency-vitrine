@@ -139,20 +139,20 @@ export default function SplashScreen({ onDone }) {
   const isOut = phase !== 'in'
 
   useEffect(() => {
-    const t1 = setTimeout(() => setPhase('flash'), 2900)
-    const t2 = setTimeout(() => setPhase('out'), 3050)
+    const t1 = setTimeout(() => setPhase('flash'), 1300)
+    const t2 = setTimeout(() => setPhase('out'), 1450)
     const t3 = setTimeout(() => {
       setMounted(false)
       sessionStorage.setItem('nw_loaded', '1')
       onDone()
-    }, 3950)
+    }, 2100)
     return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3) }
   }, [])
 
   const tagline = useTypewriter('Agence Digitale · Design & Développement', {
-    startDelay: 1450, speed: 40, enabled: !isOut,
+    startDelay: 500, speed: 28, enabled: !isOut,
   })
-  const counter = useCounter(100, { startDelay: 400, duration: 2300, enabled: !isOut })
+  const counter = useCounter(100, { startDelay: 200, duration: 950, enabled: !isOut })
 
   return (
     <AnimatePresence>

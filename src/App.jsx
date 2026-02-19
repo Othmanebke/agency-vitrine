@@ -155,11 +155,11 @@ function ScrollProgressBar() {
 
 // FloatingCTA remplacé par ChatBot
 
-import Home from './pages/Home'
-import Pricing from './pages/Pricing'
-import Portfolio from './pages/Portfolio'
-import About from './pages/About'
-import Contact from './pages/Contact'
+const Home      = React.lazy(() => import('./pages/Home'))
+const Pricing   = React.lazy(() => import('./pages/Pricing'))
+const Portfolio = React.lazy(() => import('./pages/Portfolio'))
+const About     = React.lazy(() => import('./pages/About'))
+const Contact   = React.lazy(() => import('./pages/Contact'))
 
 function GlobalBackground() {
   return (
@@ -244,7 +244,9 @@ export default function App(){
           exit={{ opacity: 0, y: -8 }}
           transition={{ duration: 0.25, ease: 'easeOut' }}
         >
-          {page}
+          <React.Suspense fallback={null}>
+            {page}
+          </React.Suspense>
         </motion.div>
       </AnimatePresence>
     </>
