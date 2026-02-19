@@ -76,21 +76,24 @@ function Lightbox({ project, onClose }) {
 
 /* ── Tech stack infinite marquee ─────────────────────────── */
 const DV = 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons'
+// OpenAI inline SVG (devicons n'a pas encore openai)
+const OPENAI_SVG = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%2310a37f' d='M22.28 9.29a5.68 5.68 0 0 0-.49-4.67 5.74 5.74 0 0 0-6.17-2.75A5.73 5.73 0 0 0 11.28 0a5.74 5.74 0 0 0-5.47 3.98 5.72 5.72 0 0 0-3.83 2.77 5.75 5.75 0 0 0 .71 6.74 5.68 5.68 0 0 0 .49 4.67 5.74 5.74 0 0 0 6.17 2.75 5.7 5.7 0 0 0 4.34 1.87 5.74 5.74 0 0 0 5.47-3.98 5.72 5.72 0 0 0 3.83-2.77 5.75 5.75 0 0 0-.71-6.74zm-8.55 11.99a4.25 4.25 0 0 1-2.73-1c.03-.02.09-.05.13-.07l4.53-2.62a.73.73 0 0 0 .37-.64V10.7l1.91 1.1a.07.07 0 0 1 .04.05v5.29a4.27 4.27 0 0 1-4.25 4.14zM3.89 17.67a4.25 4.25 0 0 1-.51-2.85l.13.08 4.53 2.62a.74.74 0 0 0 .74 0l5.53-3.2v2.21a.07.07 0 0 1-.03.06L9.7 19.24a4.27 4.27 0 0 1-5.81-1.57zM2.81 8.17A4.25 4.25 0 0 1 5.03 6.1v5.37a.73.73 0 0 0 .37.64l5.53 3.19-1.91 1.1a.07.07 0 0 1-.07 0L4.38 13.8a4.27 4.27 0 0 1-1.57-5.63zm15.69 3.66-5.53-3.2 1.91-1.1a.07.07 0 0 1 .07 0l4.57 2.64a4.27 4.27 0 0 1-.66 7.7V12.47a.73.73 0 0 0-.36-.64zm1.9-2.87-.13-.08-4.53-2.61a.74.74 0 0 0-.74 0L9.47 9.47V7.26a.07.07 0 0 1 .03-.06l4.57-2.64a4.27 4.27 0 0 1 6.33 4.4zm-11.98 3.94-1.91-1.1a.07.07 0 0 1-.04-.05V6.46a4.27 4.27 0 0 1 7-3.28 3.6 3.6 0 0 0-.13.07L8.81 5.87a.73.73 0 0 0-.37.64zm1.04-2.24 2.46-1.42 2.46 1.42v2.83l-2.46 1.42-2.46-1.42z'/%3E%3C/svg%3E`
+
 const stacks = [
-  { name: 'HTML5',      icon: `${DV}/html5/html5-original.svg`,                       glow: 'rgba(227,79,38,0.6)' },
-  { name: 'CSS3',       icon: `${DV}/css3/css3-original.svg`,                         glow: 'rgba(21,114,182,0.6)' },
-  { name: 'JavaScript', icon: `${DV}/javascript/javascript-original.svg`,             glow: 'rgba(247,223,30,0.6)' },
-  { name: 'React',      icon: `${DV}/react/react-original.svg`,                       glow: 'rgba(97,218,251,0.6)' },
-  { name: 'Tailwind',   icon: `${DV}/tailwindcss/tailwindcss-original.svg`,           glow: 'rgba(6,182,212,0.6)' },
-  { name: 'Vite',       icon: `${DV}/vitejs/vitejs-original.svg`,                     glow: 'rgba(100,108,255,0.6)' },
-  { name: 'Vercel',     icon: `${DV}/vercel/vercel-original.svg`,                     glow: 'rgba(226,226,226,0.4)' },
-  { name: 'WordPress',  icon: `${DV}/wordpress/wordpress-original.svg`,               glow: 'rgba(33,117,155,0.6)' },
-  { name: 'Node.js',    icon: `${DV}/nodejs/nodejs-original.svg`,                     glow: 'rgba(95,160,78,0.6)' },
-  { name: 'TypeScript', icon: `${DV}/typescript/typescript-original.svg`,             glow: 'rgba(49,120,198,0.6)' },
-  { name: 'Figma',      icon: `${DV}/figma/figma-original.svg`,                       glow: 'rgba(242,78,30,0.6)' },
-  { name: 'OpenAI',     icon: `${DV}/openai/openai-original.svg`,                     glow: 'rgba(16,163,127,0.6)' },
-  { name: 'Framer',     icon: `${DV}/framermotion/framermotion-original.svg`,         glow: 'rgba(139,92,246,0.6)' },
-  { name: 'Git',        icon: `${DV}/git/git-original.svg`,                           glow: 'rgba(240,80,50,0.6)' },
+  { name: 'HTML5',      icon: `${DV}/html5/html5-original.svg`,               glow: 'rgba(227,79,38,0.6)' },
+  { name: 'CSS3',       icon: `${DV}/css3/css3-original.svg`,                 glow: 'rgba(21,114,182,0.6)' },
+  { name: 'JavaScript', icon: `${DV}/javascript/javascript-original.svg`,     glow: 'rgba(247,223,30,0.6)' },
+  { name: 'React',      icon: `${DV}/react/react-original.svg`,               glow: 'rgba(97,218,251,0.6)' },
+  { name: 'Tailwind',   icon: `${DV}/tailwindcss/tailwindcss-original.svg`,   glow: 'rgba(6,182,212,0.6)' },
+  { name: 'Vite',       icon: `${DV}/vitejs/vitejs-original.svg`,             glow: 'rgba(100,108,255,0.6)' },
+  { name: 'Vercel',     icon: `${DV}/vercel/vercel-original.svg`,             glow: 'rgba(226,226,226,0.4)' },
+  { name: 'WordPress',  icon: `${DV}/wordpress/wordpress-original.svg`,       glow: 'rgba(33,117,155,0.6)' },
+  { name: 'Node.js',    icon: `${DV}/nodejs/nodejs-original.svg`,             glow: 'rgba(95,160,78,0.6)' },
+  { name: 'TypeScript', icon: `${DV}/typescript/typescript-original.svg`,     glow: 'rgba(49,120,198,0.6)' },
+  { name: 'Figma',      icon: `${DV}/figma/figma-original.svg`,               glow: 'rgba(242,78,30,0.6)' },
+  { name: 'OpenAI',     icon: OPENAI_SVG,                                     glow: 'rgba(16,163,127,0.6)' },
+  { name: 'Framer',     icon: `${DV}/framermotion/framermotion-original.svg`, glow: 'rgba(139,92,246,0.6)' },
+  { name: 'Git',        icon: `${DV}/git/git-original.svg`,                   glow: 'rgba(240,80,50,0.6)' },
 ]
 
 function StackMarquee() {
@@ -109,18 +112,17 @@ function StackMarquee() {
         {doubled.map((s, i) => (
           <div
             key={i}
-            className="mx-5 p-5 rounded-2xl border border-white/[0.07] bg-white/[0.03] hover:border-white/20 hover:bg-white/[0.06] transition-all group cursor-default"
-            style={{ boxShadow: '0 0 0px 0 transparent' }}
-            onMouseEnter={e => { e.currentTarget.style.boxShadow = `0 0 32px 0 ${s.glow}` }}
-            onMouseLeave={e => { e.currentTarget.style.boxShadow = '0 0 0px 0 transparent' }}
+            className="mx-6 group cursor-default transition-all"
+            onMouseEnter={e => { e.currentTarget.querySelector('img').style.filter = `drop-shadow(0 0 12px ${s.glow}) drop-shadow(0 0 4px ${s.glow})` }}
+            onMouseLeave={e => { e.currentTarget.querySelector('img').style.filter = `drop-shadow(0 0 0px transparent)` }}
           >
             <img
               src={s.icon}
               alt={s.name}
               width={52}
               height={52}
-              className="w-13 h-13 object-contain opacity-70 group-hover:opacity-100 transition-opacity"
-              style={{ width: 52, height: 52, filter: `drop-shadow(0 0 8px ${s.glow})` }}
+              className="object-contain opacity-60 group-hover:opacity-100 transition-opacity duration-300"
+              style={{ width: 52, height: 52 }}
             />
           </div>
         ))}
