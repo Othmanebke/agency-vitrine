@@ -75,21 +75,24 @@ function Lightbox({ project, onClose }) {
 }
 
 /* ── Tech stack infinite marquee ─────────────────────────── */
+// Using devicons CDN for max reliability (self-colored SVGs), simpleicons for others
+const DV = 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons'
+const SI = 'https://cdn.simpleicons.org'
 const stacks = [
-  { name: 'HTML5',      icon: 'https://cdn.simpleicons.org/html5/e34f26',       glow: 'rgba(227,79,38,0.5)' },
-  { name: 'CSS3',       icon: 'https://cdn.simpleicons.org/css3/1572b6',        glow: 'rgba(21,114,182,0.5)' },
-  { name: 'JavaScript', icon: 'https://cdn.simpleicons.org/javascript/f7df1e',  glow: 'rgba(247,223,30,0.5)' },
-  { name: 'React',      icon: 'https://cdn.simpleicons.org/react/61dafb',       glow: 'rgba(97,218,251,0.5)' },
-  { name: 'Tailwind',   icon: 'https://cdn.simpleicons.org/tailwindcss/06b6d4', glow: 'rgba(6,182,212,0.5)' },
-  { name: 'Vite',       icon: 'https://cdn.simpleicons.org/vite/646cff',        glow: 'rgba(100,108,255,0.5)' },
-  { name: 'Vercel',     icon: 'https://cdn.simpleicons.org/vercel/ffffff',      glow: 'rgba(255,255,255,0.3)' },
-  { name: 'WordPress',  icon: 'https://cdn.simpleicons.org/wordpress/21759b',   glow: 'rgba(33,117,155,0.5)' },
-  { name: 'Node.js',    icon: 'https://cdn.simpleicons.org/nodedotjs/5fa04e',   glow: 'rgba(95,160,78,0.5)' },
-  { name: 'TypeScript', icon: 'https://cdn.simpleicons.org/typescript/3178c6',  glow: 'rgba(49,120,198,0.5)' },
-  { name: 'Figma',      icon: 'https://cdn.simpleicons.org/figma/f24e1e',       glow: 'rgba(242,78,30,0.5)' },
-  { name: 'OpenAI',     icon: 'https://cdn.simpleicons.org/openai/ffffff',      glow: 'rgba(255,255,255,0.3)' },
-  { name: 'Shopify',    icon: 'https://cdn.simpleicons.org/shopify/96bf48',     glow: 'rgba(150,191,72,0.5)' },
-  { name: 'Git',        icon: 'https://cdn.simpleicons.org/git/f05032',         glow: 'rgba(240,80,50,0.5)' },
+  { name: 'HTML5',      icon: `${DV}/html5/html5-original.svg`,            glow: 'rgba(227,79,38,0.6)' },
+  { name: 'CSS3',       icon: `${DV}/css3/css3-original.svg`,              glow: 'rgba(21,114,182,0.6)' },
+  { name: 'JavaScript', icon: `${DV}/javascript/javascript-original.svg`,  glow: 'rgba(247,223,30,0.6)' },
+  { name: 'React',      icon: `${DV}/react/react-original.svg`,            glow: 'rgba(97,218,251,0.6)' },
+  { name: 'Tailwind',   icon: `${DV}/tailwindcss/tailwindcss-original.svg`,glow: 'rgba(6,182,212,0.6)' },
+  { name: 'Vite',       icon: `${DV}/vitejs/vitejs-original.svg`,          glow: 'rgba(100,108,255,0.6)' },
+  { name: 'Vercel',     icon: `${SI}/vercel/e2e2e2`,                       glow: 'rgba(226,226,226,0.35)' },
+  { name: 'WordPress',  icon: `${DV}/wordpress/wordpress-original.svg`,    glow: 'rgba(33,117,155,0.6)' },
+  { name: 'Node.js',    icon: `${DV}/nodejs/nodejs-original.svg`,          glow: 'rgba(95,160,78,0.6)' },
+  { name: 'TypeScript', icon: `${DV}/typescript/typescript-original.svg`,  glow: 'rgba(49,120,198,0.6)' },
+  { name: 'Figma',      icon: `${DV}/figma/figma-original.svg`,            glow: 'rgba(242,78,30,0.6)' },
+  { name: 'OpenAI',     icon: `${SI}/openai/10a37f`,                       glow: 'rgba(16,163,127,0.6)' },
+  { name: 'Framer',     icon: `${SI}/framer/8b5cf6`,                       glow: 'rgba(139,92,246,0.6)' },
+  { name: 'Git',        icon: `${DV}/git/git-original.svg`,                glow: 'rgba(240,80,50,0.6)' },
 ]
 
 function StackMarquee() {
@@ -97,8 +100,8 @@ function StackMarquee() {
   return (
     <section className="relative py-14 overflow-hidden select-none">
       {/* fade edges */}
-      <div className="pointer-events-none absolute inset-y-0 left-0 w-24 z-10 bg-gradient-to-r from-[#050510] to-transparent" />
-      <div className="pointer-events-none absolute inset-y-0 right-0 w-24 z-10 bg-gradient-to-l from-[#050510] to-transparent" />
+      <div className="pointer-events-none absolute inset-y-0 left-0 w-32 z-10 bg-gradient-to-r from-[#050510] to-transparent" />
+      <div className="pointer-events-none absolute inset-y-0 right-0 w-32 z-10 bg-gradient-to-l from-[#050510] to-transparent" />
 
       {/* label */}
       <p className="text-center text-[10px] uppercase tracking-widest text-zinc-600 mb-8 font-semibold">Stack &amp; outils</p>
@@ -108,20 +111,20 @@ function StackMarquee() {
         {doubled.map((s, i) => (
           <div
             key={i}
-            className="flex items-center gap-3 mx-5 px-5 py-3 rounded-2xl border border-white/[0.06] bg-white/[0.03] hover:border-white/20 transition-colors group"
-            style={{ boxShadow: `0 0 18px 0 ${s.glow.replace('0.5', '0')}` }}
-            onMouseEnter={e => { e.currentTarget.style.boxShadow = `0 0 22px 0 ${s.glow}` }}
-            onMouseLeave={e => { e.currentTarget.style.boxShadow = `0 0 18px 0 ${s.glow.replace('0.5', '0')}` }}
+            className="flex items-center gap-4 mx-4 px-6 py-4 rounded-2xl border border-white/[0.07] bg-white/[0.03] hover:border-white/20 hover:bg-white/[0.06] transition-all group cursor-default"
+            style={{ boxShadow: '0 0 0px 0 transparent' }}
+            onMouseEnter={e => { e.currentTarget.style.boxShadow = `0 0 28px 0 ${s.glow}` }}
+            onMouseLeave={e => { e.currentTarget.style.boxShadow = '0 0 0px 0 transparent' }}
           >
             <img
               src={s.icon}
               alt={s.name}
-              width={20}
-              height={20}
-              className="w-5 h-5 object-contain opacity-80 group-hover:opacity-100 transition-opacity"
-              style={{ filter: 'drop-shadow(0 0 4px ' + s.glow + ')' }}
+              width={36}
+              height={36}
+              className="w-9 h-9 object-contain opacity-75 group-hover:opacity-100 transition-opacity"
+              style={{ filter: `drop-shadow(0 0 6px ${s.glow})` }}
             />
-            <span className="text-xs font-semibold text-zinc-400 group-hover:text-white transition-colors whitespace-nowrap">
+            <span className="text-sm font-semibold text-zinc-400 group-hover:text-white transition-colors whitespace-nowrap">
               {s.name}
             </span>
           </div>
