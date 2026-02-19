@@ -277,7 +277,7 @@ export default function ChatBot() {
         whileHover={{ scale: 1.08 }}
         whileTap={{ scale: 0.94 }}
         aria-label={open ? 'Fermer le chat' : 'Ouvrir le chat NovaWeb'}
-        className="fixed bottom-6 right-4 md:bottom-8 md:right-8 z-50 w-14 h-14 rounded-full bg-gradient-to-br from-violet-600 to-pink-500 shadow-lg shadow-violet-500/40 flex items-center justify-center text-white transition-shadow hover:shadow-violet-500/60"
+        className="fixed bottom-6 right-4 md:bottom-8 md:right-8 z-[9991] w-14 h-14 rounded-full bg-gradient-to-br from-violet-600 to-pink-500 shadow-lg shadow-violet-500/40 flex items-center justify-center text-white transition-shadow hover:shadow-violet-500/60"
       >
         {/* badge pulsating */}
         {pulsed && !open && (
