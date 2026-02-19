@@ -75,24 +75,22 @@ function Lightbox({ project, onClose }) {
 }
 
 /* ── Tech stack infinite marquee ─────────────────────────── */
-// Using devicons CDN for max reliability (self-colored SVGs), simpleicons for others
 const DV = 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons'
-const SI = 'https://cdn.simpleicons.org'
 const stacks = [
-  { name: 'HTML5',      icon: `${DV}/html5/html5-original.svg`,            glow: 'rgba(227,79,38,0.6)' },
-  { name: 'CSS3',       icon: `${DV}/css3/css3-original.svg`,              glow: 'rgba(21,114,182,0.6)' },
-  { name: 'JavaScript', icon: `${DV}/javascript/javascript-original.svg`,  glow: 'rgba(247,223,30,0.6)' },
-  { name: 'React',      icon: `${DV}/react/react-original.svg`,            glow: 'rgba(97,218,251,0.6)' },
-  { name: 'Tailwind',   icon: `${DV}/tailwindcss/tailwindcss-original.svg`,glow: 'rgba(6,182,212,0.6)' },
-  { name: 'Vite',       icon: `${DV}/vitejs/vitejs-original.svg`,          glow: 'rgba(100,108,255,0.6)' },
-  { name: 'Vercel',     icon: `${SI}/vercel/e2e2e2`,                       glow: 'rgba(226,226,226,0.35)' },
-  { name: 'WordPress',  icon: `${DV}/wordpress/wordpress-original.svg`,    glow: 'rgba(33,117,155,0.6)' },
-  { name: 'Node.js',    icon: `${DV}/nodejs/nodejs-original.svg`,          glow: 'rgba(95,160,78,0.6)' },
-  { name: 'TypeScript', icon: `${DV}/typescript/typescript-original.svg`,  glow: 'rgba(49,120,198,0.6)' },
-  { name: 'Figma',      icon: `${DV}/figma/figma-original.svg`,            glow: 'rgba(242,78,30,0.6)' },
-  { name: 'OpenAI',     icon: `${SI}/openai/10a37f`,                       glow: 'rgba(16,163,127,0.6)' },
-  { name: 'Framer',     icon: `${SI}/framer/8b5cf6`,                       glow: 'rgba(139,92,246,0.6)' },
-  { name: 'Git',        icon: `${DV}/git/git-original.svg`,                glow: 'rgba(240,80,50,0.6)' },
+  { name: 'HTML5',      icon: `${DV}/html5/html5-original.svg`,                       glow: 'rgba(227,79,38,0.6)' },
+  { name: 'CSS3',       icon: `${DV}/css3/css3-original.svg`,                         glow: 'rgba(21,114,182,0.6)' },
+  { name: 'JavaScript', icon: `${DV}/javascript/javascript-original.svg`,             glow: 'rgba(247,223,30,0.6)' },
+  { name: 'React',      icon: `${DV}/react/react-original.svg`,                       glow: 'rgba(97,218,251,0.6)' },
+  { name: 'Tailwind',   icon: `${DV}/tailwindcss/tailwindcss-original.svg`,           glow: 'rgba(6,182,212,0.6)' },
+  { name: 'Vite',       icon: `${DV}/vitejs/vitejs-original.svg`,                     glow: 'rgba(100,108,255,0.6)' },
+  { name: 'Vercel',     icon: `${DV}/vercel/vercel-original.svg`,                     glow: 'rgba(226,226,226,0.4)' },
+  { name: 'WordPress',  icon: `${DV}/wordpress/wordpress-original.svg`,               glow: 'rgba(33,117,155,0.6)' },
+  { name: 'Node.js',    icon: `${DV}/nodejs/nodejs-original.svg`,                     glow: 'rgba(95,160,78,0.6)' },
+  { name: 'TypeScript', icon: `${DV}/typescript/typescript-original.svg`,             glow: 'rgba(49,120,198,0.6)' },
+  { name: 'Figma',      icon: `${DV}/figma/figma-original.svg`,                       glow: 'rgba(242,78,30,0.6)' },
+  { name: 'OpenAI',     icon: `${DV}/openai/openai-original.svg`,                     glow: 'rgba(16,163,127,0.6)' },
+  { name: 'Framer',     icon: `${DV}/framermotion/framermotion-original.svg`,         glow: 'rgba(139,92,246,0.6)' },
+  { name: 'Git',        icon: `${DV}/git/git-original.svg`,                           glow: 'rgba(240,80,50,0.6)' },
 ]
 
 function StackMarquee() {
@@ -107,26 +105,23 @@ function StackMarquee() {
       <p className="text-center text-[10px] uppercase tracking-widest text-zinc-600 mb-8 font-semibold">Stack &amp; outils</p>
 
       {/* track */}
-      <div className="flex animate-marquee" style={{ width: 'max-content' }}>
+      <div className="flex items-center animate-marquee" style={{ width: 'max-content' }}>
         {doubled.map((s, i) => (
           <div
             key={i}
-            className="flex items-center gap-4 mx-4 px-6 py-4 rounded-2xl border border-white/[0.07] bg-white/[0.03] hover:border-white/20 hover:bg-white/[0.06] transition-all group cursor-default"
+            className="mx-5 p-5 rounded-2xl border border-white/[0.07] bg-white/[0.03] hover:border-white/20 hover:bg-white/[0.06] transition-all group cursor-default"
             style={{ boxShadow: '0 0 0px 0 transparent' }}
-            onMouseEnter={e => { e.currentTarget.style.boxShadow = `0 0 28px 0 ${s.glow}` }}
+            onMouseEnter={e => { e.currentTarget.style.boxShadow = `0 0 32px 0 ${s.glow}` }}
             onMouseLeave={e => { e.currentTarget.style.boxShadow = '0 0 0px 0 transparent' }}
           >
             <img
               src={s.icon}
               alt={s.name}
-              width={36}
-              height={36}
-              className="w-9 h-9 object-contain opacity-75 group-hover:opacity-100 transition-opacity"
-              style={{ filter: `drop-shadow(0 0 6px ${s.glow})` }}
+              width={52}
+              height={52}
+              className="w-13 h-13 object-contain opacity-70 group-hover:opacity-100 transition-opacity"
+              style={{ width: 52, height: 52, filter: `drop-shadow(0 0 8px ${s.glow})` }}
             />
-            <span className="text-sm font-semibold text-zinc-400 group-hover:text-white transition-colors whitespace-nowrap">
-              {s.name}
-            </span>
           </div>
         ))}
       </div>
