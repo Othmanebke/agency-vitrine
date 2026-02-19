@@ -76,24 +76,34 @@ function Lightbox({ project, onClose }) {
 
 /* ── Tech stack infinite marquee ─────────────────────────── */
 const DV = 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons'
-// OpenAI inline SVG (devicons n'a pas encore openai)
-const OPENAI_SVG = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%2310a37f' d='M22.28 9.29a5.68 5.68 0 0 0-.49-4.67 5.74 5.74 0 0 0-6.17-2.75A5.73 5.73 0 0 0 11.28 0a5.74 5.74 0 0 0-5.47 3.98 5.72 5.72 0 0 0-3.83 2.77 5.75 5.75 0 0 0 .71 6.74 5.68 5.68 0 0 0 .49 4.67 5.74 5.74 0 0 0 6.17 2.75 5.7 5.7 0 0 0 4.34 1.87 5.74 5.74 0 0 0 5.47-3.98 5.72 5.72 0 0 0 3.83-2.77 5.75 5.75 0 0 0-.71-6.74zm-8.55 11.99a4.25 4.25 0 0 1-2.73-1c.03-.02.09-.05.13-.07l4.53-2.62a.73.73 0 0 0 .37-.64V10.7l1.91 1.1a.07.07 0 0 1 .04.05v5.29a4.27 4.27 0 0 1-4.25 4.14zM3.89 17.67a4.25 4.25 0 0 1-.51-2.85l.13.08 4.53 2.62a.74.74 0 0 0 .74 0l5.53-3.2v2.21a.07.07 0 0 1-.03.06L9.7 19.24a4.27 4.27 0 0 1-5.81-1.57zM2.81 8.17A4.25 4.25 0 0 1 5.03 6.1v5.37a.73.73 0 0 0 .37.64l5.53 3.19-1.91 1.1a.07.07 0 0 1-.07 0L4.38 13.8a4.27 4.27 0 0 1-1.57-5.63zm15.69 3.66-5.53-3.2 1.91-1.1a.07.07 0 0 1 .07 0l4.57 2.64a4.27 4.27 0 0 1-.66 7.7V12.47a.73.73 0 0 0-.36-.64zm1.9-2.87-.13-.08-4.53-2.61a.74.74 0 0 0-.74 0L9.47 9.47V7.26a.07.07 0 0 1 .03-.06l4.57-2.64a4.27 4.27 0 0 1 6.33 4.4zm-11.98 3.94-1.91-1.1a.07.07 0 0 1-.04-.05V6.46a4.27 4.27 0 0 1 7-3.28 3.6 3.6 0 0 0-.13.07L8.81 5.87a.73.73 0 0 0-.37.64zm1.04-2.24 2.46-1.42 2.46 1.42v2.83l-2.46 1.42-2.46-1.42z'/%3E%3C/svg%3E`
+const SI = 'https://cdn.simpleicons.org'
+
+// Inline SVGs for logos that are black and invisible on dark background
+const OPENAI_SVG  = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%2310a37f' d='M22.28 9.29a5.68 5.68 0 0 0-.49-4.67 5.74 5.74 0 0 0-6.17-2.75A5.73 5.73 0 0 0 11.28 0a5.74 5.74 0 0 0-5.47 3.98 5.72 5.72 0 0 0-3.83 2.77 5.75 5.75 0 0 0 .71 6.74 5.68 5.68 0 0 0 .49 4.67 5.74 5.74 0 0 0 6.17 2.75 5.7 5.7 0 0 0 4.34 1.87 5.74 5.74 0 0 0 5.47-3.98 5.72 5.72 0 0 0 3.83-2.77 5.75 5.75 0 0 0-.71-6.74zm-8.55 11.99a4.25 4.25 0 0 1-2.73-1c.03-.02.09-.05.13-.07l4.53-2.62a.73.73 0 0 0 .37-.64V10.7l1.91 1.1a.07.07 0 0 1 .04.05v5.29a4.27 4.27 0 0 1-4.25 4.14zM3.89 17.67a4.25 4.25 0 0 1-.51-2.85l.13.08 4.53 2.62a.74.74 0 0 0 .74 0l5.53-3.2v2.21a.07.07 0 0 1-.03.06L9.7 19.24a4.27 4.27 0 0 1-5.81-1.57zM2.81 8.17A4.25 4.25 0 0 1 5.03 6.1v5.37a.73.73 0 0 0 .37.64l5.53 3.19-1.91 1.1a.07.07 0 0 1-.07 0L4.38 13.8a4.27 4.27 0 0 1-1.57-5.63zm15.69 3.66-5.53-3.2 1.91-1.1a.07.07 0 0 1 .07 0l4.57 2.64a4.27 4.27 0 0 1-.66 7.7V12.47a.73.73 0 0 0-.36-.64zm1.9-2.87-.13-.08-4.53-2.61a.74.74 0 0 0-.74 0L9.47 9.47V7.26a.07.07 0 0 1 .03-.06l4.57-2.64a4.27 4.27 0 0 1 6.33 4.4zm-11.98 3.94-1.91-1.1a.07.07 0 0 1-.04-.05V6.46a4.27 4.27 0 0 1 7-3.28 3.6 3.6 0 0 0-.13.07L8.81 5.87a.73.73 0 0 0-.37.64zm1.04-2.24 2.46-1.42 2.46 1.42v2.83l-2.46 1.42-2.46-1.42z'/%3E%3C/svg%3E`
+// Vercel — blanc sur fond transparent
+const VERCEL_SVG  = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23e2e2e2' d='M12 1L24 22H0L12 1z'/%3E%3C/svg%3E`
+// GitHub — blanc/gris clair
+const GITHUB_SVG  = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23c9d1d9' d='M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12C24 5.37 18.63 0 12 0z'/%3E%3C/svg%3E`
+// Framer — violet clair
+const FRAMER_SVG  = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%238b5cf6' d='M4 0h16v8h-8zm0 8h8l8 8H4zm0 8h8v8z'/%3E%3C/svg%3E`
+// Node.js — vert (devicons wordmark)
+const NODEJS_SVG  = `${DV}/nodejs/nodejs-plain-wordmark.svg`
 
 const stacks = [
-  { name: 'HTML5',      icon: `${DV}/html5/html5-original.svg`,               glow: 'rgba(227,79,38,0.6)' },
-  { name: 'CSS3',       icon: `${DV}/css3/css3-original.svg`,                 glow: 'rgba(21,114,182,0.6)' },
-  { name: 'JavaScript', icon: `${DV}/javascript/javascript-original.svg`,     glow: 'rgba(247,223,30,0.6)' },
-  { name: 'React',      icon: `${DV}/react/react-original.svg`,               glow: 'rgba(97,218,251,0.6)' },
-  { name: 'Tailwind',   icon: `${DV}/tailwindcss/tailwindcss-original.svg`,   glow: 'rgba(6,182,212,0.6)' },
-  { name: 'Vite',       icon: `${DV}/vitejs/vitejs-original.svg`,             glow: 'rgba(100,108,255,0.6)' },
-  { name: 'Vercel',     icon: `${DV}/vercel/vercel-original.svg`,             glow: 'rgba(226,226,226,0.4)' },
-  { name: 'WordPress',  icon: `${DV}/wordpress/wordpress-original.svg`,       glow: 'rgba(33,117,155,0.6)' },
-  { name: 'Node.js',    icon: `${DV}/nodejs/nodejs-original.svg`,             glow: 'rgba(95,160,78,0.6)' },
-  { name: 'TypeScript', icon: `${DV}/typescript/typescript-original.svg`,     glow: 'rgba(49,120,198,0.6)' },
-  { name: 'Figma',      icon: `${DV}/figma/figma-original.svg`,               glow: 'rgba(242,78,30,0.6)' },
-  { name: 'OpenAI',     icon: OPENAI_SVG,                                     glow: 'rgba(16,163,127,0.6)' },
-  { name: 'Framer',     icon: `${DV}/framermotion/framermotion-original.svg`, glow: 'rgba(139,92,246,0.6)' },
-  { name: 'Git',        icon: `${DV}/git/git-original.svg`,                   glow: 'rgba(240,80,50,0.6)' },
+  { name: 'HTML5',      icon: `${DV}/html5/html5-original.svg`,             glow: 'rgba(227,79,38,0.6)' },
+  { name: 'CSS3',       icon: `${DV}/css3/css3-original.svg`,               glow: 'rgba(21,114,182,0.6)' },
+  { name: 'JavaScript', icon: `${DV}/javascript/javascript-original.svg`,   glow: 'rgba(247,223,30,0.6)' },
+  { name: 'React',      icon: `${DV}/react/react-original.svg`,             glow: 'rgba(97,218,251,0.6)' },
+  { name: 'Tailwind',   icon: `${DV}/tailwindcss/tailwindcss-original.svg`, glow: 'rgba(6,182,212,0.6)' },
+  { name: 'Vite',       icon: `${DV}/vitejs/vitejs-original.svg`,           glow: 'rgba(100,108,255,0.6)' },
+  { name: 'Vercel',     icon: VERCEL_SVG,                                   glow: 'rgba(226,226,226,0.45)' },
+  { name: 'WordPress',  icon: `${DV}/wordpress/wordpress-original.svg`,     glow: 'rgba(33,117,155,0.6)' },
+  { name: 'Node.js',    icon: `${SI}/nodedotjs/5fa04e`,                     glow: 'rgba(95,160,78,0.6)' },
+  { name: 'TypeScript', icon: `${DV}/typescript/typescript-original.svg`,   glow: 'rgba(49,120,198,0.6)' },
+  { name: 'Figma',      icon: `${DV}/figma/figma-original.svg`,             glow: 'rgba(242,78,30,0.6)' },
+  { name: 'OpenAI',     icon: OPENAI_SVG,                                   glow: 'rgba(16,163,127,0.6)' },
+  { name: 'Framer',     icon: FRAMER_SVG,                                   glow: 'rgba(139,92,246,0.6)' },
+  { name: 'GitHub',     icon: GITHUB_SVG,                                   glow: 'rgba(201,209,217,0.5)' },
 ]
 
 function StackMarquee() {
