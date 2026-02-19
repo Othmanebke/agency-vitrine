@@ -156,12 +156,12 @@ function ScrollProgressBar() {
 
 // FloatingCTA remplacé par ChatBot
 
-const Home      = React.lazy(() => import('./pages/Home'))
-const Pricing   = React.lazy(() => import('./pages/Pricing'))
-const Portfolio = React.lazy(() => import('./pages/Portfolio'))
-const About     = React.lazy(() => import('./pages/About'))
-const Contact   = React.lazy(() => import('./pages/Contact'))
-const Legal     = React.lazy(() => import('./pages/Legal'))
+const Home            = React.lazy(() => import('./pages/Home'))
+const Pricing         = React.lazy(() => import('./pages/Pricing'))
+const Portfolio       = React.lazy(() => import('./pages/Portfolio'))
+const About           = React.lazy(() => import('./pages/About'))
+const Contact         = React.lazy(() => import('./pages/Contact'))
+const MentionsLegales = React.lazy(() => import('./pages/MentionsLegales'))
 
 function GlobalBackground() {
   return (
@@ -224,11 +224,11 @@ export default function App(){
     return ()=> window.removeEventListener('popstate', onPop)
   }, [])
 
-  const page = path === '/pricing'   ? <Pricing /> :
-               path === '/portfolio' ? <Portfolio /> :
-               path === '/about'     ? <About /> :
-               path === '/contact'   ? <Contact /> :
-               path === '/legal'     ? <Legal /> :
+  const page = path === '/pricing'          ? <Pricing /> :
+               path === '/portfolio'        ? <Portfolio /> :
+               path === '/about'            ? <About /> :
+               path === '/contact'          ? <Contact /> :
+               path === '/mentions-legales' ? <MentionsLegales /> :
                <Home />
 
   return (
