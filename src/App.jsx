@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react'
 import { motion, AnimatePresence, useMotionValue, useSpring, useScroll, useReducedMotion } from 'framer-motion'
 import SplashScreen from './components/SplashScreen'
 import ChatBot from './components/ChatBot'
+import CookieBanner from './components/CookieBanner'
 
 function ShootingStars() {
   const canvasRef = useRef(null)
@@ -160,6 +161,7 @@ const Pricing   = React.lazy(() => import('./pages/Pricing'))
 const Portfolio = React.lazy(() => import('./pages/Portfolio'))
 const About     = React.lazy(() => import('./pages/About'))
 const Contact   = React.lazy(() => import('./pages/Contact'))
+const Legal     = React.lazy(() => import('./pages/Legal'))
 
 function GlobalBackground() {
   return (
@@ -222,10 +224,11 @@ export default function App(){
     return ()=> window.removeEventListener('popstate', onPop)
   }, [])
 
-  const page = path === '/pricing' ? <Pricing /> :
+  const page = path === '/pricing'   ? <Pricing /> :
                path === '/portfolio' ? <Portfolio /> :
-               path === '/about' ? <About /> :
-               path === '/contact' ? <Contact /> :
+               path === '/about'     ? <About /> :
+               path === '/contact'   ? <Contact /> :
+               path === '/legal'     ? <Legal /> :
                <Home />
 
   return (
@@ -236,6 +239,7 @@ export default function App(){
       <GlobalBackground />
       <ShootingStars />
       <ChatBot />
+      <CookieBanner />
       <AnimatePresence mode="wait">
         <motion.div
           key={path}

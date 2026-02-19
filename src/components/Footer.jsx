@@ -64,7 +64,10 @@ export default function Footer(){
       <div className="border-t border-white/[0.05]">
         <div className="max-w-7xl mx-auto px-6 py-5 flex flex-col md:flex-row items-center justify-between gap-2 text-xs text-zinc-600">
           <span>© {new Date().getFullYear()} NovaWeb. Tous droits réservés.</span>
-          <span>Fait avec ❤️ en France</span>
+          <div className="flex items-center gap-4">
+            <a href="/legal" onClick={e => { e.preventDefault(); navigate('/legal') }} className="hover:text-zinc-400 transition-colors">Mentions légales</a>
+            <span>Fait avec ❤️ en France</span>
+          </div>
         </div>
       </div>
     </footer>

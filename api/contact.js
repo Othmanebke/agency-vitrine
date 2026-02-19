@@ -26,15 +26,23 @@ module.exports = async (req, res) => {
 
   sgMail.setApiKey(apiKey)
 
+  // Sanitize inputs to prevent XSS in HTML emails
+  const esc = (str) => String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;')
+
   const msg = {
     to,
     from,
-    subject: `Nouveau message de ${name} via le site`,
+    subject: `Nouveau message de ${esc(name)} via le site`,
     html: `
-      <p><strong>Nom:</strong> ${name}</p>
-      <p><strong>Email:</strong> ${email}</p>
+      <p><strong>Nom:</strong> ${esc(name)}</p>
+      <p><strong>Email:</strong> ${esc(email)}</p>
       <p><strong>Message:</strong></p>
-      <div>${message.replace(/\n/g, '<br/>')}</div>
+      <div>${esc(message).replace(/\n/g, '<br/>')}</div>
     `
   }
 
