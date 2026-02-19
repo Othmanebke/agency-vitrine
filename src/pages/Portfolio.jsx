@@ -24,35 +24,110 @@ function Lightbox({ project, onClose }) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-sm p-6"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-md p-4 sm:p-8"
       role="dialog"
       aria-modal="true"
       onClick={onClose}
     >
       <motion.div
-        initial={{ scale: 0.92, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        exit={{ scale: 0.92, opacity: 0 }}
-        transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-        className="relative max-w-2xl w-full bg-white/[0.04] border border-white/10 rounded-3xl overflow-hidden"
+        initial={{ scale: 0.88, opacity: 0, y: 24 }}
+        animate={{ scale: 1, opacity: 1, y: 0 }}
+        exit={{ scale: 0.88, opacity: 0, y: 24 }}
+        transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+        className="relative max-w-3xl w-full bg-[#0d0d1a] border border-white/10 rounded-3xl overflow-hidden shadow-2xl shadow-violet-900/30"
         onClick={e => e.stopPropagation()}
       >
-        <button aria-label="Fermer" onClick={onClose} className="absolute top-4 right-4 z-10 w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors">✕</button>
-        <div className={`h-64 bg-gradient-to-br ${project.color} flex items-center justify-center overflow-hidden`}>
+        {/* close btn */}
+        <button
+          aria-label="Fermer"
+          onClick={onClose}
+          className="absolute top-4 right-4 z-20 w-9 h-9 rounded-full bg-white/10 hover:bg-violet-500/30 border border-white/10 hover:border-violet-500/40 flex items-center justify-center text-white transition-all text-sm"
+        >✕</button>
+
+        {/* image full */}
+        <div className="relative w-full bg-black" style={{ aspectRatio: '16/9' }}>
           <img
             src={project.img}
             alt={project.title}
-            className="w-full h-full object-cover object-top"
-            onError={e => { e.currentTarget.style.display = 'none' }}
+            className="w-full h-full object-contain"
+            onError={e => { e.currentTarget.parentElement.style.background = '#111'; e.currentTarget.style.display = 'none' }}
           />
+          {/* gradient overlay bottom */}
+          <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-[#0d0d1a] to-transparent" />
+          {/* tag badge */}
+          <span className="absolute top-4 left-4 text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full bg-black/50 border border-violet-500/30 text-violet-300 backdrop-blur-sm">
+            {project.tag}
+          </span>
         </div>
-        <div className="p-6">
-          <span className="text-xs font-semibold text-violet-400 uppercase tracking-widest">{project.tag}</span>
-          <h3 className="text-xl font-black mt-1 mb-2">{project.title}</h3>
-          <p className="text-zinc-400 text-sm">{project.desc}</p>
+
+        {/* info */}
+        <div className="px-7 pb-7 pt-3">
+          <h3 className="text-2xl font-black mb-2 leading-tight">{project.title}</h3>
+          <p className="text-zinc-400 text-sm leading-relaxed">{project.desc}</p>
+          <div className="mt-5 flex items-center gap-3">
+            <div className={`flex-1 h-px bg-gradient-to-r ${project.color} opacity-60`} />
+            <span className="text-[10px] text-zinc-600 uppercase tracking-widest">NovaWeb Studio</span>
+          </div>
         </div>
       </motion.div>
     </motion.div>
+  )
+}
+
+/* ── Tech stack infinite marquee ─────────────────────────── */
+const stacks = [
+  { name: 'HTML5',      icon: 'https://cdn.simpleicons.org/html5/e34f26',       glow: 'rgba(227,79,38,0.5)' },
+  { name: 'CSS3',       icon: 'https://cdn.simpleicons.org/css3/1572b6',        glow: 'rgba(21,114,182,0.5)' },
+  { name: 'JavaScript', icon: 'https://cdn.simpleicons.org/javascript/f7df1e',  glow: 'rgba(247,223,30,0.5)' },
+  { name: 'React',      icon: 'https://cdn.simpleicons.org/react/61dafb',       glow: 'rgba(97,218,251,0.5)' },
+  { name: 'Tailwind',   icon: 'https://cdn.simpleicons.org/tailwindcss/06b6d4', glow: 'rgba(6,182,212,0.5)' },
+  { name: 'Vite',       icon: 'https://cdn.simpleicons.org/vite/646cff',        glow: 'rgba(100,108,255,0.5)' },
+  { name: 'Vercel',     icon: 'https://cdn.simpleicons.org/vercel/ffffff',      glow: 'rgba(255,255,255,0.3)' },
+  { name: 'WordPress',  icon: 'https://cdn.simpleicons.org/wordpress/21759b',   glow: 'rgba(33,117,155,0.5)' },
+  { name: 'Node.js',    icon: 'https://cdn.simpleicons.org/nodedotjs/5fa04e',   glow: 'rgba(95,160,78,0.5)' },
+  { name: 'TypeScript', icon: 'https://cdn.simpleicons.org/typescript/3178c6',  glow: 'rgba(49,120,198,0.5)' },
+  { name: 'Figma',      icon: 'https://cdn.simpleicons.org/figma/f24e1e',       glow: 'rgba(242,78,30,0.5)' },
+  { name: 'OpenAI',     icon: 'https://cdn.simpleicons.org/openai/ffffff',      glow: 'rgba(255,255,255,0.3)' },
+  { name: 'Shopify',    icon: 'https://cdn.simpleicons.org/shopify/96bf48',     glow: 'rgba(150,191,72,0.5)' },
+  { name: 'Git',        icon: 'https://cdn.simpleicons.org/git/f05032',         glow: 'rgba(240,80,50,0.5)' },
+]
+
+function StackMarquee() {
+  const doubled = [...stacks, ...stacks]
+  return (
+    <section className="relative py-14 overflow-hidden select-none">
+      {/* fade edges */}
+      <div className="pointer-events-none absolute inset-y-0 left-0 w-24 z-10 bg-gradient-to-r from-[#050510] to-transparent" />
+      <div className="pointer-events-none absolute inset-y-0 right-0 w-24 z-10 bg-gradient-to-l from-[#050510] to-transparent" />
+
+      {/* label */}
+      <p className="text-center text-[10px] uppercase tracking-widest text-zinc-600 mb-8 font-semibold">Stack &amp; outils</p>
+
+      {/* track */}
+      <div className="flex animate-marquee" style={{ width: 'max-content' }}>
+        {doubled.map((s, i) => (
+          <div
+            key={i}
+            className="flex items-center gap-3 mx-5 px-5 py-3 rounded-2xl border border-white/[0.06] bg-white/[0.03] hover:border-white/20 transition-colors group"
+            style={{ boxShadow: `0 0 18px 0 ${s.glow.replace('0.5', '0')}` }}
+            onMouseEnter={e => { e.currentTarget.style.boxShadow = `0 0 22px 0 ${s.glow}` }}
+            onMouseLeave={e => { e.currentTarget.style.boxShadow = `0 0 18px 0 ${s.glow.replace('0.5', '0')}` }}
+          >
+            <img
+              src={s.icon}
+              alt={s.name}
+              width={20}
+              height={20}
+              className="w-5 h-5 object-contain opacity-80 group-hover:opacity-100 transition-opacity"
+              style={{ filter: 'drop-shadow(0 0 4px ' + s.glow + ')' }}
+            />
+            <span className="text-xs font-semibold text-zinc-400 group-hover:text-white transition-colors whitespace-nowrap">
+              {s.name}
+            </span>
+          </div>
+        ))}
+      </div>
+    </section>
   )
 }
 
@@ -206,6 +281,8 @@ export default function Portfolio() {
             {active + 1} / {projects.length}
           </p>
         </section>
+        {/* tech stack marquee */}
+        <StackMarquee />
       </main>
 
       <Footer />
