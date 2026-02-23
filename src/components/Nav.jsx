@@ -43,16 +43,14 @@ export default function Nav() {
       initial={{ y: -80, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5, ease: 'easeOut' }}
-      className="fixed inset-x-0 z-50 flex justify-center transition-all duration-500 ease-out"
-      style={{ top: scrolled ? '1rem' : '0' }}
+      className="fixed top-0 inset-x-0 z-50 transition-all duration-500"
+      style={scrolled ? { paddingTop: '1rem', paddingLeft: '1rem', paddingRight: '1rem' } : {}}
     >
-      <div
-        className={`w-full transition-all duration-500 ease-out ${scrolled
-          ? 'max-w-6xl mx-4 rounded-2xl bg-black/60 backdrop-blur-2xl border border-white/10 ring-1 ring-inset ring-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.5),0_0_0_1px_rgba(139,92,246,0.15)]'
-          : 'max-w-none mx-0 bg-transparent'
-          }`}
-      >
-        <div className={`mx-auto px-6 flex items-center justify-between transition-all duration-500 ${scrolled ? 'py-3 max-w-6xl' : 'max-w-7xl py-4'}`}>
+      <div className={`mx-auto transition-all duration-500 ${scrolled
+          ? 'max-w-6xl rounded-2xl bg-black/60 backdrop-blur-2xl border border-white/10 ring-1 ring-inset ring-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.5),0_0_0_1px_rgba(139,92,246,0.15)]'
+          : 'max-w-7xl'
+        }`}>
+        <div className="px-6 flex items-center justify-between h-14">
           {/* Logo */}
           <a
             href="/"
@@ -106,41 +104,41 @@ export default function Nav() {
             <motion.span animate={{ rotate: open ? -45 : 0, y: open ? -8 : 0 }} className="block w-6 h-0.5 bg-white origin-center transition-all" />
           </button>
         </div>
-
-        {/* Mobile menu */}
-        <AnimatePresence>
-          {open && (
-            <motion.div
-              key="mobile-menu"
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.25, ease: 'easeInOut' }}
-              className="md:hidden overflow-hidden bg-black/90 backdrop-blur-xl border-t border-white/10"
-            >
-              <div className="px-6 py-5 space-y-1">
-                {links.map((link, i) => (
-                  <motion.a
-                    key={link.label}
-                    href={link.path}
-                    onClick={(e) => handleNav(e, link)}
-                    initial={{ opacity: 0, x: -12 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: i * 0.05 }}
-                    className={`block px-4 py-3 rounded-xl text-sm font-medium transition-colors ${isActive(link) ? 'bg-white/10 text-white' : 'text-zinc-400 hover:text-white hover:bg-white/5'
-                      }`}
-                  >
-                    {link.label}
-                  </motion.a>
-                ))}
-                <a href="/contact" onClick={(e) => { e.preventDefault(); navigate('/contact'); setOpen(false) }} className="mt-3 w-full flex items-center justify-center gap-2 px-5 py-3 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-violet-600 to-pink-500 shadow shadow-violet-500/30">
-                  Devis gratuit
-                </a>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
       </div>
+
+      {/* Mobile menu */}
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            key="mobile-menu"
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.25, ease: 'easeInOut' }}
+            className="md:hidden overflow-hidden"
+          >
+            <div className={`mx-auto transition-all duration-500 ${scrolled ? 'max-w-6xl rounded-b-2xl bg-black/80 backdrop-blur-2xl border border-t-0 border-white/10' : 'max-w-7xl'
+              } px-6 py-5 space-y-1`}>
+              {links.map((link, i) => (
+                <motion.a
+                  key={link.label}
+                  href={link.path}
+                  onClick={(e) => handleNav(e, link)}
+                  initial={{ opacity: 0, x: -12 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: i * 0.05 }}
+                  className={`block px-4 py-3 rounded-xl text-sm font-medium transition-colors ${isActive(link) ? 'bg-white/10 text-white' : 'text-zinc-400 hover:text-white hover:bg-white/5'}`}
+                >
+                  {link.label}
+                </motion.a>
+              ))}
+              <a href="/contact" onClick={(e) => { e.preventDefault(); navigate('/contact'); setOpen(false) }} className="mt-3 w-full flex items-center justify-center gap-2 px-5 py-3 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-violet-600 to-pink-500 shadow shadow-violet-500/30">
+                Devis gratuit
+              </a>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.header>
   )
 }
