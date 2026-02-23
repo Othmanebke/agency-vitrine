@@ -41,7 +41,7 @@ export default function Nav() {
       initial={{ y: -80, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5, ease: 'easeOut' }}
-      className="relative z-50"
+      className="sticky top-0 z-50 bg-black/60 backdrop-blur-2xl border-b border-white/[0.07]"
     >
       <div className="mx-auto max-w-7xl">
         <div className="px-6 flex items-center justify-between h-14">
