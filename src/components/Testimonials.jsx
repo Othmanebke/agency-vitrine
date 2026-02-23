@@ -1,15 +1,69 @@
-import React from 'react'
-import { motion, useReducedMotion } from 'framer-motion'
+import React, { useRef } from 'react'
+import { motion, useMotionValue, useSpring, useTransform, useReducedMotion } from 'framer-motion'
 
-function Stars() {
+function Stars({ delay = 0 }) {
+  const shouldReduce = useReducedMotion()
   return (
     <div className="flex gap-0.5 mb-4" aria-hidden>
       {[...Array(5)].map((_, i) => (
-        <svg key={i} className="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+        <motion.svg
+          key={i}
+          initial={shouldReduce ? {} : { opacity: 0, scale: 0.5 }}
+          whileInView={shouldReduce ? {} : { opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.3, delay: delay + i * 0.06, ease: 'backOut' }}
+          className="w-4 h-4 text-yellow-400"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+        >
           <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-        </svg>
+        </motion.svg>
       ))}
     </div>
+  )
+}
+
+function TiltCard({ children, className }) {
+  const ref = useRef(null)
+  const shouldReduce = useReducedMotion()
+  const mouseX = useMotionValue(0)
+  const mouseY = useMotionValue(0)
+  const glareX = useMotionValue(50)
+  const glareY = useMotionValue(50)
+  const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [6, -6]), { stiffness: 200, damping: 20 })
+  const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-6, 6]), { stiffness: 200, damping: 20 })
+  const glare = useTransform(
+    [glareX, glareY],
+    ([gx, gy]) => `radial-gradient(circle at ${gx}% ${gy}%, rgba(255,255,255,0.07) 0%, transparent 60%)`
+  )
+
+  const handleMouseMove = (e) => {
+    if (shouldReduce || !ref.current) return
+    const rect = ref.current.getBoundingClientRect()
+    mouseX.set((e.clientX - rect.left) / rect.width - 0.5)
+    mouseY.set((e.clientY - rect.top) / rect.height - 0.5)
+    glareX.set(((e.clientX - rect.left) / rect.width) * 100)
+    glareY.set(((e.clientY - rect.top) / rect.height) * 100)
+  }
+  const handleMouseLeave = () => { mouseX.set(0); mouseY.set(0) }
+
+  return (
+    <motion.div
+      ref={ref}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={shouldReduce ? {} : { rotateX, rotateY, transformPerspective: 800, transformStyle: 'preserve-3d' }}
+      whileHover={shouldReduce ? {} : { scale: 1.02, zIndex: 10 }}
+      className={`relative overflow-hidden cursor-default ${className}`}
+    >
+      {!shouldReduce && (
+        <motion.div
+          className="pointer-events-none absolute inset-0 rounded-2xl z-10"
+          style={{ background: glare }}
+        />
+      )}
+      <div className="relative z-[1]">{children}</div>
+    </motion.div>
   )
 }
 
@@ -43,50 +97,43 @@ export default function Testimonials() {
   return (
     <section id="testimonials" className="max-w-6xl mx-auto px-6 py-24">
       <motion.div
-        initial={{ opacity: 0, y: 16 }}
-        whileInView={{ opacity: 1, y: 0 }}
+        initial={shouldReduce ? {} : { opacity: 0, y: 16, filter: 'blur(8px)' }}
+        whileInView={shouldReduce ? {} : { opacity: 1, y: 0, filter: 'blur(0px)' }}
         viewport={{ once: true }}
-        transition={{ duration: 0.5 }}
+        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
         className="mb-14"
       >
         <p className="text-xs uppercase tracking-widest text-violet-400 mb-3 font-semibold">Ils nous font confiance</p>
         <h2 className="text-3xl md:text-4xl font-black">Ce que disent nos clients</h2>
       </motion.div>
 
-      <div
-        className="grid grid-cols-1 md:grid-cols-3 gap-5"
-        role="list"
-        aria-label="Témoignages clients"
-      >
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5" role="list" aria-label="Témoignages clients">
         {items.map((it, idx) => (
-          <motion.blockquote
+          <motion.div
             key={it.name}
-            initial={shouldReduce ? {} : { opacity: 0, y: 24 }}
-            whileInView={shouldReduce ? {} : { opacity: 1, y: 0 }}
+            initial={shouldReduce ? {} : { opacity: 0, y: 32, filter: 'blur(6px)' }}
+            whileInView={shouldReduce ? {} : { opacity: 1, y: 0, filter: 'blur(0px)' }}
             viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: idx * 0.12, ease: [0.22, 1, 0.36, 1] }}
-            whileHover={shouldReduce ? {} : { y: -8, boxShadow: '0 20px 60px rgba(139,92,246,0.15)' }}
-            whileTap={shouldReduce ? {} : { scale: 0.98 }}
-            className="p-6 md:p-8 bg-white/[0.03] border border-white/[0.07] rounded-2xl cursor-default hover:border-violet-500/30 transition-colors"
-            tabIndex={0}
+            transition={{ duration: 0.6, delay: idx * 0.14, ease: [0.22, 1, 0.36, 1] }}
             role="listitem"
-            aria-label={`Témoignage de ${it.name}, ${it.role}`}
           >
-            <Stars />
-            <p className="text-zinc-200 text-sm md:text-base leading-relaxed mb-6">"{it.quote}"</p>
-            <div className="flex items-center gap-3">
-              <div
-                className={`w-10 h-10 rounded-full bg-gradient-to-br ${it.gradient} flex items-center justify-center text-white font-bold text-sm flex-shrink-0`}
-                aria-hidden
-              >
-                {it.initial}
+            <TiltCard className="p-6 md:p-8 bg-white/[0.03] border border-white/[0.07] rounded-2xl h-full hover:border-violet-500/30 transition-colors">
+              <Stars delay={idx * 0.14} />
+              <p className="text-zinc-200 text-sm md:text-base leading-relaxed mb-6">"{it.quote}"</p>
+              <div className="flex items-center gap-3">
+                <div
+                  className={`w-10 h-10 rounded-full bg-gradient-to-br ${it.gradient} flex items-center justify-center text-white font-bold text-sm flex-shrink-0`}
+                  aria-hidden
+                >
+                  {it.initial}
+                </div>
+                <div>
+                  <div className="font-semibold text-sm">{it.name}</div>
+                  <div className="text-xs text-zinc-500">{it.role}</div>
+                </div>
               </div>
-              <div>
-                <div className="font-semibold text-sm">{it.name}</div>
-                <div className="text-xs text-zinc-500">{it.role}</div>
-              </div>
-            </div>
-          </motion.blockquote>
+            </TiltCard>
+          </motion.div>
         ))}
       </div>
     </section>

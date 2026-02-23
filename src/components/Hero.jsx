@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { motion, useReducedMotion, AnimatePresence, useMotionValue, useSpring, useInView } from 'framer-motion'
+import { motion, useReducedMotion, AnimatePresence, useMotionValue, useSpring, useInView, useTransform } from 'framer-motion'
 
 const WORDS = ['convertissent', 'sur-mesure', 'performants', 'mémorables', 'visibles']
 
@@ -102,8 +102,16 @@ const stats = [
 
 const badges = ['React', 'Next.js', 'SEO', 'Tailwind', 'Framer', 'Vercel', 'WordPress', 'IA']
 
-export default function Hero(){
+export default function Hero() {
   const shouldReduce = useReducedMotion()
+  const mouseX = useMotionValue(0)
+  const mouseY = useMotionValue(0)
+  const springX = useSpring(mouseX, { stiffness: 60, damping: 20 })
+  const springY = useSpring(mouseY, { stiffness: 60, damping: 20 })
+  const orbX = useTransform(springX, v => v * -60)
+  const orbY = useTransform(springY, v => v * -40)
+  const orb2X = useTransform(springX, v => v * 40)
+  const orb2Y = useTransform(springY, v => v * 30)
 
   const fadeUp = (delay = 0) => ({
     initial: { opacity: 0, y: 24 },
@@ -112,14 +120,30 @@ export default function Hero(){
   })
 
   return (
-    <section className="relative min-h-screen flex flex-col justify-center overflow-hidden pt-24 pb-20">
-
-      {/* extra hero glow */}
+    <section
+      className="relative min-h-screen flex flex-col justify-center overflow-hidden pt-24 pb-20"
+      onMouseMove={(e) => {
+        if (shouldReduce) return
+        const rect = e.currentTarget.getBoundingClientRect()
+        const cx = (e.clientX - rect.left) / rect.width - 0.5
+        const cy = (e.clientY - rect.top) / rect.height - 0.5
+        mouseX.set(cx)
+        mouseY.set(cy)
+      }}
+    >
+      {/* parallax orb — main */}
       <motion.div
         aria-hidden
-        animate={shouldReduce ? {} : { scale: [1, 1.08, 1], opacity: [0.5, 0.7, 0.5] }}
-        transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+        style={{ x: orbX, y: orbY }}
         className="pointer-events-none absolute left-1/2 top-1/3 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px] rounded-full bg-violet-600/20 blur-[80px]"
+      />
+      {/* parallax orb — secondary (moves opposite) */}
+      <motion.div
+        aria-hidden
+        animate={shouldReduce ? {} : { scale: [1, 1.1, 1], opacity: [0.15, 0.25, 0.15] }}
+        transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+        style={{ x: orb2X, y: orb2Y }}
+        className="pointer-events-none absolute right-1/4 top-1/2 w-[400px] h-[400px] rounded-full bg-pink-600/15 blur-[100px]"
       />
 
       <div className="max-w-6xl mx-auto px-6 w-full">

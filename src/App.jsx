@@ -156,11 +156,11 @@ function ScrollProgressBar() {
 
 // FloatingCTA remplacé par ChatBot
 
-const Home            = React.lazy(() => import('./pages/Home'))
-const Pricing         = React.lazy(() => import('./pages/Pricing'))
-const Portfolio       = React.lazy(() => import('./pages/Portfolio'))
-const About           = React.lazy(() => import('./pages/About'))
-const Contact         = React.lazy(() => import('./pages/Contact'))
+const Home = React.lazy(() => import('./pages/Home'))
+const Pricing = React.lazy(() => import('./pages/Pricing'))
+const Portfolio = React.lazy(() => import('./pages/Portfolio'))
+const About = React.lazy(() => import('./pages/About'))
+const Contact = React.lazy(() => import('./pages/Contact'))
 const MentionsLegales = React.lazy(() => import('./pages/MentionsLegales'))
 
 function GlobalBackground() {
@@ -214,22 +214,22 @@ function GlobalBackground() {
   )
 }
 
-export default function App(){
+export default function App() {
   const [path, setPath] = useState(window.location.pathname)
   const [showSplash, setShowSplash] = useState(() => sessionStorage.getItem('nw_loaded') !== '1')
 
-  useEffect(()=>{
-    const onPop = ()=> setPath(window.location.pathname)
+  useEffect(() => {
+    const onPop = () => setPath(window.location.pathname)
     window.addEventListener('popstate', onPop)
-    return ()=> window.removeEventListener('popstate', onPop)
+    return () => window.removeEventListener('popstate', onPop)
   }, [])
 
-  const page = path === '/pricing'          ? <Pricing /> :
-               path === '/portfolio'        ? <Portfolio /> :
-               path === '/about'            ? <About /> :
-               path === '/contact'          ? <Contact /> :
-               path === '/mentions-legales' ? <MentionsLegales /> :
-               <Home />
+  const page = path === '/pricing' ? <Pricing /> :
+    path === '/portfolio' ? <Portfolio /> :
+      path === '/about' ? <About /> :
+        path === '/contact' ? <Contact /> :
+          path === '/mentions-legales' ? <MentionsLegales /> :
+            <Home />
 
   return (
     <>
@@ -243,10 +243,10 @@ export default function App(){
       <AnimatePresence mode="wait">
         <motion.div
           key={path}
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -8 }}
-          transition={{ duration: 0.25, ease: 'easeOut' }}
+          initial={{ opacity: 0, filter: 'blur(12px)', y: 20 }}
+          animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
+          exit={{ opacity: 0, filter: 'blur(8px)', y: -12 }}
+          transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
         >
           <React.Suspense fallback={null}>
             {page}
