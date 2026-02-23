@@ -43,9 +43,9 @@ export default function Nav() {
       initial={{ y: -80, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5, ease: 'easeOut' }}
-      className={`fixed z-50 transition-all duration-500 ease-out ${scrolled
-          ? 'top-4 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] max-w-6xl rounded-2xl bg-black/60 backdrop-blur-2xl border border-white/10 ring-1 ring-inset ring-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.5),0_0_0_1px_rgba(139,92,246,0.15)]'
-          : 'top-0 inset-x-0 bg-transparent'
+      className={`fixed left-1/2 -translate-x-1/2 z-50 transition-all duration-500 ease-out ${scrolled
+          ? 'top-4 w-[calc(100%-2rem)] max-w-6xl rounded-2xl bg-black/60 backdrop-blur-2xl border border-white/10 ring-1 ring-inset ring-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.5),0_0_0_1px_rgba(139,92,246,0.15)]'
+          : 'top-0 w-full max-w-none bg-transparent'
         }`}
     >
       <div className={`mx-auto px-6 flex items-center justify-between transition-all duration-500 ${scrolled ? 'py-3' : 'max-w-7xl py-4'}`}>
