@@ -21,7 +21,7 @@ export default function MentionsLegales() {
   return (
     <div className="min-h-screen text-white">
       <Nav />
-      <main role="main" className="pt-24">
+      <main role="main">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

@@ -19,11 +19,9 @@ export default function Nav() {
   const [current, setCurrent] = useState(window.location.pathname)
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20)
     const onPop = () => { setCurrent(window.location.pathname); setOpen(false) }
-    window.addEventListener('scroll', onScroll, { passive: true })
     window.addEventListener('popstate', onPop)
-    return () => { window.removeEventListener('scroll', onScroll); window.removeEventListener('popstate', onPop) }
+    return () => { window.removeEventListener('popstate', onPop) }
   }, [])
 
   const handleNav = (e, link) => {
@@ -43,13 +41,9 @@ export default function Nav() {
       initial={{ y: -80, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5, ease: 'easeOut' }}
-      className="fixed top-0 inset-x-0 z-50 transition-all duration-500"
-      style={scrolled ? { paddingTop: '1rem', paddingLeft: '1rem', paddingRight: '1rem' } : {}}
+      className="relative z-50"
     >
-      <div className={`mx-auto transition-all duration-500 ${scrolled
-          ? 'max-w-6xl rounded-2xl bg-black/60 backdrop-blur-2xl border border-white/10 ring-1 ring-inset ring-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.5),0_0_0_1px_rgba(139,92,246,0.15)]'
-          : 'max-w-7xl'
-        }`}>
+      <div className="mx-auto max-w-7xl">
         <div className="px-6 flex items-center justify-between h-14">
           {/* Logo */}
           <a
@@ -117,8 +111,7 @@ export default function Nav() {
             transition={{ duration: 0.25, ease: 'easeInOut' }}
             className="md:hidden overflow-hidden"
           >
-            <div className={`mx-auto transition-all duration-500 ${scrolled ? 'max-w-6xl rounded-b-2xl bg-black/80 backdrop-blur-2xl border border-t-0 border-white/10' : 'max-w-7xl'
-              } px-6 py-5 space-y-1`}>
+            <div className="mx-auto max-w-7xl px-6 py-5 space-y-1 bg-black/80 backdrop-blur-2xl border-t border-white/10">
               {links.map((link, i) => (
                 <motion.a
                   key={link.label}

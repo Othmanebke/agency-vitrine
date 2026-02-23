@@ -122,28 +122,71 @@ export default function Packages() {
         <h2 className="text-3xl md:text-4xl font-black mb-10">Tarifs & offres</h2>
 
         {/* Site packages */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-12">
-          <TiltCard className="p-6 bg-white/[0.03] border border-white/[0.07] rounded-2xl">
-            <h3 className="font-bold text-lg mb-2">Site sur-mesure</h3>
-            <p className="text-3xl font-black mb-1">500 <span className="text-lg text-zinc-400">—</span> 5 000€</p>
-            <p className="text-sm text-zinc-500 mb-1">selon périmètre</p>
-            <p className="text-sm text-zinc-500 mb-4">Développé en code ou sous WordPress — selon tes besoins.</p>
-            <ul className="space-y-2">
-              {['Responsive (mobile & desktop)', 'Optimisation SEO incluse', 'Maintenance 1 an offerte', 'Révisions incluses'].map(f => (
-                <li key={f} className="flex items-center gap-2 text-sm text-zinc-400">
-                  <svg className="w-4 h-4 text-violet-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" /></svg>
-                  {f}
-                </li>
-              ))}
-            </ul>
-          </TiltCard>
-          <TiltCard className="p-6 bg-white/[0.03] border border-white/[0.07] rounded-2xl">
-            <h3 className="font-bold text-lg mb-2">Flyers & Refonte</h3>
-            <p className="text-zinc-400 leading-relaxed">Supports print et refonte de site : tarifs sur devis — audit préalable pour estimer le temps et le budget.</p>
-            <a href="/contact" onClick={e => { e.preventDefault(); history.pushState({}, '', '/contact'); window.dispatchEvent(new PopStateEvent('popstate')) }} className="mt-5 inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/5 border border-white/10 text-sm font-medium hover:border-violet-500/40 transition-colors">
-              Obtenir un devis
-            </a>
-          </TiltCard>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+          {/* ⭐ Featured card: Site sur-mesure */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+          >
+            <TiltCard
+              highlight
+              className="relative p-7 bg-gradient-to-b from-violet-600/25 via-violet-900/10 to-pink-600/10 border border-violet-500/50 rounded-2xl shadow-2xl shadow-violet-500/20 h-full"
+            >
+              {/* Badge */}
+              <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-gradient-to-r from-violet-600 to-pink-500 text-white text-xs font-bold shadow-lg shadow-violet-500/40 whitespace-nowrap">
+                ⭐ Notre offre phare
+              </span>
+
+              <h3 className="font-black text-xl mb-2 text-white">Site sur-mesure</h3>
+              <p className="text-4xl font-black mb-1 bg-gradient-to-r from-violet-300 to-pink-300 bg-clip-text text-transparent">
+                500 <span className="text-xl text-zinc-400 font-normal">—</span> 5 000€
+              </p>
+              <p className="text-sm text-zinc-400 mb-1">selon périmètre</p>
+              <p className="text-sm text-zinc-400 mb-5">Développé en code ou sous WordPress — selon tes besoins.</p>
+
+              <ul className="space-y-2.5 mb-7">
+                {['Responsive (mobile & desktop)', 'Optimisation SEO incluse', 'Maintenance 1 an offerte', 'Révisions incluses'].map(f => (
+                  <li key={f} className="flex items-center gap-2.5 text-sm text-zinc-300">
+                    <span className="flex-shrink-0 w-5 h-5 rounded-full bg-violet-500/20 flex items-center justify-center">
+                      <svg className="w-3 h-3 text-violet-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>
+                    </span>
+                    {f}
+                  </li>
+                ))}
+              </ul>
+
+              <a
+                href="/contact"
+                onClick={e => { e.preventDefault(); history.pushState({}, '', '/contact'); window.dispatchEvent(new PopStateEvent('popstate')) }}
+                className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-violet-600 to-pink-500 shadow-lg shadow-violet-500/30 hover:scale-105 hover:shadow-violet-500/50 transition-all duration-200"
+              >
+                Démarrer mon projet
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+              </a>
+            </TiltCard>
+          </motion.div>
+
+          {/* Regular card: Flyers & Refonte */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+          >
+            <TiltCard className="p-7 bg-white/[0.03] border border-white/[0.07] rounded-2xl h-full flex flex-col">
+              <h3 className="font-bold text-lg mb-2">Flyers & Refonte</h3>
+              <p className="text-zinc-400 leading-relaxed flex-1">Supports print et refonte de site : tarifs sur devis — audit préalable pour estimer le temps et le budget.</p>
+              <a
+                href="/contact"
+                onClick={e => { e.preventDefault(); history.pushState({}, '', '/contact'); window.dispatchEvent(new PopStateEvent('popstate')) }}
+                className="mt-6 inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/5 border border-white/10 text-sm font-medium hover:border-violet-500/40 hover:text-white transition-colors"
+              >
+                Obtenir un devis
+              </a>
+            </TiltCard>
+          </motion.div>
         </div>
 
         {/* Social packs */}

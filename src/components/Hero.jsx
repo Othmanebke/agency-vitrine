@@ -121,7 +121,7 @@ export default function Hero() {
 
   return (
     <section
-      className="relative min-h-screen flex flex-col justify-center overflow-hidden pt-24 pb-20"
+      className="relative min-h-screen flex flex-col justify-center overflow-hidden pb-20"
       onMouseMove={(e) => {
         if (shouldReduce) return
         const rect = e.currentTarget.getBoundingClientRect()

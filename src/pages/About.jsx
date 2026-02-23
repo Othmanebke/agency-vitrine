@@ -38,7 +38,7 @@ export default function About() {
     <div className="min-h-screen text-white">
       <Nav />
 
-      <main role="main" className="pt-24">
+      <main role="main">
 
         {/* Hero */}
         <header className="max-w-6xl mx-auto px-6 py-20 text-center">
