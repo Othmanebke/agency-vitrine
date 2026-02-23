@@ -8,11 +8,9 @@ function navigate(path) {
 
 const links = [
   { label: 'Accueil', path: '/' },
-  { label: 'Services', path: '/#services', hash: true },
   { label: 'Tarifs', path: '/pricing' },
   { label: 'Portfolio', path: '/portfolio' },
   { label: 'À propos', path: '/about' },
-  { label: 'Contact', path: '/contact' },
 ]
 
 export default function Nav() {
@@ -45,13 +43,12 @@ export default function Nav() {
       initial={{ y: -80, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5, ease: 'easeOut' }}
-      className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? 'bg-black/70 backdrop-blur-xl border-b border-white/10 shadow-lg shadow-black/40'
-          : 'bg-transparent'
-      }`}
+      className={`fixed z-50 transition-all duration-500 ease-out ${scrolled
+          ? 'top-4 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] max-w-6xl rounded-2xl bg-black/60 backdrop-blur-2xl border border-white/10 ring-1 ring-inset ring-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.5),0_0_0_1px_rgba(139,92,246,0.15)]'
+          : 'top-0 inset-x-0 bg-transparent'
+        }`}
     >
-      <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div className={`mx-auto px-6 flex items-center justify-between transition-all duration-500 ${scrolled ? 'py-3' : 'max-w-7xl py-4'}`}>
         {/* Logo */}
         <a
           href="/"
@@ -69,11 +66,10 @@ export default function Nav() {
               key={link.label}
               href={link.path}
               onClick={(e) => handleNav(e, link)}
-              className={`relative px-4 py-2 text-sm font-medium rounded-full transition-colors duration-200 ${
-                isActive(link)
-                  ? 'text-white'
-                  : 'text-zinc-400 hover:text-white'
-              }`}
+              className={`relative px-4 py-2 text-sm font-medium rounded-full transition-colors duration-200 ${isActive(link)
+                ? 'text-white'
+                : 'text-zinc-400 hover:text-white'
+                }`}
             >
               {isActive(link) && (
                 <motion.span
@@ -127,9 +123,8 @@ export default function Nav() {
                   initial={{ opacity: 0, x: -12 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: i * 0.05 }}
-                  className={`block px-4 py-3 rounded-xl text-sm font-medium transition-colors ${
-                    isActive(link) ? 'bg-white/10 text-white' : 'text-zinc-400 hover:text-white hover:bg-white/5'
-                  }`}
+                  className={`block px-4 py-3 rounded-xl text-sm font-medium transition-colors ${isActive(link) ? 'bg-white/10 text-white' : 'text-zinc-400 hover:text-white hover:bg-white/5'
+                    }`}
                 >
                   {link.label}
                 </motion.a>
