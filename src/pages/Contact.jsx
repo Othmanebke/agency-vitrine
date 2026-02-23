@@ -5,7 +5,7 @@ import ContactForm from '../components/ContactForm'
 import Footer from '../components/Footer'
 import { useSEO } from '../hooks/useSEO'
 
-export default function Contact(){
+export default function Contact() {
   useSEO({
     title: 'Contact — NovaWeb | Devis Gratuit en 48 h',
     description: 'Demandez un devis gratuit à NovaWeb — réponse garantie en moins de 48 h. Création de site, refonte, SEO ou print : décrivez votre projet.',
@@ -66,7 +66,6 @@ export default function Contact(){
                 {[
                   { label: 'TikTok — @n0vaweb', href: 'https://tiktok.com/@n0vaweb' },
                   { label: 'Instagram — novaaa.web', href: 'https://instagram.com/novaaa.web' },
-                  { label: 'LinkedIn — Othmane Bouakline', href: 'https://linkedin.com/in/othmanebouakline' },
                 ].map(s => (
                   <a
                     key={s.label}
