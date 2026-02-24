@@ -42,61 +42,7 @@ function useCounter(to, { startDelay = 0, duration = 1800, enabled = true } = {}
   return val
 }
 
-/* ── Glitch letter ── */
-const GLITCH_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&'
-function GlitchLetter({ letter, delay, isOut, gradient = false }) {
-  const [displayed, setDisplayed] = useState(GLITCH_CHARS[0])
-  const [ready, setReady] = useState(false)
-  const [visible, setVisible] = useState(false)
 
-  useEffect(() => {
-    // Show letter (trigger CSS fade-in) after delay
-    const t0 = setTimeout(() => setVisible(true), delay)
-    // Glitch frames
-    let frame = 0
-    const totalFrames = 7
-    const t1 = setTimeout(() => {
-      const iv = setInterval(() => {
-        frame++
-        if (frame >= totalFrames) {
-          setDisplayed(letter)
-          setReady(true)
-          clearInterval(iv)
-        } else {
-          setDisplayed(GLITCH_CHARS[Math.floor(Math.random() * GLITCH_CHARS.length)])
-        }
-      }, 45)
-      return () => clearInterval(iv)
-    }, delay)
-    return () => { clearTimeout(t0); clearTimeout(t1) }
-  }, [letter, delay])
-
-  const baseStyle = {
-    display: 'inline-block',
-    lineHeight: 1,
-    opacity: isOut ? 0 : (visible ? 1 : 0),
-    transform: isOut
-      ? `translateY(${gradient ? '60px' : '-60px'})`
-      : visible ? 'translateY(0px)' : `translateY(${gradient ? '40px' : '-40px'})`,
-    filter: isOut ? 'blur(12px)' : (ready ? 'blur(0px)' : 'blur(4px)'),
-    transition: isOut
-      ? 'opacity 0.4s ease, transform 0.4s ease, filter 0.4s ease'
-      : 'opacity 0.5s cubic-bezier(0.22,1,0.36,1), transform 0.6s cubic-bezier(0.22,1,0.36,1), filter 0.3s ease',
-  }
-
-  const colorStyle = gradient ? {
-    background: 'linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%)',
-    WebkitBackgroundClip: 'text',
-    WebkitTextFillColor: 'transparent',
-    backgroundClip: 'text',
-  } : { color: '#ffffff' }
-
-  return (
-    <span style={{ ...baseStyle, ...colorStyle }}>
-      {displayed}
-    </span>
-  )
-}
 
 /* ── Corner bracket ── */
 function Corner({ pos, delay, isOut }) {
@@ -130,8 +76,7 @@ function Scanlines() {
   )
 }
 
-const WEX = ['W', 'E', 'X']
-const OR = ['O', 'R']
+// Remove unused constants
 
 export default function SplashScreen({ onDone }) {
   const [phase, setPhase] = useState('in') // 'in' | 'flash' | 'out'
@@ -139,13 +84,13 @@ export default function SplashScreen({ onDone }) {
   const isOut = phase !== 'in'
 
   useEffect(() => {
-    const t1 = setTimeout(() => setPhase('flash'), 1300)
-    const t2 = setTimeout(() => setPhase('out'), 1450)
+    const t1 = setTimeout(() => setPhase('flash'), 1800)
+    const t2 = setTimeout(() => setPhase('out'), 1950)
     const t3 = setTimeout(() => {
       setMounted(false)
       sessionStorage.setItem('nw_loaded', '1')
       onDone()
-    }, 2100)
+    }, 2600)
     return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3) }
   }, [])
 
@@ -209,32 +154,37 @@ export default function SplashScreen({ onDone }) {
             {/* Letters */}
             <div
               className="relative z-[3] flex items-end"
-              style={{ fontFamily: "'Etna', sans-serif", fontWeight: 900, fontSize: 'clamp(4.5rem,13vw,8.5rem)', letterSpacing: '-0.03em' }}
+              style={{ fontFamily: "'Etna', sans-serif", fontWeight: 900, fontSize: 'clamp(6rem,18vw,12rem)', letterSpacing: '-0.03em' }}
             >
-              {WEX.map((l, i) => (
-                <GlitchLetter key={`n${i}`} letter={l} delay={200 + i * 110} isOut={isOut} gradient={false} />
-              ))}
+              <motion.span
+                initial={{ opacity: 0, scale: 0.8, filter: 'blur(20px)' }}
+                animate={isOut ? { opacity: 0, scale: 1.1, filter: 'blur(15px)' } : { opacity: 1, scale: 1, filter: 'blur(0px)' }}
+                transition={{
+                  duration: 0.8,
+                  ease: [0.22, 1, 0.36, 1],
+                  opacity: { duration: 0.6 },
+                  filter: { duration: 0.7 }
+                }}
+                className="text-white"
+              >
+                W
+              </motion.span>
 
               {/* dot */}
               <motion.span
                 initial={{ opacity: 0, scale: 0, rotate: -90 }}
                 animate={isOut ? { opacity: 0, scale: 0 } : { opacity: 1, scale: 1, rotate: 0 }}
-                transition={{ delay: isOut ? 0 : 0.85, duration: 0.35, ease: 'backOut' }}
+                transition={{ delay: isOut ? 0 : 0.6, duration: 0.45, ease: 'backOut' }}
                 className="rounded-full flex-shrink-0"
                 style={{
-                  width: 'clamp(5px,0.8vw,9px)', height: 'clamp(5px,0.8vw,9px)',
+                  width: 'clamp(10px,1.2vw,18px)', height: 'clamp(10px,1.2vw,18px)',
                   background: 'linear-gradient(135deg, #8b5cf6, #ec4899)',
-                  boxShadow: '0 0 14px rgba(139,92,246,0.9)',
+                  boxShadow: '0 0 20px rgba(139,92,246,0.9)',
                   alignSelf: 'flex-end',
-                  marginBottom: '0.36em',
-                  marginLeft: '0.18em',
-                  marginRight: '0.18em',
+                  marginBottom: '1.2rem',
+                  marginLeft: '0.1rem',
                 }}
               />
-
-              {OR.map((l, i) => (
-                <GlitchLetter key={`w${i}`} letter={l} delay={700 + i * 110} isOut={isOut} gradient={true} />
-              ))}
             </div>
 
             {/* Typewriter tagline */}
