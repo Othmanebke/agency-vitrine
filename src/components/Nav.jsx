@@ -70,8 +70,7 @@ export default function Nav() {
               onClick={(e) => handleNav(e, { path: '/' })}
               className="flex items-center gap-2 group"
             >
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-500 to-pink-500 flex items-center justify-center text-white font-black text-sm shadow-md shadow-violet-500/30 group-hover:shadow-violet-500/60 transition-shadow duration-300">W</div>
-              <span className="font-extrabold text-lg tracking-tight bg-gradient-to-r from-white to-zinc-400 bg-clip-text text-transparent">W.</span>
+              <span className="font-etna font-extrabold text-2xl tracking-tight bg-gradient-to-r from-white to-zinc-400 bg-clip-text text-transparent">W.</span>
             </a>
 
             {/* Desktop links */}

@@ -16,8 +16,7 @@ export default function Footer() {
         {/* brand */}
         <div className="md:col-span-2">
           <div className="flex items-center gap-2 mb-4">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-500 to-pink-500 flex items-center justify-center text-white font-black text-sm">W</div>
-            <span className="font-extrabold text-lg tracking-tight">W.</span>
+            <span className="font-etna font-extrabold text-2xl tracking-tight">W.</span>
           </div>
           <p className="text-sm text-zinc-500 max-w-xs leading-relaxed">Création de sites sur-mesure, identité visuelle et stratégies digitales pour faire grandir ta marque.</p>
           <div className="mt-5 flex gap-3">

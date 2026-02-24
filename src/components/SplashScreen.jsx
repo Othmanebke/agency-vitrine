@@ -105,18 +105,18 @@ function Corner({ pos, delay, isOut }) {
     <motion.div
       className="absolute w-6 h-6 sm:w-8 sm:h-8 pointer-events-none hidden sm:block"
       style={{
-        top:    (tl || tr) ? '2rem' : undefined,
+        top: (tl || tr) ? '2rem' : undefined,
         bottom: (bl || br) ? '2rem' : undefined,
-        left:   (tl || bl) ? '2rem' : undefined,
-        right:  (tr || br) ? '2rem' : undefined,
-        borderTop:    (tl || tr) ? '1px solid rgba(139,92,246,0.5)' : undefined,
+        left: (tl || bl) ? '2rem' : undefined,
+        right: (tr || br) ? '2rem' : undefined,
+        borderTop: (tl || tr) ? '1px solid rgba(139,92,246,0.5)' : undefined,
         borderBottom: (bl || br) ? '1px solid rgba(139,92,246,0.5)' : undefined,
-        borderLeft:   (tl || bl) ? '1px solid rgba(139,92,246,0.5)' : undefined,
-        borderRight:  (tr || br) ? '1px solid rgba(139,92,246,0.5)' : undefined,
+        borderLeft: (tl || bl) ? '1px solid rgba(139,92,246,0.5)' : undefined,
+        borderRight: (tr || br) ? '1px solid rgba(139,92,246,0.5)' : undefined,
       }}
       initial={{ opacity: 0, scale: 1.6 }}
       animate={isOut ? { opacity: 0 } : { opacity: 1, scale: 1 }}
-      transition={{ delay: isOut ? 0 : delay, duration: 0.5, ease: [0.22,1,0.36,1] }}
+      transition={{ delay: isOut ? 0 : delay, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
     />
   )
 }
@@ -131,7 +131,7 @@ function Scanlines() {
 }
 
 const WEX = ['W', 'E', 'X']
-const OR  = ['O', 'R']
+const OR = ['O', 'R']
 
 export default function SplashScreen({ onDone }) {
   const [phase, setPhase] = useState('in') // 'in' | 'flash' | 'out'
@@ -179,10 +179,10 @@ export default function SplashScreen({ onDone }) {
             style={{ backgroundColor: '#050510' }}
           >
             <Scanlines />
-            <Corner pos="tl" delay={0.9}  isOut={isOut} />
-            <Corner pos="tr" delay={1.0}  isOut={isOut} />
-            <Corner pos="bl" delay={1.1}  isOut={isOut} />
-            <Corner pos="br" delay={1.2}  isOut={isOut} />
+            <Corner pos="tl" delay={0.9} isOut={isOut} />
+            <Corner pos="tr" delay={1.0} isOut={isOut} />
+            <Corner pos="bl" delay={1.1} isOut={isOut} />
+            <Corner pos="br" delay={1.2} isOut={isOut} />
 
             {/* Ambient glow */}
             <motion.div
@@ -209,7 +209,7 @@ export default function SplashScreen({ onDone }) {
             {/* Letters */}
             <div
               className="relative z-[3] flex items-end"
-              style={{ fontFamily: 'Inter, sans-serif', fontWeight: 900, fontSize: 'clamp(4.5rem,13vw,8.5rem)', letterSpacing: '-0.03em' }}
+              style={{ fontFamily: "'Etna', sans-serif", fontWeight: 900, fontSize: 'clamp(4.5rem,13vw,8.5rem)', letterSpacing: '-0.03em' }}
             >
               {WEX.map((l, i) => (
                 <GlitchLetter key={`n${i}`} letter={l} delay={200 + i * 110} isOut={isOut} gradient={false} />
