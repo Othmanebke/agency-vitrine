@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-const BASE_URL = 'https://novaweb-agence.vercel.app'
+const BASE_URL = 'https://wexor.vercel.app'
 
 function setMeta(key, keyVal, content) {
   let el = document.querySelector(`meta[${key}="${keyVal}"]`)
@@ -24,7 +24,7 @@ function setLink(rel, href) {
 
 /**
  * useSEO — met à jour tous les meta tags de la page courante
- * @param {string} title       — ex: "À propos — NovaWeb"
+ * @param {string} title       — ex: "À propos — Wexor"
  * @param {string} description — ~155 caractères max
  * @param {string} path        — ex: "/about"
  */
@@ -34,15 +34,15 @@ export function useSEO({ title, description, path = '/' }) {
 
     document.title = title
 
-    setMeta('name',     'description',         description)
-    setLink('canonical',                        url)
+    setMeta('name', 'description', description)
+    setLink('canonical', url)
 
-    setMeta('property', 'og:title',             title)
-    setMeta('property', 'og:description',       description)
-    setMeta('property', 'og:url',               url)
+    setMeta('property', 'og:title', title)
+    setMeta('property', 'og:description', description)
+    setMeta('property', 'og:url', url)
 
-    setMeta('name',     'twitter:title',        title)
-    setMeta('name',     'twitter:description',  description)
-    setMeta('name',     'twitter:url',          url)
+    setMeta('name', 'twitter:title', title)
+    setMeta('name', 'twitter:description', description)
+    setMeta('name', 'twitter:url', url)
   }, [title, description, path])
 }

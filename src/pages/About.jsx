@@ -29,8 +29,8 @@ const fadeUp = (delay = 0) => ({
 
 export default function About() {
   useSEO({
-    title: 'À propos — NovaWeb | Agence Digitale',
-    description: 'Othmane Bouakline, fondateur de NovaWeb — agence digitale Bac+5 spécialisée en création de sites sur-mesure, refonte, SEO et supports print pour TPE et PME.',
+    title: 'À propos — Wexor | Agence Digitale',
+    description: 'Othmane Bouakline, fondateur de Wexor — agence digitale Bac+5 spécialisée en création de sites sur-mesure, refonte, SEO et supports print pour TPE et PME.',
     path: '/about',
   })
 
@@ -49,7 +49,7 @@ export default function About() {
               <span className="text-gradient">qui font la différence</span>
             </h1>
             <p className="mt-6 text-zinc-400 max-w-2xl mx-auto text-lg">
-              NovaWeb aide les petites entreprises à exister en ligne avec des sites rapides, accessibles et pensés pour convertir.
+              Wexor aide les petites entreprises à exister en ligne avec des sites rapides, accessibles et pensés pour convertir.
             </p>
           </motion.div>
         </header>

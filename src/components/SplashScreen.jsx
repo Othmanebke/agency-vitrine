@@ -130,8 +130,8 @@ function Scanlines() {
   )
 }
 
-const NOVA = ['N', 'O', 'V', 'A']
-const WEB  = ['W', 'E', 'B']
+const WEX = ['W', 'E', 'X']
+const OR  = ['O', 'R']
 
 export default function SplashScreen({ onDone }) {
   const [phase, setPhase] = useState('in') // 'in' | 'flash' | 'out'
@@ -211,7 +211,7 @@ export default function SplashScreen({ onDone }) {
               className="relative z-[3] flex items-end"
               style={{ fontFamily: 'Inter, sans-serif', fontWeight: 900, fontSize: 'clamp(4.5rem,13vw,8.5rem)', letterSpacing: '-0.03em' }}
             >
-              {NOVA.map((l, i) => (
+              {WEX.map((l, i) => (
                 <GlitchLetter key={`n${i}`} letter={l} delay={200 + i * 110} isOut={isOut} gradient={false} />
               ))}
 
@@ -232,7 +232,7 @@ export default function SplashScreen({ onDone }) {
                 }}
               />
 
-              {WEB.map((l, i) => (
+              {OR.map((l, i) => (
                 <GlitchLetter key={`w${i}`} letter={l} delay={700 + i * 110} isOut={isOut} gradient={true} />
               ))}
             </div>
@@ -290,7 +290,7 @@ export default function SplashScreen({ onDone }) {
               style={{ color: 'rgba(255,255,255,0.11)' }}
               initial={{ opacity: 0 }} animate={isOut ? { opacity: 0 } : { opacity: 1 }}
               transition={{ delay: 1.7, duration: 0.5 }}
-            >© 2026 NOVAWEB</motion.div>
+            >© 2026 WEXOR</motion.div>
           </motion.div>
         </>
       )}

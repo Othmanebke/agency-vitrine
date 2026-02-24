@@ -66,7 +66,7 @@ function Lightbox({ project, onClose }) {
           <p className="text-zinc-400 text-sm leading-relaxed">{project.desc}</p>
           <div className="mt-5 flex items-center gap-3">
             <div className={`flex-1 h-px bg-gradient-to-r ${project.color} opacity-60`} />
-            <span className="text-[10px] text-zinc-600 uppercase tracking-widest">NovaWeb Studio</span>
+            <span className="text-[10px] text-zinc-600 uppercase tracking-widest">Wexor Studio</span>
           </div>
         </div>
       </motion.div>
@@ -151,8 +151,8 @@ export default function Portfolio() {
   const dragX = useRef(0)
 
   useSEO({
-    title: 'Portfolio — NovaWeb | Sites, Refontes, Branding & SEO',
-    description: 'Découvrez les réalisations NovaWeb : sites vitrines, e-commerce, refontes, branding et campagnes SEO. Des projets concrets livrés avec soin.',
+    title: 'Portfolio — Wexor | Sites, Refontes, Branding & SEO',
+    description: 'Découvrez les réalisations Wexor : sites vitrines, e-commerce, refontes, branding et campagnes SEO. Des projets concrets livrés avec soin.',
     path: '/portfolio',
   })
 
@@ -278,8 +278,8 @@ export default function Portfolio() {
                 aria-label={`Projet ${i + 1}`}
                 onClick={() => { setDirection(i > active ? 1 : -1); setActive(i) }}
                 className={`rounded-full transition-all duration-300 ${i === active
-                    ? 'w-6 h-2 bg-violet-500'
-                    : 'w-2 h-2 bg-white/20 hover:bg-white/40'
+                  ? 'w-6 h-2 bg-violet-500'
+                  : 'w-2 h-2 bg-white/20 hover:bg-white/40'
                   }`}
               />
             ))}

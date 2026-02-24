@@ -6,8 +6,8 @@ import { useSEO } from '../hooks/useSEO'
 
 export default function Pricing() {
   useSEO({
-    title: 'Tarifs & Offres — NovaWeb | Site Vitrine, E-commerce, Réseaux Sociaux',
-    description: 'Découvrez les tarifs NovaWeb : site vitrine dès 500 €, e-commerce, refonte, SEO et packs réseaux sociaux. Devis précis après un bref échange.',
+    title: 'Tarifs & Offres — Wexor | Site Vitrine, E-commerce, Réseaux Sociaux',
+    description: 'Découvrez les tarifs Wexor : site vitrine dès 500 €, e-commerce, refonte, SEO et packs réseaux sociaux. Devis précis après un bref échange.',
     path: '/pricing',
   })
   return (

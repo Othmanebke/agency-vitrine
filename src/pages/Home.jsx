@@ -9,15 +9,15 @@ import FAQ from '../components/FAQ'
 import Packages from '../components/Packages'
 import Footer from '../components/Footer'
 
-export default function Home(){
+export default function Home() {
   const shouldReduce = useReducedMotion()
   useSEO({
-    title: 'NovaWeb — Agence Digitale | Création de Sites Web Sur-Mesure',
-    description: 'NovaWeb crée des sites web sur-mesure, rapides et accessibles pour PME et indépendants. Refonte, SEO, identité visuelle — devis gratuit en 48 h.',
+    title: 'Wexor — Agence Digitale | Création de Sites Web Sur-Mesure',
+    description: 'Wexor crée des sites web sur-mesure, rapides et accessibles pour PME et indépendants. Refonte, SEO, identité visuelle — devis gratuit en 48 h.',
     path: '/',
   })
 
-  function ServiceCard({ title, desc, index, icon }){
+  function ServiceCard({ title, desc, index, icon }) {
     const ref = useRef(null)
     const rotX = useMotionValue(0)
     const rotY = useMotionValue(0)
@@ -33,7 +33,7 @@ export default function Home(){
     return (
       <motion.article
         ref={ref}
-        variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { delay: (index+1) * 0.12, duration: 0.5, ease: [0.22,1,0.36,1] } } }}
+        variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { delay: (index + 1) * 0.12, duration: 0.5, ease: [0.22, 1, 0.36, 1] } } }}
         whileHover={shouldReduce ? {} : { y: -6, boxShadow: '0 24px 60px rgba(139,92,246,0.18)' }}
         whileTap={shouldReduce ? {} : { scale: 0.98 }}
         style={{ rotateX: springRX, rotateY: springRY, transformPerspective: 800 }}

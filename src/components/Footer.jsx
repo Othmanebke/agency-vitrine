@@ -16,8 +16,8 @@ export default function Footer() {
         {/* brand */}
         <div className="md:col-span-2">
           <div className="flex items-center gap-2 mb-4">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-500 to-pink-500 flex items-center justify-center text-white font-black text-sm">N</div>
-            <span className="font-extrabold text-lg tracking-tight">NovaWeb</span>
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-500 to-pink-500 flex items-center justify-center text-white font-black text-sm">W</div>
+            <span className="font-extrabold text-lg tracking-tight">W.</span>
           </div>
           <p className="text-sm text-zinc-500 max-w-xs leading-relaxed">Création de sites sur-mesure, identité visuelle et stratégies digitales pour faire grandir ta marque.</p>
           <div className="mt-5 flex gap-3">
@@ -59,7 +59,7 @@ export default function Footer() {
 
       <div className="border-t border-white/[0.05]">
         <div className="max-w-7xl mx-auto px-6 py-5 flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-zinc-600">
-          <span>© {new Date().getFullYear()} NovaWeb. Tous droits réservés.</span>
+          <span>© {new Date().getFullYear()} Wexor. Tous droits réservés.</span>
           <div className="flex items-center gap-4">
             <a
               href="/mentions-legales"

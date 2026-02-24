@@ -13,8 +13,8 @@ const Section = ({ title, children }) => (
 
 export default function MentionsLegales() {
   useSEO({
-    title: 'Mentions légales — NovaWeb',
-    description: 'Mentions légales, politique de confidentialité et informations légales du site NovaWeb.',
+    title: 'Mentions légales — Wexor',
+    description: 'Mentions légales, politique de confidentialité et informations légales du site Wexor.',
     path: '/mentions-legales',
   })
 
@@ -35,7 +35,7 @@ export default function MentionsLegales() {
           <div className="rounded-2xl border border-white/[0.07] bg-white/[0.02] p-8 space-y-0">
 
             <Section title="1. Éditeur du site">
-              <p><strong className="text-white">Nom du site :</strong> NovaWeb</p>
+              <p><strong className="text-white">Nom du site :</strong> Wexor</p>
               <p><strong className="text-white">Responsable de la publication :</strong> Othman Bouakline</p>
               <p><strong className="text-white">Statut :</strong> Auto-entrepreneur</p>
               <p><strong className="text-white">Email :</strong>{' '}
@@ -62,7 +62,7 @@ export default function MentionsLegales() {
 
             <Section title="3. Propriété intellectuelle">
               <p>
-                L'ensemble des contenus présents sur ce site (textes, images, logos, graphismes, code source) est la propriété exclusive de NovaWeb, sauf mention contraire.
+                L'ensemble des contenus présents sur ce site (textes, images, logos, graphismes, code source) est la propriété exclusive de Wexor, sauf mention contraire.
               </p>
               <p>
                 Toute reproduction, distribution ou utilisation sans autorisation écrite préalable est strictement interdite et constitue une contrefaçon au sens des articles L.335-2 et suivants du Code de la Propriété Intellectuelle.
@@ -71,7 +71,7 @@ export default function MentionsLegales() {
 
             <Section title="4. Données personnelles & RGPD">
               <p>
-                NovaWeb collecte uniquement les données strictement nécessaires au traitement de vos demandes (formulaire de contact : nom, email, message). Ces données ne sont ni vendues ni transmises à des tiers.
+                Wexor collecte uniquement les données strictement nécessaires au traitement de vos demandes (formulaire de contact : nom, email, message). Ces données ne sont ni vendues ni transmises à des tiers.
               </p>
               <p>
                 Conformément au Règlement Général sur la Protection des Données (RGPD – UE 2016/679) et à la loi Informatique et Libertés, vous disposez des droits suivants :
@@ -99,7 +99,7 @@ export default function MentionsLegales() {
 
             <Section title="6. Limitation de responsabilité">
               <p>
-                NovaWeb s'efforce d'assurer l'exactitude et la mise à jour des informations diffusées sur ce site. Cependant, NovaWeb ne peut garantir l'exactitude, la complétude ou l'actualité des informations.
+                Wexor s'efforce d'assurer l'exactitude et la mise à jour des informations diffusées sur ce site. Cependant, Wexor ne peut garantir l'exactitude, la complétude ou l'actualité des informations.
               </p>
               <p>
                 Des liens hypertextes peuvent renvoyer vers des sites tiers. NovaWeb n'est pas responsable du contenu de ces sites.
