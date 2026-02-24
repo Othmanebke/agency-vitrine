@@ -3,6 +3,7 @@ dist
 .env
 .DS_Store
 .vscode
+!.vscode/settings.json
 
 .env.local
 .env.local.bak
