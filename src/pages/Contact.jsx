@@ -64,8 +64,8 @@ export default function Contact() {
               <div className="pt-4 border-t border-white/[0.07] space-y-2">
                 <p className="text-xs text-zinc-500 uppercase tracking-wide mb-3">Suivez-nous</p>
                 {[
-                  { label: 'TikTok — @n0vaweb', href: 'https://tiktok.com/@n0vaweb' },
-                  { label: 'Instagram — novaaa.web', href: 'https://instagram.com/novaaa.web' },
+                  { label: 'TikTok — @wexo_agence', href: 'https://tiktok.com/@wexo_agence' },
+                  { label: 'Instagram — wexor_agence', href: 'https://instagram.com/wexor_agence' },
                 ].map(s => (
                   <a
                     key={s.label}
