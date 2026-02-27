@@ -153,48 +153,74 @@ export default function SplashScreen({ onDone }) {
 
             {/* Letters */}
             <div
-              className="relative z-[3] flex items-end"
-              style={{ fontFamily: "'Etna', sans-serif", fontWeight: 900, fontSize: 'clamp(6rem,18vw,12rem)', letterSpacing: '-0.03em' }}
+              className="relative z-[3] flex items-end gap-1 sm:gap-2"
+              style={{ fontFamily: "'Etna', sans-serif", fontWeight: 900, fontSize: 'clamp(3.5rem,15vw,9rem)', letterSpacing: '-0.02em' }}
             >
-              <motion.span
-                initial={{ opacity: 0, scale: 0.8, filter: 'blur(20px)' }}
-                animate={isOut ? { opacity: 0, scale: 1.1, filter: 'blur(15px)' } : { opacity: 1, scale: 1, filter: 'blur(0px)' }}
-                transition={{
-                  duration: 0.8,
-                  ease: [0.22, 1, 0.36, 1],
-                  opacity: { duration: 0.6 },
-                  filter: { duration: 0.7 }
-                }}
-                className="text-white"
-              >
-                W
-              </motion.span>
+              {"WEXOR".split("").map((letter, idx) => (
+                <motion.span
+                  key={idx}
+                  initial={{ opacity: 0, scale: 0.5, y: 20, filter: 'blur(20px)' }}
+                  animate={isOut
+                    ? { opacity: 0, scale: 1.5, filter: 'blur(20px)', transition: { delay: idx * 0.05 } }
+                    : { opacity: 1, scale: 1, y: 0, filter: 'blur(0px)' }
+                  }
+                  transition={{
+                    duration: 0.7,
+                    delay: idx * 0.1,
+                    ease: [0.22, 1, 0.36, 1],
+                  }}
+                  className="text-white relative"
+                >
+                  {letter}
+                  {/* Subtle letter glow */}
+                  <motion.span
+                    className="absolute inset-0 text-violet-500/20 blur-lg select-none pointer-events-none"
+                    animate={{ opacity: [0.2, 0.5, 0.2] }}
+                    transition={{ duration: 2, repeat: Infinity, delay: idx * 0.2 }}
+                  >
+                    {letter}
+                  </motion.span>
+                </motion.span>
+              ))}
 
               {/* dot */}
               <motion.span
                 initial={{ opacity: 0, scale: 0, rotate: -90 }}
                 animate={isOut ? { opacity: 0, scale: 0 } : { opacity: 1, scale: 1, rotate: 0 }}
-                transition={{ delay: isOut ? 0 : 0.6, duration: 0.45, ease: 'backOut' }}
+                transition={{ delay: isOut ? 0 : 1.2, duration: 0.45, ease: 'backOut' }}
                 className="rounded-full flex-shrink-0"
                 style={{
-                  width: 'clamp(10px,1.2vw,18px)', height: 'clamp(10px,1.2vw,18px)',
+                  width: 'clamp(8px,1vw,14px)', height: 'clamp(8px,1vw,14px)',
                   background: 'linear-gradient(135deg, #8b5cf6, #ec4899)',
                   boxShadow: '0 0 20px rgba(139,92,246,0.9)',
                   alignSelf: 'flex-end',
-                  marginBottom: '1.2rem',
+                  marginBottom: '1rem',
                   marginLeft: '0.1rem',
                 }}
               />
             </div>
 
+            {/* Light Sweep Effect */}
+            <motion.div
+              className="absolute inset-0 z-[4] pointer-events-none"
+              initial={{ x: '-100%' }}
+              animate={isOut ? {} : { x: '200%' }}
+              transition={{ delay: 1.5, duration: 1.5, ease: "easeInOut" }}
+              style={{
+                background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent)',
+                width: '50%',
+                skewX: '-20deg'
+              }}
+            />
+
             {/* Typewriter tagline */}
             <motion.div
-              className="relative z-[3] mt-5 h-5 flex items-center"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: isOut ? 0 : 1 }}
-              transition={{ delay: 1.3, duration: 0.3 }}
+              className="relative z-[3] mt-8 h-5 flex items-center"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: isOut ? 0 : 1, y: isOut ? -10 : 0 }}
+              transition={{ delay: 1.6, duration: 0.4 }}
             >
-              <span className="text-xs tracking-[0.28em] uppercase"
+              <span className="text-[10px] sm:text-xs tracking-[0.3em] uppercase"
                 style={{ color: 'rgba(161,161,170,0.65)', fontFamily: 'Inter, monospace' }}>
                 {tagline}
               </span>
@@ -205,6 +231,7 @@ export default function SplashScreen({ onDone }) {
                 transition={{ duration: 0.65, repeat: Infinity }}
               />
             </motion.div>
+
 
             {/* Bottom: counter + progress */}
             <motion.div
