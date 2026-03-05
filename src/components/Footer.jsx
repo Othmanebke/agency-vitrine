@@ -34,9 +34,13 @@ export default function Footer() {
         <div>
           <h4 className="font-semibold mb-4 text-sm">Navigation</h4>
           <ul className="space-y-2.5">
-            {[['Accueil', '/'], ['Tarifs', '/pricing'], ['Portfolio', '/portfolio'], ['À propos', '/about']].map(([label, path]) => (
+            {[['Accueil', '/'], ['Tarifs', '/pricing'], ['Portfolio', '/porfolio/portfolio.html'], ['À propos', '/about']].map(([label, path]) => (
               <li key={label}>
-                <a href={path} onClick={e => { e.preventDefault(); navigate(path) }} className="text-sm text-zinc-500 hover:text-white transition-colors">{label}</a>
+                {path.endsWith('.html') ? (
+                  <a href={path} className="text-sm text-zinc-500 hover:text-white transition-colors">{label}</a>
+                ) : (
+                  <a href={path} onClick={e => { e.preventDefault(); navigate(path) }} className="text-sm text-zinc-500 hover:text-white transition-colors">{label}</a>
+                )}
               </li>
             ))}
           </ul>

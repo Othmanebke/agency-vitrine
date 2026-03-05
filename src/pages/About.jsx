@@ -113,7 +113,16 @@ export default function About() {
             <p className="text-xs uppercase tracking-widest text-violet-400 mb-2 font-semibold">Qui suis-je</p>
             <h2 className="text-3xl font-black">Le fondateur</h2>
           </motion.div>
-          <Team />
+          <div className="grid md:grid-cols-3 gap-6 items-start">
+            <div className="md:col-span-2">
+              <Team />
+            </div>
+            <div className="p-6 bg-white/[0.02] border border-white/[0.05] rounded-xl">
+              <h3 className="font-bold mb-2">En savoir plus</h3>
+              <p className="text-sm text-zinc-400 mb-4">Tu peux consulter mon portfolio personnel pour voir mes projets, designs et études de cas.</p>
+              <a href="/porfolio/portfolio.html" className="inline-block px-4 py-2 rounded-full bg-violet-600/20 border border-violet-500/30 text-violet-300 text-sm font-medium hover:bg-violet-600/30 transition-colors">Voir mon portfolio</a>
+            </div>
+          </div>
         </section>
 
         {/* Contact */}
