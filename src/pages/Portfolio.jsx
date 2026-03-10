@@ -362,29 +362,30 @@ export default function PortfolioPage() {
         ) : (
           <section ref={containerRef} style={{ height: `${totalItems * 100}vh` }} className="relative w-full bg-[#050510]">
             {/* Sticky container that stays in view while we scroll vertically */}
-            <div className="sticky top-0 h-screen w-full flex flex-col justify-center overflow-hidden">
+            <div className="sticky top-0 h-screen w-full flex flex-col justify-center overflow-hidden pt-20">
 
-              {/* Sticky Header fixed in the background/top left */}
-              {/* Removed fadeout so it stays visible while scrolling through projects */}
+              {/* Sticky Header positioned at the top */}
               <motion.div
-                className="absolute top-[12%] left-[8%] md:left-[10%] z-0"
+                className="w-full px-[5vw] md:px-[10vw] mb-4 md:mb-10 lg:mb-14 z-20 flex flex-col md:flex-row md:items-end justify-between gap-6"
               >
-                <div className="flex items-center gap-3 mb-2">
-                  <div className="w-2 h-2 rounded-full bg-violet-500 animate-pulse" />
-                  <p className="text-xs uppercase tracking-widest text-violet-400 font-semibold font-mono">Nos réalisations</p>
+                <div>
+                  <div className="flex items-center gap-3 mb-2 md:mb-4">
+                    <div className="w-2 h-2 rounded-full bg-violet-500 animate-pulse" />
+                    <p className="text-[10px] md:text-xs uppercase tracking-widest text-violet-400 font-semibold font-mono">Nos réalisations</p>
+                  </div>
+                  <h2 className="text-4xl md:text-6xl lg:text-7xl font-black text-white tracking-tighter">
+                    PORTFOLIO
+                  </h2>
                 </div>
-                <h2 className="text-5xl md:text-7xl lg:text-8xl font-black text-white/10 tracking-tighter" style={{ WebkitTextStroke: '1px rgba(255,255,255,0.2)' }}>
-                  PORTFOLIO
-                </h2>
-                <p className="text-zinc-400 max-w-md mt-4 text-sm md:text-base">
-                  Scrollez vers le bas pour explorer nos projets.
+                <p className="text-zinc-400 max-w-sm text-sm md:text-base mb-2 md:text-right">
+                  Scrollez horizontalement ou vers le bas pour explorer nos projets.
                 </p>
               </motion.div>
 
-              {/* The horizontal sliding deck */}
+              {/* The horizontal sliding deck, slightly shorter to accommodate the header */}
               <motion.div
                 style={{ x: useTransform(smoothX, v => `${v / totalItems}%`) }}
-                className="flex items-center w-max z-10 pt-16 md:pt-0"
+                className="flex items-center w-max z-10 pb-10"
               >
                 {/* Left padding so the first card isn't stuck to the screen edge */}
                 <div className="w-[5vw] md:w-[10vw] flex-shrink-0" />
