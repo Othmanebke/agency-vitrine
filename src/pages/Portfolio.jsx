@@ -186,7 +186,7 @@ function PortfolioCarouselCard({ project, onSelect }) {
     <div className="w-[85vw] md:w-[60vw] lg:w-[50vw] h-[65vh] md:h-[550px] flex-shrink-0 flex items-center justify-center px-4 md:px-6">
       <motion.div
         className={`group relative w-full h-full rounded-[2rem] md:rounded-[3rem] overflow-hidden bg-gradient-to-br ${project.color} border border-white/10`}
-        whileHover={shouldReduce ? {} : { borderColor: project.accent + '80', boxShadow: `0 0 40px ${project.accent}20` }}
+        whileHover={shouldReduce ? {} : { y: -8, borderColor: project.accent + '80', boxShadow: `0 24px 80px ${project.accent}20` }}
         transition={{ duration: 0.5 }}
       >
         {/* Background Image with Hover Scale */}

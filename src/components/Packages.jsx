@@ -34,8 +34,8 @@ function TiltCard({ children, className, highlight }) {
 
   return (
     <motion.div
-      whileHover={shouldReduce ? {} : { scale: 1.02, zIndex: 10 }}
-      transition={{ duration: 0.2 }}
+      whileHover={shouldReduce ? {} : { y: -8, boxShadow: '0 24px 80px rgba(139,92,246,0.15)' }}
+      transition={{ duration: 0.3 }}
       className={`relative overflow-hidden cursor-default ${className}`}
     >
       {/* aurora animated border for highlight card */}

@@ -10,6 +10,8 @@ import Packages from '../components/Packages'
 import Footer from '../components/Footer'
 import {
   MagneticTitle,
+  MarqueeBand,
+  ScrollTextReveal
 } from '../components/ScrollEffects'
 
 /* ─── Service Icons (animated SVGs) ─── */
@@ -129,27 +131,12 @@ const services = [
 ]
 
 function BentoCard({ service, index }) {
-  const ref = useRef(null)
   const shouldReduce = useReducedMotion()
-  const rotX = useMotionValue(0)
-  const rotY = useMotionValue(0)
-  const springRX = useSpring(rotX, { stiffness: 300, damping: 25 })
-  const springRY = useSpring(rotY, { stiffness: 300, damping: 25 })
-
-  const handleMove = (e) => {
-    if (!ref.current || shouldReduce) return
-    const r = ref.current.getBoundingClientRect()
-    rotY.set(((e.clientX - r.left) / r.width - 0.5) * 12)
-    rotX.set(-((e.clientY - r.top) / r.height - 0.5) * 12)
-  }
-  const handleLeave = () => { rotX.set(0); rotY.set(0) }
-
   const Icon = service.icon
 
   return (
     <div className={service.span}>
       <motion.article
-        ref={ref}
         variants={{
           hidden: { opacity: 0, y: 30, filter: 'blur(8px)' },
           visible: {
@@ -161,18 +148,13 @@ function BentoCard({ service, index }) {
         }}
         whileHover={shouldReduce ? {} : { y: -8, boxShadow: '0 24px 80px rgba(139,92,246,0.2)' }}
         whileTap={shouldReduce ? {} : { scale: 0.98 }}
-        onMouseMove={handleMove}
-        onMouseLeave={handleLeave}
-        className={`group relative overflow-hidden rounded-2xl cursor-default transition-colors duration-500 h-full ${service.size === 'large'
+        className={`group relative overflow-hidden rounded-2xl cursor-default transition-all duration-500 h-full ${service.size === 'large'
           ? 'p-8 md:p-10'
           : service.size === 'tall'
             ? 'p-8'
             : 'p-6 md:p-8'
           }`}
         style={{
-          rotateX: springRX,
-          rotateY: springRY,
-          transformPerspective: 800,
           background: 'rgba(255,255,255,0.03)',
           backdropFilter: 'blur(12px)',
           WebkitBackdropFilter: 'blur(12px)',
@@ -259,12 +241,13 @@ function ShowcaseCard({ item, index }) {
     <motion.div
       initial={shouldReduce ? {} : { opacity: 0, scale: 0.9 }}
       whileInView={shouldReduce ? {} : { opacity: 1, scale: 1 }}
+      whileHover={shouldReduce ? {} : { y: -8 }}
       viewport={{ once: true }}
       transition={{ duration: 0.6, delay: 0.1 }}
-      className="relative w-full max-w-xl mx-auto"
+      className="relative w-full max-w-xl mx-auto group"
     >
       <div
-        className={`relative h-[60vh] max-h-[500px] rounded-3xl p-8 md:p-12 flex flex-col justify-between overflow-hidden bg-gradient-to-br ${item.color}`}
+        className={`relative h-[60vh] max-h-[500px] rounded-3xl p-8 md:p-12 flex flex-col justify-between overflow-hidden bg-gradient-to-br ${item.color} transition-all duration-500 group-hover:shadow-[0_24px_80px_rgba(139,92,246,0.15)] group-hover:border-[currentColor]`}
         style={{
           border: '1px solid rgba(255,255,255,0.08)',
           backdropFilter: 'blur(12px)',
@@ -310,6 +293,9 @@ export default function Home() {
       <main role="main">
         <Hero />
 
+        {/* ─── Marquee Band ─── */}
+        <MarqueeBand />
+
         {/* ─── Bento Grid Services ─── */}
         <section id="services" className="max-w-6xl mx-auto px-6 py-24">
           <motion.div
@@ -342,9 +328,10 @@ export default function Home() {
 
         {/* ─── Big Statement ─── */}
         <section className="max-w-5xl mx-auto px-6 py-24 md:py-32 text-center">
-          <h2 className="text-3xl md:text-5xl lg:text-6xl font-black leading-tight tracking-tight">
-            Nous ne faisons pas de sites web. Nous créons des expériences digitales qui transforment tes visiteurs en clients.
-          </h2>
+          <ScrollTextReveal
+            text="Nous ne faisons pas de sites web. Nous créons des expériences digitales qui transforment tes visiteurs en clients."
+            className="text-3xl md:text-5xl lg:text-6xl font-black leading-tight tracking-tight inline-block"
+          />
         </section>
 
         {/* ─── Horizontal Scroll Process ─── */}
@@ -372,6 +359,9 @@ export default function Home() {
 
         {/* ─── Process ─── */}
         <Process />
+
+        {/* ─── Marquee Band ─── */}
+        <MarqueeBand />
 
         <Testimonials />
 
