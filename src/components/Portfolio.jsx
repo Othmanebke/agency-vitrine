@@ -4,132 +4,175 @@ import { motion, useScroll, useTransform, useSpring, useReducedMotion } from 'fr
 const projects = [
     {
         id: 1,
-        title: 'Aura Skincare',
-        category: 'E-commerce & Branding',
-        desc: 'Boutique en ligne ultra-rapide avec une expérience d\'achat immersive. Augmentation du taux de conversion de 45% post-refonte.',
-        tech: ['Next.js', 'Shopify Plus', 'Framer Motion'],
-        color: '#0D0E15',
+        title: 'Aura',
+        subtitle: 'Skincare',
+        category: 'E-commerce',
+        desc: 'Une expérience d\'achat sensorielle. Augmentation de 45% du taux de conversion grâce à une architecture headless ultra-rapide.',
+        tech: ['Next.js', 'Shopify', 'Framer'],
+        color: 'from-violet-500/20 to-fuchsia-500/10',
+        accent: '#a78bfa',
         image: 'https://images.unsplash.com/photo-1615397323149-5b7b6c59218c?q=80&w=2670&auto=format&fit=crop'
     },
     {
         id: 2,
-        title: 'Nova SaaS',
-        category: 'Web App & Dashboard',
-        desc: 'Plateforme B2B complète avec dashboard analytique en temps réel. Focus absolu sur l\'UX et les performances d\'affichage.',
-        tech: ['React', 'Tailwind', 'Recharts'],
-        color: '#150D12',
+        title: 'Nova',
+        subtitle: 'SaaS Platform',
+        category: 'Web App',
+        desc: 'Dashboard B2B minimaliste et puissant. Traitement en temps réel de milliers de données avec une interface fluide à 60fps.',
+        tech: ['React', 'Tailwind', 'tRPC'],
+        color: 'from-blue-500/20 to-indigo-500/10',
+        accent: '#60a5fa',
         image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2670&auto=format&fit=crop'
     },
     {
         id: 3,
-        title: 'Studio Lumens',
-        category: 'Site Vitrine Awwwards',
-        desc: 'Portfolio d\'un studio photo parisien récompensé pour ses animations fluides et sa direction artistique minimaliste.',
+        title: 'Lumens',
+        subtitle: 'Studio Photo',
+        category: 'Site Vitrine',
+        desc: 'Direction artistique audacieuse et portfolio immersif 3D récompensé sur Awwwards. Un showcase interactif.',
         tech: ['WebGL', 'GSAP', 'Vite'],
-        color: '#101511',
+        color: 'from-emerald-500/20 to-teal-500/10',
+        accent: '#34d399',
         image: 'https://images.unsplash.com/photo-1600607686527-6fb886090705?q=80&w=2670&auto=format&fit=crop'
+    },
+    {
+        id: 4,
+        title: 'Fintech',
+        subtitle: 'Banking',
+        category: 'App Mobile',
+        desc: 'Application bancaire nouvelle génération. Sécurité bancaire associée à une interface utilisateur fluide et intuitive.',
+        tech: ['React Native', 'Node.js', 'PostgreSQL'],
+        color: 'from-rose-500/20 to-pink-500/10',
+        accent: '#fb7185',
+        image: 'https://images.unsplash.com/photo-1563986768494-4dee2763ff0f?q=80&w=2670&auto=format&fit=crop'
     }
 ]
 
-function PortfolioCard({ project, index, totalCards }) {
-    const cardRef = useRef(null)
-    const shouldReduce = useReducedMotion()
-
-    // Track scroll progress of THIS specific card
-    const { scrollYProgress } = useScroll({
-        target: cardRef,
-        offset: ['start end', 'start top']
-    })
-
-    // Hook to track the OVERALL scroll progress of the container to animate stacked cards
-    const { scrollYProgress: stickyProgress } = useScroll({
-        target: cardRef,
-        offset: ['start top', 'end top']
-    })
-
-    // Reveal animation: card slides up and fades in
-    const y = useTransform(scrollYProgress, [0, 1], [100, 0])
-    const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [0, 0.5, 1])
-
-    // Stacking animation: when card sticks, it scales down and gets darker as next cards overlap it
-    // We only want this effect if it's NOT the last card
-    const isLast = index === totalCards - 1
-    const scale = useTransform(stickyProgress, [0, 1], [1, isLast ? 1 : 0.9])
-    const brightness = useTransform(stickyProgress, [0, 1], [1, isLast ? 1 : 0.4])
-
-    // Image internal parallax
-    const imgY = useTransform(scrollYProgress, [0, 1], ['-15%', '0%'])
+/* --- Animated Word Reveal for Descriptions --- */
+function AnimatedWords({ text }) {
+    const words = text.split(" ")
+    const container = {
+        hidden: { opacity: 0 },
+        visible: (i = 1) => ({
+            opacity: 1,
+            transition: { staggerChildren: 0.05, delayChildren: 0.2 * i }
+        })
+    }
+    const child = {
+        visible: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { type: "spring", damping: 16, stiffness: 200 } },
+        hidden: { opacity: 0, y: 15, filter: 'blur(8px)' }
+    }
 
     return (
-        <div className="h-screen w-full flex items-center justify-center sticky top-0">
-            <motion.div
-                ref={cardRef}
-                style={shouldReduce ? {} : {
-                    y,
-                    opacity,
-                    scale,
-                    filter: `brightness(${brightness})`,
-                    transformOrigin: 'top center'
-                }}
-                className="relative w-[90vw] md:w-[80vw] lg:w-[1000px] h-[75vh] md:h-[600px] rounded-3xl overflow-hidden shadow-2xl flex flex-col justify-end"
-            >
-                {/* Background color placeholder & border */}
-                <div className="absolute inset-0" style={{ backgroundColor: project.color, border: '1px solid rgba(255,255,255,0.05)', borderRadius: 'inherit' }} />
+        <motion.div style={{ overflow: "hidden", display: "flex", flexWrap: "wrap", gap: "0.3em" }} variants={container} initial="hidden" whileInView="visible" viewport={{ once: true }}>
+            {words.map((word, index) => (
+                <motion.span variants={child} key={index}>
+                    {word}
+                </motion.span>
+            ))}
+        </motion.div>
+    )
+}
 
-                {/* Parallax Image */}
-                <motion.div
-                    className="absolute inset-0 z-0 origin-bottom"
-                    style={shouldReduce ? {} : { y: imgY }}
-                >
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent z-10" />
-                    <img
+/* --- Animated Title Character by Character --- */
+function AnimatedTitle({ title, subtitle, accent }) {
+    const chars = title.split("")
+    const child = {
+        visible: { opacity: 1, scale: 1, rotateY: 0, transition: { type: "spring", damping: 12, stiffness: 200 } },
+        hidden: { opacity: 0, scale: 0.8, rotateY: 90 }
+    }
+
+    return (
+        <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.5 }}
+            variants={{ visible: { transition: { staggerChildren: 0.08 } } }}
+            className="flex flex-col"
+        >
+            <div className="flex" style={{ perspective: "1000px" }}>
+                {chars.map((char, index) => (
+                    <motion.span variants={child} key={index} className="text-5xl md:text-7xl lg:text-[6rem] font-black tracking-tighter" style={{ color: accent, textShadow: `0 0 30px ${accent}40` }}>
+                        {char}
+                    </motion.span>
+                ))}
+            </div>
+            <motion.span
+                variants={{ hidden: { opacity: 0, x: -20 }, visible: { opacity: 1, x: 0, transition: { delay: chars.length * 0.08 } } }}
+                className="text-3xl md:text-5xl lg:text-7xl font-extralight tracking-tight text-white mt-[-0.5rem]"
+            >
+                {subtitle}
+            </motion.span>
+        </motion.div>
+    )
+}
+
+
+function PortfolioCarouselCard({ project }) {
+    const shouldReduce = useReducedMotion()
+
+    return (
+        <div className="w-[85vw] md:w-[65vw] lg:w-[50vw] h-[75vh] md:h-[650px] flex-shrink-0 flex items-center justify-center px-4 md:px-6">
+            <motion.div
+                className={`group relative w-full h-full rounded-[2rem] md:rounded-[3rem] overflow-hidden bg-gradient-to-br ${project.color} border border-white/10`}
+                whileHover={shouldReduce ? {} : { borderColor: project.accent + '80', boxShadow: `0 0 40px ${project.accent}20` }}
+                transition={{ duration: 0.5 }}
+            >
+                {/* Background Image with Hover Scale */}
+                <div className="absolute inset-0 z-0 overflow-hidden rounded-[inherit]">
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#050510] via-black/60 to-black/20 z-10" />
+                    <motion.img
                         src={project.image}
                         alt={project.title}
-                        className="w-full h-[120%] object-cover object-center grayscale-[0.2]"
+                        className="w-full h-full object-cover grayscale-[0.5] group-hover:grayscale-0 transition-all duration-700 group-hover:scale-105"
                     />
-                </motion.div>
+                </div>
 
-                {/* Content Overlay */}
-                <div className="relative z-20 p-8 md:p-12 w-full md:w-3/4">
-                    <motion.div
-                        initial={{ opacity: 0, x: -20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.2, duration: 0.5 }}
-                    >
-                        <span className="text-pink-400 font-mono text-xs md:text-sm tracking-widest uppercase mb-4 block">
+                {/* Card Content container */}
+                <div className="relative z-20 h-full p-8 md:p-12 lg:p-16 flex flex-col justify-end">
+
+                    <div className="flex items-center gap-4 mb-6 md:mb-8">
+                        <span className="text-xs font-mono tracking-widest uppercase border border-white/20 px-4 py-1.5 rounded-full backdrop-blur-md" style={{ color: project.accent, borderColor: project.accent + '40', background: project.accent + '10' }}>
                             {project.category}
                         </span>
-                        <h3 className="text-4xl md:text-6xl font-black text-white mb-6 leading-tight">
-                            {project.title}
-                        </h3>
-                        <p className="text-zinc-300 text-sm md:text-base leading-relaxed mb-8 max-w-xl">
-                            {project.desc}
-                        </p>
+                        <div className="h-px bg-white/20 flex-grow" />
+                        <span className="text-white/40 font-mono text-sm tracking-widest hidden md:block">0{project.id}</span>
+                    </div>
 
-                        {/* Tech Stack Pills */}
-                        <div className="flex flex-wrap gap-2 md:gap-3 mb-8">
+                    <div className="mb-8">
+                        <AnimatedTitle title={project.title} subtitle={project.subtitle} accent={project.accent} />
+                    </div>
+
+                    <div className="text-zinc-300 text-sm md:text-lg mb-8 md:mb-12 max-w-lg leading-relaxed font-light">
+                        <AnimatedWords text={project.desc} />
+                    </div>
+
+                    <div className="flex flex-wrap items-center justify-between gap-6">
+                        {/* Tech Stack */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.6 }}
+                            className="flex flex-wrap gap-2"
+                        >
                             {project.tech.map(t => (
-                                <span key={t} className="px-4 py-1.5 rounded-full text-xs font-semibold bg-white/10 text-white/90 backdrop-blur-md border border-white/10">
+                                <span key={t} className="text-xs font-semibold text-white/70 bg-white/5 border border-white/10 px-3 py-1.5 rounded-lg">
                                     {t}
                                 </span>
                             ))}
-                        </div>
+                        </motion.div>
 
-                        {/* Glowing CTA Button */}
-                        <button className="group relative px-6 py-3 rounded-full font-bold text-sm bg-white text-black overflow-hidden hover:scale-105 transition-transform duration-300">
-                            <span className="relative z-10 flex items-center gap-2">
-                                Voir le projet
-                                <svg className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                                </svg>
-                            </span>
-                        </button>
-                    </motion.div>
-                </div>
+                        {/* CTA */}
+                        <motion.button
+                            whileHover={{ scale: 1.05, backgroundColor: 'rgba(255,255,255,0.1)' }}
+                            whileTap={{ scale: 0.95 }}
+                            className="h-12 w-12 rounded-full border border-white/30 flex items-center justify-center text-white backdrop-blur-md group-hover:border-white transition-colors"
+                            aria-label="Voir le projet"
+                        >
+                            <svg className="w-5 h-5 -rotate-45 group-hover:rotate-0 transition-transform duration-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                            </svg>
+                        </motion.button>
+                    </div>
 
-                {/* Project Number (Top Right) */}
-                <div className="absolute top-8 right-8 z-20 text-white/20 font-black text-6xl md:text-8xl select-none">
-                    0{index + 1}
                 </div>
             </motion.div>
         </div>
@@ -137,33 +180,82 @@ function PortfolioCard({ project, index, totalCards }) {
 }
 
 export default function Portfolio() {
+    const containerRef = useRef(null)
     const shouldReduce = useReducedMotion()
 
-    return (
-        <section id="portfolio" className="relative w-full py-24 mb-32">
-            {/* Header */}
-            <div className="max-w-6xl mx-auto px-6 mb-12">
-                <motion.div
-                    initial={shouldReduce ? {} : { opacity: 0, y: 20, filter: 'blur(8px)' }}
-                    whileInView={shouldReduce ? {} : { opacity: 1, y: 0, filter: 'blur(0px)' }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.6 }}
-                >
-                    <p className="text-xs uppercase tracking-widest text-pink-400 mb-3 font-semibold">Nos réalisations</p>
-                    <h2 className="text-3xl md:text-5xl lg:text-7xl font-black glow-title text-white">Créations récentes</h2>
-                </motion.div>
-            </div>
+    const { scrollYProgress } = useScroll({
+        target: containerRef,
+        offset: ['start start', 'end end']
+    })
 
-            {/* Stacking Cards Container */}
-            <div className="relative w-full">
-                {projects.map((project, i) => (
-                    <PortfolioCard
-                        key={project.id}
-                        project={project}
-                        index={i}
-                        totalCards={projects.length}
-                    />
+    // Horizontal scroll for the carousel. 
+    // We have length items. We want to scroll enough to see the last item.
+    // 4 items = we want to move from 0 to -75% (approx) to show the last one, 
+    // but since we have a title section, the container needs height = items * 100vh.
+    const totalItems = projects.length
+
+    // Calculate movement. 0 to -(totalItems - 1) * 100% of the single view width, but we use xPercent for flex sliding
+    const xPercent = useTransform(scrollYProgress, [0, 1], [0, -(totalItems - 1) * 100])
+    const smoothX = useSpring(xPercent, { stiffness: 80, damping: 25 })
+
+    // Title fade out when scrolling horizontally starts
+    const titleOpacity = useTransform(scrollYProgress, [0, 0.1], [1, 0])
+    const titleY = useTransform(scrollYProgress, [0, 0.1], [0, -50])
+
+    if (shouldReduce) {
+        return (
+            <section className="py-24 max-w-7xl mx-auto px-6 space-y-12">
+                <h2 className="text-4xl font-black">Nos réalisations</h2>
+                {projects.map(p => (
+                    <div key={p.id} className="p-8 border border-white/10 rounded-3xl bg-white/5">
+                        <h3 className="text-3xl font-bold mb-2">{p.title} <span className="text-zinc-400 font-light">{p.subtitle}</span></h3>
+                        <p className="text-zinc-400 mb-6">{p.desc}</p>
+                        <div className="flex gap-2">
+                            {p.tech.map(t => <span key={t} className="px-3 py-1 bg-black/50 rounded-full text-xs">{t}</span>)}
+                        </div>
+                    </div>
                 ))}
+            </section>
+        )
+    }
+
+    return (
+        <section ref={containerRef} id="portfolio" style={{ height: `${totalItems * 100}vh` }} className="relative w-full bg-[#050510]">
+
+            {/* Sticky container that stays in view while we scroll vertically */}
+            <div className="sticky top-0 h-screen w-full flex flex-col justify-center overflow-hidden">
+
+                {/* Sticky Header fixed in the background/top left */}
+                <motion.div
+                    style={{ opacity: titleOpacity, y: titleY }}
+                    className="absolute top-[10%] left-[8%] md:left-[10%] z-0"
+                >
+                    <div className="flex items-center gap-3 mb-2">
+                        <div className="w-2 h-2 rounded-full bg-violet-500 animate-pulse" />
+                        <p className="text-xs uppercase tracking-widest text-violet-400 font-semibold font-mono">Nos réalisations</p>
+                    </div>
+                    <h2 className="text-5xl md:text-7xl lg:text-8xl font-black text-white/10 tracking-tighter" style={{ WebkitTextStroke: '1px rgba(255,255,255,0.2)' }}>
+                        PORTFOLIO
+                    </h2>
+                </motion.div>
+
+                {/* The horizontal sliding deck */}
+                <motion.div
+                    style={{ x: useTransform(smoothX, v => `${v / totalItems}%`) }}
+                    className="flex items-center w-full z-10 pt-16 md:pt-0"
+                >
+                    {/* We add a left padding on the flex container so the first card isn't stuck to the screen edge.
+              Using padding on the first element works better for smooth scrolling. */}
+                    <div className="w-[5vw] md:w-[10vw] flex-shrink-0" />
+
+                    {projects.map((project, i) => (
+                        <PortfolioCarouselCard key={project.id} project={project} />
+                    ))}
+
+                    {/* Right padding so the last card doesn't hit the right edge perfectly */}
+                    <div className="w-[10vw] md:w-[25vw] flex-shrink-0" />
+                </motion.div>
+
             </div>
         </section>
     )
