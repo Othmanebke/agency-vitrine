@@ -1,4 +1,5 @@
 import React, { useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { motion, useScroll, useTransform, useSpring, useReducedMotion, AnimatePresence } from 'framer-motion'
 import Nav from '../components/Nav'
 import Footer from '../components/Footer'
@@ -405,55 +406,61 @@ export default function PortfolioPage() {
         <StackMarquee />
       </main>
 
-      {/* Lightbox Modal */}
-      <AnimatePresence>
-        {selectedProject && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-8 bg-black/80 backdrop-blur-xl"
-            onClick={() => setSelectedProject(null)}
-          >
+      {/* Lightbox Modal rendered via Portal to escape CSS transform context */}
+      {typeof document !== 'undefined' && createPortal(
+        <AnimatePresence>
+          {selectedProject && (
             <motion.div
-              layoutId={`card-${selectedProject.id}`}
-              className={`bg-gradient-to-br ${selectedProject.color} w-full max-w-5xl max-h-[90vh] rounded-3xl border border-white/20 overflow-hidden flex flex-col md:flex-row`}
-              onClick={e => e.stopPropagation()}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-[100000] flex items-center justify-center p-4 md:p-8 bg-black/80 backdrop-blur-xl"
+              onClick={() => setSelectedProject(null)}
             >
-              <div className="w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-center">
-                <span className="text-xs font-mono tracking-widest uppercase mb-4 inline-block w-max border border-white/20 px-3 py-1.5 rounded-full" style={{ color: selectedProject.accent, background: selectedProject.accent + '15' }}>
-                  {selectedProject.category}
-                </span>
+              <motion.div
+                initial={{ scale: 0.9, opacity: 0, y: 20 }}
+                animate={{ scale: 1, opacity: 1, y: 0 }}
+                exit={{ scale: 0.9, opacity: 0, y: 20 }}
+                transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+                className={`bg-gradient-to-br ${selectedProject.color} w-full max-w-5xl max-h-[90vh] rounded-3xl border border-white/20 overflow-hidden flex flex-col md:flex-row`}
+                onClick={e => e.stopPropagation()}
+              >
+                <div className="w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-center overflow-y-auto">
+                  <span className="text-xs font-mono tracking-widest uppercase mb-4 inline-block w-max border border-white/20 px-3 py-1.5 rounded-full" style={{ color: selectedProject.accent, background: selectedProject.accent + '15' }}>
+                    {selectedProject.category}
+                  </span>
 
-                <h3 className="text-4xl md:text-5xl font-black text-white mb-2">{selectedProject.title}</h3>
-                <p className="text-2xl font-light text-white/50 mb-6">{selectedProject.subtitle}</p>
+                  <h3 className="text-4xl md:text-5xl font-black text-white mb-2">{selectedProject.title}</h3>
+                  <p className="text-2xl font-light text-white/50 mb-6">{selectedProject.subtitle}</p>
 
-                <p className="text-zinc-300 text-lg leading-relaxed mb-10">
-                  {selectedProject.desc}
-                </p>
+                  <p className="text-zinc-300 text-lg leading-relaxed mb-10">
+                    {selectedProject.desc}
+                  </p>
 
-                <div className="flex flex-wrap gap-2 mt-auto">
-                  {selectedProject.tech.map(t => (
-                    <span key={t} className="text-xs font-semibold text-white/80 bg-white/10 border border-white/10 px-3 py-1.5 rounded-lg">
-                      {t}
-                    </span>
-                  ))}
+                  <div className="flex flex-wrap gap-2 mt-auto">
+                    {selectedProject.tech.map(t => (
+                      <span key={t} className="text-xs font-semibold text-white/80 bg-white/10 border border-white/10 px-3 py-1.5 rounded-lg">
+                        {t}
+                      </span>
+                    ))}
+                  </div>
                 </div>
-              </div>
 
-              <div className="w-full md:w-1/2 relative bg-black/50 overflow-hidden min-h-[300px]">
-                <img src={selectedProject.image} alt={selectedProject.title} className="w-full h-full object-cover object-top opacity-90" />
-                <button
-                  onClick={() => setSelectedProject(null)}
-                  className="absolute top-6 right-6 w-10 h-10 rounded-full bg-black/50 border border-white/20 flex items-center justify-center text-white backdrop-blur-md hover:bg-white hover:text-black transition-colors"
-                >
-                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
-                </button>
-              </div>
+                <div className="w-full md:w-1/2 relative bg-black/50 overflow-hidden min-h-[300px]">
+                  <img src={selectedProject.image} alt={selectedProject.title} className="w-full h-full object-cover object-top opacity-90" />
+                  <button
+                    onClick={() => setSelectedProject(null)}
+                    className="absolute top-6 right-6 w-10 h-10 rounded-full bg-black/50 border border-white/20 flex items-center justify-center text-white backdrop-blur-md hover:bg-white hover:text-black transition-colors"
+                  >
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+                  </button>
+                </div>
+              </motion.div>
             </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
 
       <Footer />
     </div >
