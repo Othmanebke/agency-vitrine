@@ -4,7 +4,6 @@ import Team from "../components/Team";
 import ContactForm from "../components/ContactForm";
 import Footer from "../components/Footer";
 import { motion } from "framer-motion";
-import { ScrollTextReveal, MarqueeBand } from "../components/ScrollEffects";
 import { useSEO } from "../hooks/useSEO";
 
 const values = [
@@ -45,10 +44,10 @@ export default function About() {
         <header className="max-w-6xl mx-auto px-6 py-20 text-center">
           <motion.div {...fadeUp(0)}>
             <p className="text-xs uppercase tracking-widest text-violet-400 mb-3 font-semibold">Notre histoire</p>
-            <ScrollTextReveal
-              text="On construit des sites qui font la différence"
-              className="text-4xl md:text-6xl font-black leading-tight inline-block"
-            />
+            <h1 className="text-4xl md:text-6xl font-black leading-tight">
+              On construit des sites<br />
+              <span className="text-gradient">qui font la différence</span>
+            </h1>
             <p className="mt-6 text-zinc-400 max-w-2xl mx-auto text-lg">
               Wexor aide les petites entreprises à exister en ligne avec des sites rapides, accessibles et pensés pour convertir.
             </p>
@@ -90,8 +89,6 @@ export default function About() {
             </ul>
           </motion.div>
         </section>
-
-        <MarqueeBand />
 
         {/* Values */}
         <section className="max-w-6xl mx-auto px-6 py-16">

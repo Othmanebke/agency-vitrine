@@ -1,6 +1,5 @@
 import React from 'react'
 import { motion } from 'framer-motion'
-import { ScrollTextReveal } from '../components/ScrollEffects'
 import Nav from '../components/Nav'
 import ContactForm from '../components/ContactForm'
 import Footer from '../components/Footer'
@@ -26,7 +25,9 @@ export default function Contact() {
             className="mb-16"
           >
             <p className="text-xs uppercase tracking-widest text-violet-400 mb-3 font-semibold">On t'écoute</p>
-            <ScrollTextReveal text="Parlons de ton projet" className="text-4xl md:text-5xl font-black mb-4 inline-block" />
+            <h1 className="text-4xl md:text-5xl font-black mb-4">
+              Parlons de <span className="text-gradient">ton projet</span>
+            </h1>
             <p className="text-zinc-400 max-w-lg">
               Devis gratuit &amp; sans engagement — réponse sous 48&thinsp;h.
             </p>

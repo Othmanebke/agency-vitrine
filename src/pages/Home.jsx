@@ -9,13 +9,6 @@ import FAQ from '../components/FAQ'
 import Packages from '../components/Packages'
 import Footer from '../components/Footer'
 import {
-  MarqueeBand,
-  ScrollTextReveal,
-  HorizontalScroll,
-  HorizontalSlide,
-  ScrollSkewWrapper,
-  Scroll3DCard,
-  ParallaxSection,
   MagneticTitle,
 } from '../components/ScrollEffects'
 
@@ -154,7 +147,7 @@ function BentoCard({ service, index }) {
   const Icon = service.icon
 
   return (
-    <Scroll3DCard index={index} className={service.span}>
+    <div className={service.span}>
       <motion.article
         ref={ref}
         variants={{
@@ -223,7 +216,7 @@ function BentoCard({ service, index }) {
         {/* Bottom gradient line */}
         <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-violet-500/0 to-transparent group-hover:via-violet-500/60 transition-all duration-500" />
       </motion.article>
-    </Scroll3DCard>
+    </div>
   )
 }
 
@@ -268,7 +261,7 @@ function ShowcaseCard({ item, index }) {
       whileInView={shouldReduce ? {} : { opacity: 1, scale: 1 }}
       viewport={{ once: true }}
       transition={{ duration: 0.6, delay: 0.1 }}
-      className="relative w-[80vw] md:w-[40vw] max-w-xl flex-shrink-0"
+      className="relative w-full max-w-xl mx-auto"
     >
       <div
         className={`relative h-[60vh] max-h-[500px] rounded-3xl p-8 md:p-12 flex flex-col justify-between overflow-hidden bg-gradient-to-br ${item.color}`}
@@ -317,47 +310,41 @@ export default function Home() {
       <main role="main">
         <Hero />
 
-        {/* ─── Marquee Band ─── */}
-        <MarqueeBand />
-
         {/* ─── Bento Grid Services ─── */}
-        <ParallaxSection>
-          <section id="services" className="max-w-6xl mx-auto px-6 py-24">
-            <motion.div
-              initial={shouldReduce ? {} : { opacity: 0, y: 20, filter: 'blur(8px)' }}
-              whileInView={shouldReduce ? {} : { opacity: 1, y: 0, filter: 'blur(0px)' }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            >
-              <p className="text-xs uppercase tracking-widest text-violet-400 mb-3 font-semibold">Ce qu'on fait</p>
-              <MagneticTitle>
-                <h2 className="text-3xl md:text-5xl lg:text-6xl font-black mb-4 glow-title">Nos services</h2>
-              </MagneticTitle>
-              <p className="text-zinc-400 max-w-xl mb-14">Tout ce dont tu as besoin pour exister et performer en ligne.</p>
-            </motion.div>
+        <section id="services" className="max-w-6xl mx-auto px-6 py-24">
+          <motion.div
+            initial={shouldReduce ? {} : { opacity: 0, y: 20, filter: 'blur(8px)' }}
+            whileInView={shouldReduce ? {} : { opacity: 1, y: 0, filter: 'blur(0px)' }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <p className="text-xs uppercase tracking-widest text-violet-400 mb-3 font-semibold">Ce qu'on fait</p>
+            <MagneticTitle>
+              <h2 className="text-3xl md:text-5xl lg:text-6xl font-black mb-4 glow-title">Nos services</h2>
+            </MagneticTitle>
+            <p className="text-zinc-400 max-w-xl mb-14">Tout ce dont tu as besoin pour exister et performer en ligne.</p>
+          </motion.div>
 
-            <motion.div
-              className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5 auto-rows-auto"
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.15 }}
-              variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.1 } } }}
-              role="list"
-              aria-label="Nos services"
-            >
-              {services.map((s, i) => (
-                <BentoCard key={s.title} service={s} index={i} />
-              ))}
-            </motion.div>
-          </section>
-        </ParallaxSection>
+          <motion.div
+            className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5 auto-rows-auto"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.15 }}
+            variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.1 } } }}
+            role="list"
+            aria-label="Nos services"
+          >
+            {services.map((s, i) => (
+              <BentoCard key={s.title} service={s} index={i} />
+            ))}
+          </motion.div>
+        </section>
 
-        {/* ─── Big Statement — Character Reveal ─── */}
-        <section className="max-w-5xl mx-auto px-6 py-24 md:py-32">
-          <ScrollTextReveal
-            text="Nous ne faisons pas de sites web. Nous créons des expériences digitales qui transforment tes visiteurs en clients."
-            className="text-3xl md:text-5xl lg:text-6xl font-black leading-tight tracking-tight"
-          />
+        {/* ─── Big Statement ─── */}
+        <section className="max-w-5xl mx-auto px-6 py-24 md:py-32 text-center">
+          <h2 className="text-3xl md:text-5xl lg:text-6xl font-black leading-tight tracking-tight">
+            Nous ne faisons pas de sites web. Nous créons des expériences digitales qui transforment tes visiteurs en clients.
+          </h2>
         </section>
 
         {/* ─── Horizontal Scroll Process ─── */}
@@ -376,22 +363,15 @@ export default function Home() {
             </motion.div>
           </div>
 
-          <HorizontalScroll itemCount={4}>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-6xl mx-auto px-6 mb-16">
             {showcaseItems.map((item, i) => (
-              <HorizontalSlide key={item.num} className="gap-8">
-                <ShowcaseCard item={item} index={i} />
-              </HorizontalSlide>
+              <ShowcaseCard key={item.num} item={item} index={i} />
             ))}
-          </HorizontalScroll>
+          </div>
         </div>
 
-        {/* ─── Process (with skew effect) ─── */}
-        <ScrollSkewWrapper>
-          <Process />
-        </ScrollSkewWrapper>
-
-        {/* ─── Another Marquee ─── */}
-        <MarqueeBand />
+        {/* ─── Process ─── */}
+        <Process />
 
         <Testimonials />
 

@@ -30,64 +30,14 @@ const plans = [
 ]
 
 function TiltCard({ children, className, highlight }) {
-  const ref = useRef(null)
   const shouldReduce = useReducedMotion()
-
-  const mouseX = useMotionValue(0)
-  const mouseY = useMotionValue(0)
-  const glareX = useMotionValue(50)
-  const glareY = useMotionValue(50)
-
-  const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [8, -8]), { stiffness: 200, damping: 20 })
-  const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-8, 8]), { stiffness: 200, damping: 20 })
-
-  const handleMouseMove = (e) => {
-    if (shouldReduce || !ref.current) return
-    const rect = ref.current.getBoundingClientRect()
-    const x = (e.clientX - rect.left) / rect.width - 0.5
-    const y = (e.clientY - rect.top) / rect.height - 0.5
-    mouseX.set(x)
-    mouseY.set(y)
-    glareX.set(((e.clientX - rect.left) / rect.width) * 100)
-    glareY.set(((e.clientY - rect.top) / rect.height) * 100)
-  }
-
-  const handleMouseLeave = () => {
-    mouseX.set(0)
-    mouseY.set(0)
-    glareX.set(50)
-    glareY.set(50)
-  }
 
   return (
     <motion.div
-      ref={ref}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      style={shouldReduce ? {} : {
-        rotateX,
-        rotateY,
-        transformPerspective: 800,
-        transformStyle: 'preserve-3d',
-      }}
       whileHover={shouldReduce ? {} : { scale: 1.02, zIndex: 10 }}
       transition={{ duration: 0.2 }}
       className={`relative overflow-hidden cursor-default ${className}`}
     >
-      {/* glare effect */}
-      {!shouldReduce && (
-        <motion.div
-          className="pointer-events-none absolute inset-0 rounded-2xl z-10"
-          style={{
-            background: useTransform(
-              [glareX, glareY],
-              ([gx, gy]) =>
-                `radial-gradient(circle at ${gx}% ${gy}%, rgba(255,255,255,${highlight ? 0.12 : 0.07}) 0%, transparent 60%)`
-            ),
-          }}
-        />
-      )}
-
       {/* aurora animated border for highlight card */}
       {highlight && !shouldReduce && (
         <motion.div
@@ -203,8 +153,8 @@ export default function Packages() {
               <TiltCard
                 highlight={plan.highlight}
                 className={`relative p-6 rounded-2xl border h-full ${plan.highlight
-                    ? 'bg-gradient-to-b from-violet-600/20 to-pink-600/10 border-violet-500/50 shadow-xl shadow-violet-500/10'
-                    : 'bg-white/[0.03] border-white/[0.07]'
+                  ? 'bg-gradient-to-b from-violet-600/20 to-pink-600/10 border-violet-500/50 shadow-xl shadow-violet-500/10'
+                  : 'bg-white/[0.03] border-white/[0.07]'
                   }`}
               >
                 {plan.badge && (
@@ -229,8 +179,8 @@ export default function Packages() {
                   href="/contact"
                   onClick={e => { e.preventDefault(); history.pushState({}, '', '/contact'); window.dispatchEvent(new PopStateEvent('popstate')) }}
                   className={`w-full flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-semibold transition-all ${plan.highlight
-                      ? 'bg-gradient-to-r from-violet-600 to-pink-500 text-white shadow-md shadow-violet-500/30 hover:scale-105'
-                      : 'bg-white/5 border border-white/10 text-zinc-300 hover:border-violet-500/40'
+                    ? 'bg-gradient-to-r from-violet-600 to-pink-500 text-white shadow-md shadow-violet-500/30 hover:scale-105'
+                    : 'bg-white/5 border border-white/10 text-zinc-300 hover:border-violet-500/40'
                     }`}
                 >
                   Choisir {plan.name}

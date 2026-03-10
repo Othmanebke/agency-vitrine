@@ -3,7 +3,6 @@ import Packages from '../components/Packages'
 import Nav from '../components/Nav'
 import Footer from '../components/Footer'
 import { useSEO } from '../hooks/useSEO'
-import { ScrollTextReveal } from '../components/ScrollEffects'
 
 export default function Pricing() {
   useSEO({
@@ -18,7 +17,7 @@ export default function Pricing() {
       <main role="main">
         <header className="max-w-6xl mx-auto px-6 py-16 text-center">
           <p className="text-xs uppercase tracking-widest text-violet-400 mb-3 font-semibold">Transparent & sans surprise</p>
-          <ScrollTextReveal text="Tarifs & offres" className="text-4xl md:text-5xl font-black mb-4 inline-block" />
+          <h1 className="text-4xl md:text-5xl font-black">Tarifs & offres</h1>
           <p className="text-zinc-400 mt-4 max-w-2xl mx-auto">Des fourchettes claires — on te fournit un devis précis après un bref échange.</p>
         </header>
 

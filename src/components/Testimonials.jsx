@@ -24,44 +24,13 @@ function Stars({ delay = 0 }) {
 }
 
 function TiltCard({ children, className }) {
-  const ref = useRef(null)
   const shouldReduce = useReducedMotion()
-  const mouseX = useMotionValue(0)
-  const mouseY = useMotionValue(0)
-  const glareX = useMotionValue(50)
-  const glareY = useMotionValue(50)
-  const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [6, -6]), { stiffness: 200, damping: 20 })
-  const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-6, 6]), { stiffness: 200, damping: 20 })
-  const glare = useTransform(
-    [glareX, glareY],
-    ([gx, gy]) => `radial-gradient(circle at ${gx}% ${gy}%, rgba(255,255,255,0.07) 0%, transparent 60%)`
-  )
-
-  const handleMouseMove = (e) => {
-    if (shouldReduce || !ref.current) return
-    const rect = ref.current.getBoundingClientRect()
-    mouseX.set((e.clientX - rect.left) / rect.width - 0.5)
-    mouseY.set((e.clientY - rect.top) / rect.height - 0.5)
-    glareX.set(((e.clientX - rect.left) / rect.width) * 100)
-    glareY.set(((e.clientY - rect.top) / rect.height) * 100)
-  }
-  const handleMouseLeave = () => { mouseX.set(0); mouseY.set(0) }
 
   return (
     <motion.div
-      ref={ref}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      style={shouldReduce ? {} : { rotateX, rotateY, transformPerspective: 800, transformStyle: 'preserve-3d' }}
       whileHover={shouldReduce ? {} : { scale: 1.02, zIndex: 10 }}
       className={`relative overflow-hidden cursor-default ${className}`}
     >
-      {!shouldReduce && (
-        <motion.div
-          className="pointer-events-none absolute inset-0 rounded-2xl z-10"
-          style={{ background: glare }}
-        />
-      )}
       <div className="relative z-[1]">{children}</div>
     </motion.div>
   )
