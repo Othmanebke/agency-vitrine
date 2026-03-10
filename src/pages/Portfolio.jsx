@@ -1,5 +1,5 @@
-import React, { useRef } from 'react'
-import { motion, useScroll, useTransform, useSpring, useReducedMotion } from 'framer-motion'
+import React, { useRef, useState } from 'react'
+import { motion, useScroll, useTransform, useSpring, useReducedMotion, AnimatePresence } from 'framer-motion'
 import Nav from '../components/Nav'
 import Footer from '../components/Footer'
 import { useSEO } from '../hooks/useSEO'
@@ -162,14 +162,14 @@ function AnimatedTitle({ title, subtitle, accent }) {
     >
       <div className="flex" style={{ perspective: "1000px" }}>
         {chars.map((char, index) => (
-          <motion.span variants={child} key={index} className="text-5xl md:text-7xl lg:text-[6rem] font-black tracking-tighter" style={{ color: accent, textShadow: `0 0 30px ${accent}40` }}>
+          <motion.span variants={child} key={index} className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter" style={{ color: accent, textShadow: `0 0 30px ${accent}40` }}>
             {char}
           </motion.span>
         ))}
       </div>
       <motion.span
         variants={{ hidden: { opacity: 0, x: -20 }, visible: { opacity: 1, x: 0, transition: { delay: chars.length * 0.08 } } }}
-        className="text-3xl md:text-5xl lg:text-7xl font-extralight tracking-tight text-white mt-[-0.5rem]"
+        className="text-2xl md:text-3xl lg:text-4xl font-extralight tracking-tight text-white mt-1"
       >
         {subtitle}
       </motion.span>
@@ -178,7 +178,7 @@ function AnimatedTitle({ title, subtitle, accent }) {
 }
 
 
-function PortfolioCarouselCard({ project }) {
+function PortfolioCarouselCard({ project, onSelect }) {
   const shouldReduce = useReducedMotion()
 
   return (
@@ -236,6 +236,7 @@ function PortfolioCarouselCard({ project }) {
 
             {/* CTA */}
             <motion.button
+              onClick={onSelect}
               whileHover={{ scale: 1.05, backgroundColor: 'rgba(255,255,255,0.15)' }}
               whileTap={{ scale: 0.95 }}
               className="h-10 w-10 md:h-14 md:w-14 rounded-full border border-white/30 flex items-center justify-center text-white backdrop-blur-md group-hover:border-white transition-colors bg-white/5"
@@ -318,6 +319,7 @@ function StackMarquee() {
 export default function PortfolioPage() {
   const containerRef = useRef(null)
   const shouldReduce = useReducedMotion()
+  const [selectedProject, setSelectedProject] = useState(null)
 
   useSEO({
     title: 'Portfolio — Wexor | Sites, Refontes, Branding & SEO',
@@ -345,12 +347,13 @@ export default function PortfolioPage() {
       <main role="main">
         {shouldReduce ? (
           <section className="py-24 max-w-7xl mx-auto px-6 space-y-12">
-            <h2 className="text-4xl font-black">Nos réalisations</h2>
+            <h2 className="text-4xl font-black mb-8">Nos réalisations</h2>
             {projects.map(p => (
-              <div key={p.id} className="p-8 border border-white/10 rounded-3xl bg-white/5">
-                <h3 className="text-3xl font-bold mb-2">{p.title} <span className="text-zinc-400 font-light">{p.subtitle}</span></h3>
-                <p className="text-zinc-400 mb-6">{p.desc}</p>
-                <div className="flex gap-2">
+              <div key={p.id} className="p-8 border border-white/10 rounded-3xl bg-white/5 flex flex-col gap-4">
+                <img src={p.image} alt={p.title} className="w-full h-auto rounded-xl object-cover" />
+                <h3 className="text-3xl font-bold mt-4">{p.title} <span className="text-zinc-400 font-light">{p.subtitle}</span></h3>
+                <p className="text-zinc-400 mb-2">{p.desc}</p>
+                <div className="flex gap-2 flex-wrap">
                   {p.tech.map(t => <span key={t} className="px-3 py-1 bg-black/50 rounded-full text-xs">{t}</span>)}
                 </div>
               </div>
@@ -362,8 +365,8 @@ export default function PortfolioPage() {
             <div className="sticky top-0 h-screen w-full flex flex-col justify-center overflow-hidden">
 
               {/* Sticky Header fixed in the background/top left */}
+              {/* Removed fadeout so it stays visible while scrolling through projects */}
               <motion.div
-                style={{ opacity: titleOpacity, y: titleY }}
                 className="absolute top-[12%] left-[8%] md:left-[10%] z-0"
               >
                 <div className="flex items-center gap-3 mb-2">
@@ -381,13 +384,13 @@ export default function PortfolioPage() {
               {/* The horizontal sliding deck */}
               <motion.div
                 style={{ x: useTransform(smoothX, v => `${v / totalItems}%`) }}
-                className="flex items-center w-full z-10 pt-16 md:pt-0"
+                className="flex items-center w-max z-10 pt-16 md:pt-0"
               >
                 {/* Left padding so the first card isn't stuck to the screen edge */}
                 <div className="w-[5vw] md:w-[10vw] flex-shrink-0" />
 
                 {projects.map((project) => (
-                  <PortfolioCarouselCard key={project.id} project={project} />
+                  <PortfolioCarouselCard key={project.id} project={project} onSelect={() => setSelectedProject(project)} />
                 ))}
 
                 {/* Right padding so the last card doesn't hit the right edge perfectly */}
@@ -400,6 +403,56 @@ export default function PortfolioPage() {
         {/* Tech Stack Marquee kept from original page */}
         <StackMarquee />
       </main>
+
+      {/* Lightbox Modal */}
+      <AnimatePresence>
+        {selectedProject && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-8 bg-black/80 backdrop-blur-xl"
+            onClick={() => setSelectedProject(null)}
+          >
+            <motion.div
+              layoutId={`card-${selectedProject.id}`}
+              className={`bg-gradient-to-br ${selectedProject.color} w-full max-w-5xl max-h-[90vh] rounded-3xl border border-white/20 overflow-hidden flex flex-col md:flex-row`}
+              onClick={e => e.stopPropagation()}
+            >
+              <div className="w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-center">
+                <span className="text-xs font-mono tracking-widest uppercase mb-4 inline-block w-max border border-white/20 px-3 py-1.5 rounded-full" style={{ color: selectedProject.accent, background: selectedProject.accent + '15' }}>
+                  {selectedProject.category}
+                </span>
+
+                <h3 className="text-4xl md:text-5xl font-black text-white mb-2">{selectedProject.title}</h3>
+                <p className="text-2xl font-light text-white/50 mb-6">{selectedProject.subtitle}</p>
+
+                <p className="text-zinc-300 text-lg leading-relaxed mb-10">
+                  {selectedProject.desc}
+                </p>
+
+                <div className="flex flex-wrap gap-2 mt-auto">
+                  {selectedProject.tech.map(t => (
+                    <span key={t} className="text-xs font-semibold text-white/80 bg-white/10 border border-white/10 px-3 py-1.5 rounded-lg">
+                      {t}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              <div className="w-full md:w-1/2 relative bg-black/50 overflow-hidden min-h-[300px]">
+                <img src={selectedProject.image} alt={selectedProject.title} className="w-full h-full object-cover object-top opacity-90" />
+                <button
+                  onClick={() => setSelectedProject(null)}
+                  className="absolute top-6 right-6 w-10 h-10 rounded-full bg-black/50 border border-white/20 flex items-center justify-center text-white backdrop-blur-md hover:bg-white hover:text-black transition-colors"
+                >
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <Footer />
     </div >
