@@ -258,157 +258,150 @@ const SI = 'https://cdn.simpleicons.org'
 
 // Inline SVGs for logos that are black and invisible on dark background
 const OPENAI_SVG = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%2310a37f' d='M22.28 9.29a5.68 5.68 0 0 0-.49-4.67 5.74 5.74 0 0 0-6.17-2.75A5.73 5.73 0 0 0 11.28 0a5.74 5.74 0 0 0-5.47 3.98 5.72 5.72 0 0 0-3.83 2.77 5.75 5.75 0 0 0 .71 6.74 5.68 5.68 0 0 0 .49 4.67 5.74 5.74 0 0 0 6.17 2.75 5.7 5.7 0 0 0 4.34 1.87 5.74 5.74 0 0 0 5.47-3.98 5.72 5.72 0 0 0 3.83-2.77 5.75 5.75 0 0 0-.71-6.74zm-8.55 11.99a4.25 4.25 0 0 1-2.73-1c.03-.02.09-.05.13-.07l4.53-2.62a.73.73 0 0 0 .37-.64V10.7l1.91 1.1a.07.07 0 0 1 .04.05v5.29a4.27 4.27 0 0 1-4.25 4.14zM3.89 17.67a4.25 4.25 0 0 1-.51-2.85l.13.08 4.53 2.62a.74.74 0 0 0 .74 0l5.53-3.2v2.21a.07.07 0 0 1-.03.06L9.7 19.24a4.27 4.27 0 0 1-5.81-1.57zM2.81 8.17A4.25 4.25 0 0 1 5.03 6.1v5.37a.73.73 0 0 0 .37.64l5.53 3.19-1.91 1.1a.07.07 0 0 1-.07 0L4.38 13.8a4.27 4.27 0 0 1-1.57-5.63zm15.69 3.66-5.53-3.2 1.91-1.1a.07.07 0 0 1 .07 0l4.57 2.64a4.27 4.27 0 0 1-.66 7.7V12.47a.73.73 0 0 0-.36-.64zm1.9-2.87-.13-.08-4.53-2.61a.74.74 0 0 0-.74 0L9.47 9.47V7.26a.07.07 0 0 1 .03-.06l4.57-2.64a4.27 4.27 0 0 1 6.33 4.4zm-11.98 3.94-1.91-1.1a.07.07 0 0 1-.04-.05V6.46a4.27 4.27 0 0 1 7-3.28 3.6 3.6 0 0 0-.13.07L8.81 5.87a.73.73 0 0 0-.37.64zm1.04-2.24 2.46-1.42 2.46 1.42v2.83l-2.46 1.42-2.46-1.42z'/%3E%3C/svg%3E`
-208: const VERCEL_SVG = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23e2e2e2' d='M12 1L24 22H0L12 1z'/%3E%3C/svg%3E`
-209: const GITHUB_SVG = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23c9d1d9' d='M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12C24 5.37 18.63 0 12 0z'/%3E%3C/svg%3E`
-210: const FRAMER_SVG = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%238b5cf6' d='M4 0h16v8h-8zm0 8h8l8 8H4zm0 8h8v8z'/%3E%3C/svg%3E`
-211:
-212: const stacks = [
-  213: { name: 'HTML5', icon: `${DV}/html5/html5-original.svg`, glow: 'rgba(227,79,38,0.6)' },
-  214: { name: 'CSS3', icon: `${DV}/css3/css3-original.svg`, glow: 'rgba(21,114,182,0.6)' },
-  215: { name: 'JavaScript', icon: `${DV}/javascript/javascript-original.svg`, glow: 'rgba(247,223,30,0.6)' },
-  216: { name: 'React', icon: `${DV}/react/react-original.svg`, glow: 'rgba(97,218,251,0.6)' },
-  217: { name: 'Tailwind', icon: `${DV}/tailwindcss/tailwindcss-original.svg`, glow: 'rgba(6,182,212,0.6)' },
-  218: { name: 'Vite', icon: `${DV}/vitejs/vitejs-original.svg`, glow: 'rgba(100,108,255,0.6)' },
-  219: { name: 'Vercel', icon: VERCEL_SVG, glow: 'rgba(226,226,226,0.45)' },
-  220: { name: 'WordPress', icon: `${DV}/wordpress/wordpress-original.svg`, glow: 'rgba(33,117,155,0.6)' },
-  221: { name: 'Node.js', icon: `${SI}/nodedotjs/5fa04e`, glow: 'rgba(95,160,78,0.6)' },
-  222: { name: 'TypeScript', icon: `${DV}/typescript/typescript-original.svg`, glow: 'rgba(49,120,198,0.6)' },
-  223: { name: 'Figma', icon: `${DV}/figma/figma-original.svg`, glow: 'rgba(242,78,30,0.6)' },
-  224: { name: 'OpenAI', icon: OPENAI_SVG, glow: 'rgba(16,163,127,0.6)' },
-  225: { name: 'Framer', icon: FRAMER_SVG, glow: 'rgba(139,92,246,0.6)' },
-  226: { name: 'GitHub', icon: GITHUB_SVG, glow: 'rgba(201,209,217,0.5)' },
-  227: ]
-228:
-229: function StackMarquee() {
-  230: const doubled = [...stacks, ...stacks]
-  231: return (
-    232: <section className="relative py-14 overflow-hidden select-none bg-[#050510]">
-      233:       {/* fade edges */}
-      234:       <div className="pointer-events-none absolute inset-y-0 left-0 w-32 z-10 bg-gradient-to-r from-[#050510] to-transparent" />
-      235:       <div className="pointer-events-none absolute inset-y-0 right-0 w-32 z-10 bg-gradient-to-l from-[#050510] to-transparent" />
-      236:
-      237:       {/* label */}
-      238:       <p className="text-center text-[10px] uppercase tracking-widest text-zinc-600 mb-8 font-semibold">Stack &amp; outils</p>
-      239:
-      240:       {/* track */}
-      241:       <div className="flex items-center animate-marquee" style={{ width: 'max-content' }}>
-        242:         {doubled.map((s, i) => (
-          243:           <div
-244:             key={i}
-        245:             className="mx-6 group cursor-default transition-all"
-        246:             onMouseEnter={e => { e.currentTarget.querySelector('img').style.filter = `drop-shadow(0 0 12px ${s.glow}) drop-shadow(0 0 4px ${s.glow})` }}
-        247:             onMouseLeave={e => { e.currentTarget.querySelector('img').style.filter = `drop-shadow(0 0 0px transparent)` }}
-248:           >
-        249:             <img
-250:               src={s.icon}
-        251:               alt={s.name}
-        252:               width={52}
-        253:               height={52}
-        254:               className="object-contain opacity-60 group-hover:opacity-100 transition-opacity duration-300"
-        255:               style={{ width: 52, height: 52 }}
-256:             />
-        257:           </div>
-258:         ))}
-      259:       </div>
-  260:     </section >
-    261:   )
-  262:
+const VERCEL_SVG = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23e2e2e2' d='M12 1L24 22H0L12 1z'/%3E%3C/svg%3E`
+const GITHUB_SVG = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23c9d1d9' d='M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12C24 5.37 18.63 0 12 0z'/%3E%3C/svg%3E`
+const FRAMER_SVG = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%238b5cf6' d='M4 0h16v8h-8zm0 8h8l8 8H4zm0 8h8v8z'/%3E%3C/svg%3E`
+
+const stacks = [
+  { name: 'HTML5', icon: `${DV}/html5/html5-original.svg`, glow: 'rgba(227,79,38,0.6)' },
+  { name: 'CSS3', icon: `${DV}/css3/css3-original.svg`, glow: 'rgba(21,114,182,0.6)' },
+  { name: 'JavaScript', icon: `${DV}/javascript/javascript-original.svg`, glow: 'rgba(247,223,30,0.6)' },
+  { name: 'React', icon: `${DV}/react/react-original.svg`, glow: 'rgba(97,218,251,0.6)' },
+  { name: 'Tailwind', icon: `${DV}/tailwindcss/tailwindcss-original.svg`, glow: 'rgba(6,182,212,0.6)' },
+  { name: 'Vite', icon: `${DV}/vitejs/vitejs-original.svg`, glow: 'rgba(100,108,255,0.6)' },
+  { name: 'Vercel', icon: VERCEL_SVG, glow: 'rgba(226,226,226,0.45)' },
+  { name: 'WordPress', icon: `${DV}/wordpress/wordpress-original.svg`, glow: 'rgba(33,117,155,0.6)' },
+  { name: 'Node.js', icon: `${SI}/nodedotjs/5fa04e`, glow: 'rgba(95,160,78,0.6)' },
+  { name: 'TypeScript', icon: `${DV}/typescript/typescript-original.svg`, glow: 'rgba(49,120,198,0.6)' },
+  { name: 'Figma', icon: `${DV}/figma/figma-original.svg`, glow: 'rgba(242,78,30,0.6)' },
+  { name: 'OpenAI', icon: OPENAI_SVG, glow: 'rgba(16,163,127,0.6)' },
+  { name: 'Framer', icon: FRAMER_SVG, glow: 'rgba(139,92,246,0.6)' },
+  { name: 'GitHub', icon: GITHUB_SVG, glow: 'rgba(201,209,217,0.5)' },
+]
+
+function StackMarquee() {
+  const doubled = [...stacks, ...stacks]
+  return (
+    <section className="relative py-14 overflow-hidden select-none bg-[#050510]">
+      {/* fade edges */}
+      <div className="pointer-events-none absolute inset-y-0 left-0 w-32 z-10 bg-gradient-to-r from-[#050510] to-transparent" />
+      <div className="pointer-events-none absolute inset-y-0 right-0 w-32 z-10 bg-gradient-to-l from-[#050510] to-transparent" />
+
+      {/* label */}
+      <p className="text-center text-[10px] uppercase tracking-widest text-zinc-600 mb-8 font-semibold">Stack &amp; outils</p>
+
+      {/* track */}
+      <div className="flex items-center animate-marquee" style={{ width: 'max-content' }}>
+        {doubled.map((s, i) => (
+          <div
+            key={i}
+            className="mx-6 group cursor-default transition-all"
+            onMouseEnter={e => { e.currentTarget.querySelector('img').style.filter = `drop-shadow(0 0 12px ${s.glow}) drop-shadow(0 0 4px ${s.glow})` }}
+            onMouseLeave={e => { e.currentTarget.querySelector('img').style.filter = `drop-shadow(0 0 0px transparent)` }}
+          >
+            <img
+              src={s.icon}
+              alt={s.name}
+              width={52}
+              height={52}
+              className="object-contain opacity-60 group-hover:opacity-100 transition-opacity duration-300"
+              style={{ width: 52, height: 52 }}
+            />
+          </div>
+        ))}
+      </div>
+    </section>
+  )
 }
-263:
-264: export default function PortfolioPage() {
-  265: const containerRef = useRef(null)
-  266: const shouldReduce = useReducedMotion()
-  267:
-  268: useSEO({
-    269: title: 'Portfolio — Wexor | Sites, Refontes, Branding & SEO',
-    270: description: 'Découvrez les réalisations Wexor : sites vitrines, e-commerce, refontes, branding et campagnes SEO. Des projets concrets livrés avec soin.',
-    271: path: '/portfolio',
-    272:   })
-  273:
-  274: const { scrollYProgress } = useScroll({
-    275: target: containerRef,
-    276: offset: ['start start', 'end end']
-277:
+
+export default function PortfolioPage() {
+  const containerRef = useRef(null)
+  const shouldReduce = useReducedMotion()
+
+  useSEO({
+    title: 'Portfolio — Wexor | Sites, Refontes, Branding & SEO',
+    description: 'Découvrez les réalisations Wexor : sites vitrines, e-commerce, refontes, branding et campagnes SEO. Des projets concrets livrés avec soin.',
+    path: '/portfolio',
   })
-  278:
-  279: const totalItems = projects.length
-  280:
-  281:   // Calculate horizontal movement
-  282: const xPercent = useTransform(scrollYProgress, [0, 1], [0, -(totalItems - 1) * 100])
-  283: const smoothX = useSpring(xPercent, { stiffness: 80, damping: 25 })
-  284:
-  285:   // Title fade out when scrolling horizontally starts
-  286: const titleOpacity = useTransform(scrollYProgress, [0, 0.05], [1, 0])
-  287: const titleY = useTransform(scrollYProgress, [0, 0.05], [0, -50])
-  288:
-  289: return (
-    290: <div className="min-h-screen text-white bg-[#050510]">
-      291:       <Nav />
-      292:
-      293:       <main role="main">
-        294:
-        295:         {shouldReduce ? (
-          296: <section className="py-24 max-w-7xl mx-auto px-6 space-y-12">
-          297:                 <h2 className="text-4xl font-black">Nos réalisations</h2>
-          298:                 {projects.map(p => (
-            299:                     <div key={p.id} className="p-8 border border-white/10 rounded-3xl bg-white/5">
-            300:                         <h3 className="text-3xl font-bold mb-2">{p.title} <span className="text-zinc-400 font-light">{p.subtitle}</span></h3>
-            301:                         <p className="text-zinc-400 mb-6">{p.desc}</p>
-            302:                         <div className="flex gap-2">
-              303:                             {p.tech.map(t => <span key={t} className="px-3 py-1 bg-black/50 rounded-full text-xs">{t}</span>)}
-              304:                         </div>
-            305:                     </div>
-306:                 ))}
-          307:             </section>
-308:         ) : (
-        309:             <section ref={containerRef} style={{ height: `${totalItems * 100}vh` }} className="relative w-full bg-[#050510]">
-          310:
-          311:                 {/* Sticky container that stays in view while we scroll vertically */}
-          312:                 <div className="sticky top-0 h-screen w-full flex flex-col justify-center overflow-hidden">
-            313:
-            314:                     {/* Sticky Header fixed in the background/top left */}
-            315:                     <motion.div 
-316:                         style={{ opacity: titleOpacity, y: titleY }}
-            317:                         className="absolute top-[12%] left-[8%] md:left-[10%] z-0"
-318:                     >
-            319:                         <div className="flex items-center gap-3 mb-2">
-              320:                             <div className="w-2 h-2 rounded-full bg-violet-500 animate-pulse" />
-              321:                             <p className="text-xs uppercase tracking-widest text-violet-400 font-semibold font-mono">Nos réalisations</p>
-              322:                         </div>
-            323:                         <h2 className="text-5xl md:text-7xl lg:text-8xl font-black text-white/10 tracking-tighter" style={{ WebkitTextStroke: '1px rgba(255,255,255,0.2)' }}>
-              324:                             PORTFOLIO
-              325:                         </h2>
-            326:                         <p className="text-zinc-400 max-w-md mt-4 text-sm md:text-base">
-              327:                           Scrollez vers le bas pour explorer nos projets.
-              328:                         </p>
-            329:                     </motion.div>
-          330:
-          331:                     {/* The horizontal sliding deck */}
-          332:                     <motion.div
-333:                         style={{ x: useTransform(smoothX, v => `${v / totalItems}%`) }}
-          334:                         className="flex items-center w-full z-10 pt-16 md:pt-0"
-335:                     >
-          336:                         {/* Left padding so the first card isn't stuck to the screen edge */}
-          337:                         <div className="w-[5vw] md:w-[10vw] flex-shrink-0" />
-          338:
-          339:                         {projects.map((project) => (
-            340:                             <PortfolioCarouselCard key={project.id} project={project} />
-341:                         ))}
-          342:
-          343:                         {/* Right padding so the last card doesn't hit the right edge perfectly */}
-          344:                         <div className="w-[10vw] md:w-[25vw] flex-shrink-0" />
-          345:                     </motion.div>
-        346:
-        347:                 </div>
-  348:             </section >
-    349:         )
+
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ['start start', 'end end']
+  })
+
+  const totalItems = projects.length
+
+  const xPercent = useTransform(scrollYProgress, [0, 1], [0, -(totalItems - 1) * 100])
+  const smoothX = useSpring(xPercent, { stiffness: 80, damping: 25 })
+
+  const titleOpacity = useTransform(scrollYProgress, [0, 0.05], [1, 0])
+  const titleY = useTransform(scrollYProgress, [0, 0.05], [0, -50])
+
+  return (
+    <div className="min-h-screen text-white bg-[#050510]">
+      <Nav />
+
+      <main role="main">
+        {shouldReduce ? (
+          <section className="py-24 max-w-7xl mx-auto px-6 space-y-12">
+            <h2 className="text-4xl font-black">Nos réalisations</h2>
+            {projects.map(p => (
+              <div key={p.id} className="p-8 border border-white/10 rounded-3xl bg-white/5">
+                <h3 className="text-3xl font-bold mb-2">{p.title} <span className="text-zinc-400 font-light">{p.subtitle}</span></h3>
+                <p className="text-zinc-400 mb-6">{p.desc}</p>
+                <div className="flex gap-2">
+                  {p.tech.map(t => <span key={t} className="px-3 py-1 bg-black/50 rounded-full text-xs">{t}</span>)}
+                </div>
+              </div>
+            ))}
+          </section>
+        ) : (
+          <section ref={containerRef} style={{ height: `${totalItems * 100}vh` }} className="relative w-full bg-[#050510]">
+            {/* Sticky container that stays in view while we scroll vertically */}
+            <div className="sticky top-0 h-screen w-full flex flex-col justify-center overflow-hidden">
+
+              {/* Sticky Header fixed in the background/top left */}
+              <motion.div
+                style={{ opacity: titleOpacity, y: titleY }}
+                className="absolute top-[12%] left-[8%] md:left-[10%] z-0"
+              >
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="w-2 h-2 rounded-full bg-violet-500 animate-pulse" />
+                  <p className="text-xs uppercase tracking-widest text-violet-400 font-semibold font-mono">Nos réalisations</p>
+                </div>
+                <h2 className="text-5xl md:text-7xl lg:text-8xl font-black text-white/10 tracking-tighter" style={{ WebkitTextStroke: '1px rgba(255,255,255,0.2)' }}>
+                  PORTFOLIO
+                </h2>
+                <p className="text-zinc-400 max-w-md mt-4 text-sm md:text-base">
+                  Scrollez vers le bas pour explorer nos projets.
+                </p>
+              </motion.div>
+
+              {/* The horizontal sliding deck */}
+              <motion.div
+                style={{ x: useTransform(smoothX, v => `${v / totalItems}%`) }}
+                className="flex items-center w-full z-10 pt-16 md:pt-0"
+              >
+                {/* Left padding so the first card isn't stuck to the screen edge */}
+                <div className="w-[5vw] md:w-[10vw] flex-shrink-0" />
+
+                {projects.map((project) => (
+                  <PortfolioCarouselCard key={project.id} project={project} />
+                ))}
+
+                {/* Right padding so the last card doesn't hit the right edge perfectly */}
+                <div className="w-[10vw] md:w-[25vw] flex-shrink-0" />
+              </motion.div>
+            </div>
+          </section>
+        )}
+
+        {/* Tech Stack Marquee kept from original page */}
+        <StackMarquee />
+      </main>
+
+      <Footer />
+    </div >
+  )
 }
-350:
-351: {/* Tech Stack Marquee kept from original page */ }
-352: <StackMarquee />
-353:       </main >
-  354:
-355: <Footer />
-356:     </div >
-  357:   )
-358: }
+
