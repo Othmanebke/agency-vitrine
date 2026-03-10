@@ -8,6 +8,20 @@ import { useSEO } from '../hooks/useSEO'
 const projects = [
   {
     id: 1,
+    title: 'Aivana',
+    subtitle: 'Flyes SaaS',
+    category: 'SaaS IA',
+    desc: 'Dashboard moderne propulsé par l\'IA pour de la génération d\'insights et l\'automatisation avancée.',
+    tech: ['Next.js', 'Tailwind', 'IA'],
+    color: 'from-violet-500/20 to-indigo-600/10',
+    accent: '#8b5cf6',
+    image: new URL('../assets/portfolio/AivanaFlyes-SAASdashboardIA-NextTailwind.png', import.meta.url).href,
+    challenge: "Créer une interface d'analyse de données IA complexe mais facile à prendre en main.",
+    solution: "Dashboard ultra-réactif sous Next.js avec des visualisations de données en temps réel très fluides.",
+    results: "Une rétention utilisateur B2B augmentée grâce à une expérience SaaS premium."
+  },
+  {
+    id: 2,
     title: 'Ajt',
     subtitle: 'Blog',
     category: 'Blog',
@@ -21,7 +35,7 @@ const projects = [
     results: "Temps de chargement < 0.5s et excellente indexation organique."
   },
   {
-    id: 2,
+    id: 3,
     title: 'Brows',
     subtitle: 'Creative',
     category: 'E-commerce',
@@ -35,7 +49,7 @@ const projects = [
     results: "+40% de réservations en ligne et lancement réussi de la gamme e-commerce."
   },
   {
-    id: 3,
+    id: 4,
     title: 'Forma',
     subtitle: 'Immobilier',
     category: 'Agence Immo',
@@ -49,7 +63,7 @@ const projects = [
     results: "Augmentation significative des leads qualifiés via les fiches de propriétés."
   },
   {
-    id: 4,
+    id: 5,
     title: 'Luxe Cars',
     subtitle: 'Location',
     category: 'Web App',
@@ -63,7 +77,7 @@ const projects = [
     results: "Expérience client premium et réduction des appels téléphoniques de réservation."
   },
   {
-    id: 5,
+    id: 6,
     title: 'Maison',
     subtitle: 'Parfumerie',
     category: 'E-commerce',
@@ -77,7 +91,7 @@ const projects = [
     results: "Positionnement haut de gamme affirmé et hausse du panier moyen."
   },
   {
-    id: 6,
+    id: 7,
     title: 'Maison',
     subtitle: 'Verdure',
     category: 'Site Vitrine',
@@ -91,7 +105,7 @@ const projects = [
     results: "Visibilité en ligne accrue dans le quartier et afflux de nouveaux clients."
   },
   {
-    id: 7,
+    id: 8,
     title: 'NeuroFlow',
     subtitle: 'SaaS IA',
     category: 'App Web',
@@ -105,7 +119,7 @@ const projects = [
     results: "Adoption rapide par les utilisateurs B2B grâce à une UX grandement simplifiée."
   },
   {
-    id: 8,
+    id: 9,
     title: 'Sora',
     subtitle: 'Thai Food',
     category: 'Restaurant',
@@ -119,7 +133,7 @@ const projects = [
     results: "Salles pleines le week-end et retours très positifs sur l'esthétique du site."
   },
   {
-    id: 9,
+    id: 10,
     title: 'Wondercut',
     subtitle: 'Concept',
     category: 'Barber Shop',
