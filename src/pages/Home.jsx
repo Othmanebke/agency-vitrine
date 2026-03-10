@@ -370,6 +370,41 @@ export default function Home() {
 
         <FAQ />
 
+        {/* ─── Final Marketing Statement ─── */}
+        <section className="relative max-w-5xl mx-auto px-6 py-32 text-center">
+          <motion.div
+            initial={shouldReduce ? {} : { opacity: 0, scale: 0.9 }}
+            whileInView={shouldReduce ? {} : { opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="inline-block mb-8 px-4 py-1.5 rounded border border-violet-500/30 bg-violet-500/10 text-violet-300 font-mono text-sm md:text-base tracking-widest uppercase"
+          >
+            [ le meilleur investissement ]
+          </motion.div>
+
+          <ScrollTextReveal
+            text="Ton site web ne devrait pas être une dépense. C'est le meilleur commercial de ton entreprise, ouvert 24h/24 et 7j/7 pour convertir tes visiteurs en clients."
+            className="text-3xl md:text-5xl font-black leading-tight tracking-tight inline-block"
+          />
+
+          <motion.div
+            initial={shouldReduce ? {} : { opacity: 0, y: 20 }}
+            whileInView={shouldReduce ? {} : { opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.6, duration: 0.5 }}
+            className="mt-14"
+          >
+            <a
+              href="/contact"
+              onClick={e => { e.preventDefault(); history.pushState({}, '', '/contact'); window.dispatchEvent(new PopStateEvent('popstate')) }}
+              className="inline-flex items-center gap-2 px-8 py-4 rounded-full font-bold text-white bg-gradient-to-r from-violet-600 to-pink-500 shadow-lg shadow-violet-500/20 hover:scale-105 hover:shadow-violet-500/40 transition-all"
+            >
+              On parle de ton projet ?
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+            </a>
+          </motion.div>
+        </section>
+
       </main>
 
       <Footer />
