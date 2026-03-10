@@ -27,7 +27,6 @@ function ShootingStars() {
         this.reset(true)
       }
       reset(initial = false) {
-        // start from top edge or left edge randomly
         const fromTop = Math.random() > 0.4
         this.x = fromTop ? Math.random() * canvas.width * 0.75 : 0
         this.y = fromTop ? 0 : Math.random() * canvas.height * 0.4
@@ -87,6 +86,7 @@ function ShootingStars() {
   return <canvas ref={canvasRef} className="fixed inset-0 pointer-events-none z-[0]" aria-hidden />
 }
 
+/* ─── Enhanced Custom Cursor ─── */
 function CursorGlow() {
   const x = useMotionValue(-200)
   const y = useMotionValue(-200)
@@ -95,18 +95,60 @@ function CursorGlow() {
   const dotX = useSpring(x, { stiffness: 400, damping: 30 })
   const dotY = useSpring(y, { stiffness: 400, damping: 30 })
   const [isTouch, setIsTouch] = useState(false)
+  const [isHovering, setIsHovering] = useState(false)
+  const [hoverType, setHoverType] = useState(null) // 'link', 'button', 'input'
 
   useEffect(() => {
-    // Hide on touch devices (mobile/tablet)
     const hasTouch = window.matchMedia('(pointer: coarse)').matches
     setIsTouch(hasTouch)
     if (hasTouch) return
+
     const move = (e) => { x.set(e.clientX); y.set(e.clientY) }
     window.addEventListener('mousemove', move)
-    return () => window.removeEventListener('mousemove', move)
+
+    // Detect hover over interactive elements
+    const handleMouseOver = (e) => {
+      const target = e.target.closest('a, button, [role="button"], input, select, textarea, [data-cursor="pointer"]')
+      if (target) {
+        setIsHovering(true)
+        if (target.matches('a')) setHoverType('link')
+        else if (target.matches('button, [role="button"]')) setHoverType('button')
+        else setHoverType('input')
+      }
+    }
+
+    const handleMouseOut = (e) => {
+      const target = e.target.closest('a, button, [role="button"], input, select, textarea, [data-cursor="pointer"]')
+      if (target) {
+        setIsHovering(false)
+        setHoverType(null)
+      }
+    }
+
+    document.addEventListener('mouseover', handleMouseOver)
+    document.addEventListener('mouseout', handleMouseOut)
+
+    return () => {
+      window.removeEventListener('mousemove', move)
+      document.removeEventListener('mouseover', handleMouseOver)
+      document.removeEventListener('mouseout', handleMouseOut)
+    }
   }, [x, y])
 
   if (isTouch) return null
+
+  const dotSize = isHovering ? 44 : 8
+  const dotBg = isHovering
+    ? hoverType === 'link'
+      ? 'rgba(236,72,153,0.4)'
+      : hoverType === 'button'
+        ? 'rgba(139,92,246,0.4)'
+        : 'rgba(167,139,250,0.3)'
+    : 'rgba(167,139,250,0.9)'
+  const dotShadow = isHovering
+    ? '0 0 30px 8px rgba(139,92,246,0.4)'
+    : '0 0 10px 2px rgba(139,92,246,0.7)'
+  const dotBorder = isHovering ? '2px solid rgba(255,255,255,0.3)' : 'none'
 
   return (
     <>
@@ -122,22 +164,41 @@ function CursorGlow() {
         }}
         aria-hidden
       />
-      {/* small dot */}
+      {/* interactive dot */}
       <motion.div
-        className="pointer-events-none fixed -translate-x-1/2 -translate-y-1/2 z-[9999] rounded-full mix-blend-screen"
+        className="pointer-events-none fixed -translate-x-1/2 -translate-y-1/2 z-[9999] rounded-full"
+        animate={{
+          width: dotSize,
+          height: dotSize,
+          background: dotBg,
+          boxShadow: dotShadow,
+          border: dotBorder,
+        }}
+        transition={{ type: 'spring', stiffness: 300, damping: 20 }}
         style={{
           left: dotX,
           top: dotY,
-          width: 8,
-          height: 8,
-          background: 'rgba(167,139,250,0.9)',
-          boxShadow: '0 0 10px 2px rgba(139,92,246,0.7)',
+          mixBlendMode: isHovering ? 'normal' : 'screen',
         }}
         aria-hidden
       />
+      {/* Label text inside expanded cursor */}
+      {isHovering && (
+        <motion.div
+          className="pointer-events-none fixed -translate-x-1/2 -translate-y-1/2 z-[10000] text-[8px] font-bold uppercase tracking-widest text-white/80"
+          initial={{ opacity: 0, scale: 0 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0 }}
+          style={{ left: dotX, top: dotY }}
+          aria-hidden
+        >
+          {hoverType === 'link' ? '→' : hoverType === 'button' ? '●' : ''}
+        </motion.div>
+      )}
     </>
   )
 }
+
 function ScrollProgressBar() {
   const { scrollYProgress } = useScroll()
   const scaleX = useSpring(scrollYProgress, { stiffness: 200, damping: 30 })
@@ -153,8 +214,6 @@ function ScrollProgressBar() {
     />
   )
 }
-
-// FloatingCTA remplacé par ChatBot
 
 const Home = React.lazy(() => import('./pages/Home'))
 const Pricing = React.lazy(() => import('./pages/Pricing'))
@@ -199,12 +258,12 @@ function GlobalBackground() {
           backgroundSize: '60px 60px'
         }}
       />
-      {/* grain texture */}
+      {/* grain texture (amplified) */}
       <div
         aria-hidden
         className="absolute inset-0 pointer-events-none"
         style={{
-          opacity: 0.022,
+          opacity: 0.035,
           backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
           backgroundRepeat: 'repeat',
           backgroundSize: '180px 180px',

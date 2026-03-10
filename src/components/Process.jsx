@@ -14,68 +14,93 @@ const benefits = [
   'ROI mesurable',
 ]
 
+const sectionVariants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { staggerChildren: 0.12, delayChildren: 0.1 } }
+}
+
+const cardVariant = {
+  hidden: { opacity: 0, y: 30, filter: 'blur(8px)' },
+  visible: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } }
+}
+
 export default function Process() {
   const shouldReduce = useReducedMotion()
 
   return (
     <section id="process" className="max-w-6xl mx-auto px-6 py-24">
       <motion.div
-        initial={{ opacity: 0, y: 16 }}
-        whileInView={{ opacity: 1, y: 0 }}
+        initial={shouldReduce ? {} : { opacity: 0, y: 20, filter: 'blur(8px)' }}
+        whileInView={shouldReduce ? {} : { opacity: 1, y: 0, filter: 'blur(0px)' }}
         viewport={{ once: true }}
-        transition={{ duration: 0.5 }}
+        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
         className="mb-14"
       >
         <p className="text-xs uppercase tracking-widest text-violet-400 mb-3 font-semibold">Comment on travaille</p>
-        <h2 className="text-3xl md:text-4xl font-black">Notre méthode simple et efficace</h2>
+        <h2 className="text-3xl md:text-4xl lg:text-5xl font-black glow-title">Notre méthode simple et efficace</h2>
       </motion.div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">
+      <motion.div
+        className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8"
+        variants={shouldReduce ? {} : sectionVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+      >
         {steps.map((s, i) => (
           <motion.div
             key={s.title}
-            initial={shouldReduce ? {} : { opacity: 0, y: 24 }}
-            whileInView={shouldReduce ? {} : { opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: i * 0.12, ease: [0.22, 1, 0.36, 1] }}
+            variants={shouldReduce ? {} : cardVariant}
             whileHover={shouldReduce ? {} : { y: -8, boxShadow: '0 20px 60px rgba(139,92,246,0.15)' }}
             whileTap={shouldReduce ? {} : { scale: 0.98 }}
-            className="relative p-6 md:p-8 bg-white/[0.03] border border-white/[0.07] rounded-2xl cursor-default hover:border-violet-500/30 transition-colors group"
+            className="relative p-6 md:p-8 rounded-2xl cursor-default hover:border-violet-500/30 transition-all duration-500 group"
+            style={{
+              background: 'rgba(255,255,255,0.03)',
+              backdropFilter: 'blur(12px)',
+              WebkitBackdropFilter: 'blur(12px)',
+              border: '1px solid rgba(255,255,255,0.07)',
+            }}
             tabIndex={0}
             role="article"
           >
             <span className="absolute top-5 right-5 text-xs font-black text-zinc-700 group-hover:text-violet-500/50 transition-colors">{s.num}</span>
-            <div className="text-3xl mb-5">{s.icon}</div>
+            <div className="text-3xl mb-5 transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6">{s.icon}</div>
             <h3 className="font-bold text-lg mb-3">{s.title}</h3>
             <p className="text-sm text-zinc-400 leading-relaxed">{s.text}</p>
             <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-violet-500/0 to-transparent group-hover:via-violet-500/60 transition-all duration-500 rounded-b-2xl" />
           </motion.div>
         ))}
-      </div>
+      </motion.div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+      <motion.div
+        className="grid grid-cols-1 md:grid-cols-2 gap-5"
+        variants={shouldReduce ? {} : sectionVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+      >
         <motion.div
-          initial={shouldReduce ? {} : { opacity: 0, y: 16 }}
-          whileInView={shouldReduce ? {} : { opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.1 }}
+          variants={shouldReduce ? {} : cardVariant}
           whileHover={shouldReduce ? {} : { y: -6, boxShadow: '0 20px 60px rgba(139,92,246,0.12)' }}
-          className="p-6 md:p-8 bg-gradient-to-br from-violet-600/10 to-pink-600/5 border border-violet-500/20 rounded-2xl cursor-default hover:border-violet-500/40 transition-colors"
+          className="p-6 md:p-8 bg-gradient-to-br from-violet-600/10 to-pink-600/5 border border-violet-500/20 rounded-2xl cursor-default hover:border-violet-500/40 transition-all duration-500"
         >
-          <div className="text-2xl mb-4">📊</div>
+          <div className="text-2xl mb-4 transition-transform duration-500 hover:scale-110">📊</div>
           <h4 className="font-bold mb-2">Résultats concrets</h4>
           <p className="text-sm text-zinc-400">Réduction des tâches manuelles et amélioration mesurable du ROI dès les premières semaines.</p>
         </motion.div>
 
         <motion.div
-          initial={shouldReduce ? {} : { opacity: 0, y: 16 }}
-          whileInView={shouldReduce ? {} : { opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.18 }}
+          variants={shouldReduce ? {} : cardVariant}
           whileHover={shouldReduce ? {} : { y: -6, boxShadow: '0 20px 60px rgba(139,92,246,0.12)' }}
-          className="p-6 md:p-8 bg-white/[0.03] border border-white/[0.07] rounded-2xl cursor-default hover:border-violet-500/30 transition-colors"
+          className="p-6 md:p-8 rounded-2xl cursor-default hover:border-violet-500/30 transition-all duration-500"
+          style={{
+            background: 'rgba(255,255,255,0.03)',
+            backdropFilter: 'blur(12px)',
+            WebkitBackdropFilter: 'blur(12px)',
+            border: '1px solid rgba(255,255,255,0.07)',
+          }}
         >
-          <div className="text-2xl mb-4">✨</div>
+          <div className="text-2xl mb-4 transition-transform duration-500 hover:scale-110">✨</div>
           <h4 className="font-bold mb-3">Bénéfices clés</h4>
           <ul className="space-y-2">
             {benefits.map(b => (
@@ -88,7 +113,7 @@ export default function Process() {
             ))}
           </ul>
         </motion.div>
-      </div>
+      </motion.div>
     </section>
   )
 }

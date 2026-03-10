@@ -26,10 +26,10 @@ function CyclingWord() {
       <AnimatePresence mode="wait">
         <motion.span
           key={WORDS[index]}
-          initial={{ opacity: 0, y: 16, filter: 'blur(6px)' }}
-          animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-          exit={{ opacity: 0, y: -16, filter: 'blur(6px)' }}
-          transition={{ duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
+          initial={{ opacity: 0, y: 24, filter: 'blur(8px)', scale: 0.95 }}
+          animate={{ opacity: 1, y: 0, filter: 'blur(0px)', scale: 1 }}
+          exit={{ opacity: 0, y: -24, filter: 'blur(8px)', scale: 0.95 }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
           className="text-gradient inline-block"
         >
           {WORDS[index]}
@@ -84,8 +84,8 @@ function MagneticButton({ href, className, children, onClick }) {
       style={{ x: springX, y: springY }}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      whileHover={shouldReduce ? {} : { scale: 1.04, boxShadow: '0 0 44px rgba(139,92,246,0.55)' }}
-      whileTap={{ scale: 0.97 }}
+      whileHover={shouldReduce ? {} : { scale: 1.06, boxShadow: '0 0 60px rgba(139,92,246,0.6), 0 0 120px rgba(236,72,153,0.25)' }}
+      whileTap={{ scale: 0.95 }}
       onClick={onClick}
       className={className}
     >
@@ -102,22 +102,40 @@ const stats = [
 
 const badges = ['React', 'Next.js', 'SEO', 'Tailwind', 'Framer', 'Vercel', 'WordPress', 'IA']
 
+/* ─── Stagger variants for cascading reveal ─── */
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.12,
+      delayChildren: 0.1,
+    }
+  }
+}
+
+const childVariants = {
+  hidden: { opacity: 0, y: 30, filter: 'blur(10px)' },
+  visible: {
+    opacity: 1,
+    y: 0,
+    filter: 'blur(0px)',
+    transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] }
+  }
+}
+
 export default function Hero() {
   const shouldReduce = useReducedMotion()
   const mouseX = useMotionValue(0)
   const mouseY = useMotionValue(0)
   const springX = useSpring(mouseX, { stiffness: 60, damping: 20 })
   const springY = useSpring(mouseY, { stiffness: 60, damping: 20 })
-  const orbX = useTransform(springX, v => v * -60)
-  const orbY = useTransform(springY, v => v * -40)
-  const orb2X = useTransform(springX, v => v * 40)
-  const orb2Y = useTransform(springY, v => v * 30)
-
-  const fadeUp = (delay = 0) => ({
-    initial: { opacity: 0, y: 24 },
-    animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.6, delay, ease: [0.22, 1, 0.36, 1] }
-  })
+  const orbX = useTransform(springX, v => v * -80)
+  const orbY = useTransform(springY, v => v * -50)
+  const orb2X = useTransform(springX, v => v * 50)
+  const orb2Y = useTransform(springY, v => v * 40)
+  const orb3X = useTransform(springX, v => v * -30)
+  const orb3Y = useTransform(springY, v => v * 60)
 
   return (
     <section
@@ -131,89 +149,126 @@ export default function Hero() {
         mouseY.set(cy)
       }}
     >
-      {/* parallax orb — main */}
+      {/* parallax orb — main (enhanced) */}
       <motion.div
         aria-hidden
         style={{ x: orbX, y: orbY }}
-        className="pointer-events-none absolute left-1/2 top-1/3 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px] rounded-full bg-violet-600/20 blur-[80px]"
+        className="pointer-events-none absolute left-1/2 top-1/3 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[500px] rounded-full bg-violet-600/25 blur-[100px]"
       />
-      {/* parallax orb — secondary (moves opposite) */}
+      {/* parallax orb — secondary (enhanced) */}
       <motion.div
         aria-hidden
-        animate={shouldReduce ? {} : { scale: [1, 1.1, 1], opacity: [0.15, 0.25, 0.15] }}
+        animate={shouldReduce ? {} : { scale: [1, 1.15, 1], opacity: [0.15, 0.3, 0.15] }}
         transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
         style={{ x: orb2X, y: orb2Y }}
-        className="pointer-events-none absolute right-1/4 top-1/2 w-[400px] h-[400px] rounded-full bg-pink-600/15 blur-[100px]"
+        className="pointer-events-none absolute right-1/4 top-1/2 w-[500px] h-[500px] rounded-full bg-pink-600/20 blur-[120px]"
+      />
+      {/* parallax orb — tertiary */}
+      <motion.div
+        aria-hidden
+        animate={shouldReduce ? {} : { scale: [1, 1.08, 1], opacity: [0.1, 0.2, 0.1] }}
+        transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut', delay: 4 }}
+        style={{ x: orb3X, y: orb3Y }}
+        className="pointer-events-none absolute left-1/4 bottom-1/4 w-[400px] h-[400px] rounded-full bg-indigo-500/15 blur-[100px]"
       />
 
       <div className="max-w-6xl mx-auto px-6 w-full">
-        <div className="text-center">
-
+        {/* ─── Stagger Container ─── */}
+        <motion.div
+          className="text-center"
+          variants={shouldReduce ? {} : containerVariants}
+          initial="hidden"
+          animate="visible"
+        >
           {/* badge */}
-          <motion.div {...(shouldReduce ? {} : fadeUp(0))} className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-violet-500/30 bg-violet-500/10 text-violet-300 text-xs font-medium mb-8">
-            <span className="w-1.5 h-1.5 rounded-full bg-violet-400 animate-pulse" />
+          <motion.div variants={shouldReduce ? {} : childVariants} className="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-violet-500/30 bg-violet-500/10 text-violet-300 text-xs font-medium mb-10">
+            <span className="w-2 h-2 rounded-full bg-violet-400 animate-pulse" />
             Agence digitale — Sites, Identité & SEO
           </motion.div>
 
-          {/* headline */}
-          <motion.h1 {...(shouldReduce ? {} : fadeUp(0.1))} className="text-4xl sm:text-6xl md:text-7xl font-black leading-[1.1] tracking-tight">
-            <span className="block">On crée des sites</span>
-            <span className="block mt-1"><CyclingWord /></span>
-          </motion.h1>
+          {/* ─── Hero Headline with Mixed Weights + Glow ─── */}
+          <motion.div variants={shouldReduce ? {} : childVariants} className="relative">
+            {/* Glow spot behind title */}
+            <div
+              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[200px] rounded-full pointer-events-none"
+              style={{
+                background: 'radial-gradient(ellipse, rgba(139,92,246,0.3) 0%, rgba(236,72,153,0.1) 40%, transparent 70%)',
+              }}
+              aria-hidden
+            />
+            <h1 className="relative text-5xl sm:text-7xl md:text-8xl lg:text-[6.5rem] leading-[1.05] tracking-tight">
+              <span className="block font-extralight text-zinc-300">On crée des</span>
+              <span className="block mt-2 font-black">
+                sites <CyclingWord />
+              </span>
+            </h1>
+          </motion.div>
 
-          <motion.p {...(shouldReduce ? {} : fadeUp(0.25))} className="mt-6 text-base md:text-xl text-zinc-400 max-w-2xl mx-auto leading-relaxed">
+          <motion.p variants={shouldReduce ? {} : childVariants} className="mt-8 text-base md:text-xl text-zinc-400 max-w-2xl mx-auto leading-relaxed">
             Sites sur-mesure, refonte, SEO et supports print — des expériences digitales pensées pour faire grandir ta marque.
           </motion.p>
 
           {/* CTAs */}
-          <motion.div {...(shouldReduce ? {} : fadeUp(0.35))} className="mt-10 flex flex-wrap justify-center gap-4">
+          <motion.div variants={shouldReduce ? {} : childVariants} className="mt-12 flex flex-wrap justify-center gap-4">
             <MagneticButton
               href="/contact"
               onClick={(e) => { e.preventDefault(); history.pushState({}, '', '/contact'); window.dispatchEvent(new PopStateEvent('popstate')) }}
-              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-semibold text-white bg-gradient-to-r from-violet-600 to-pink-500 shadow-lg shadow-violet-500/30 transition-shadow"
+              className="group relative inline-flex items-center gap-2.5 px-8 py-4 rounded-full font-semibold text-white bg-gradient-to-r from-violet-600 to-pink-500 shadow-lg shadow-violet-500/30 transition-all duration-300 overflow-hidden"
             >
-              Demander un devis
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+              {/* shimmer sweep */}
+              <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
+              <span className="relative">Demander un devis</span>
+              <svg className="relative w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
             </MagneticButton>
             <motion.a
               href="#services"
-              whileHover={shouldReduce ? {} : { scale: 1.03 }}
+              whileHover={shouldReduce ? {} : { scale: 1.04 }}
               whileTap={shouldReduce ? {} : { scale: 0.97 }}
-              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-semibold border border-white/15 text-white/80 hover:text-white hover:border-white/30 transition-colors"
+              className="inline-flex items-center gap-2 px-8 py-4 rounded-full font-semibold border border-white/15 text-white/80 hover:text-white hover:border-white/30 hover:bg-white/5 transition-all duration-300"
             >
               Nos services
             </motion.a>
           </motion.div>
 
           {/* tech badges */}
-          <motion.div {...(shouldReduce ? {} : fadeUp(0.45))} className="mt-12 flex flex-wrap justify-center gap-2">
-            {badges.map((b) => (
-              <span key={b} className="px-3 py-1 rounded-full text-xs font-medium bg-white/5 border border-white/10 text-zinc-400">{b}</span>
+          <motion.div variants={shouldReduce ? {} : childVariants} className="mt-14 flex flex-wrap justify-center gap-2">
+            {badges.map((b, i) => (
+              <motion.span
+                key={b}
+                whileHover={{ scale: 1.1, borderColor: 'rgba(139,92,246,0.5)' }}
+                className="px-3.5 py-1.5 rounded-full text-xs font-medium bg-white/[0.04] border border-white/10 text-zinc-400 backdrop-blur-sm transition-colors hover:text-violet-300"
+              >
+                {b}
+              </motion.span>
             ))}
           </motion.div>
 
           {/* stats */}
-          <motion.div {...(shouldReduce ? {} : fadeUp(0.55))} className="mt-16 grid grid-cols-3 gap-2 sm:gap-4 max-w-lg mx-auto">
+          <motion.div variants={shouldReduce ? {} : childVariants} className="mt-16 grid grid-cols-3 gap-3 sm:gap-6 max-w-lg mx-auto">
             {stats.map((s) => (
               <div key={s.label} className="text-center px-1">
-                <div className="text-xl sm:text-2xl md:text-3xl font-black text-gradient"><CountUp value={s.value} /></div>
-                <div className="text-[10px] sm:text-xs text-zinc-500 mt-1 leading-tight">{s.label}</div>
+                <div className="text-2xl sm:text-3xl md:text-4xl font-black text-gradient"><CountUp value={s.value} /></div>
+                <div className="text-[10px] sm:text-xs text-zinc-500 mt-1.5 leading-tight">{s.label}</div>
               </div>
             ))}
           </motion.div>
 
           {/* scroll indicator */}
           <motion.div
-            {...(shouldReduce ? {} : { animate: { y: [0, 8, 0] }, transition: { duration: 2, repeat: Infinity } })}
-            className="mt-16 flex justify-center"
+            variants={shouldReduce ? {} : childVariants}
+            className="mt-20 flex justify-center"
           >
-            <div className="flex flex-col items-center gap-1 text-zinc-600">
-              <div className="w-px h-8 bg-gradient-to-b from-transparent to-zinc-600" />
+            <motion.div
+              animate={shouldReduce ? {} : { y: [0, 10, 0] }}
+              transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
+              className="flex flex-col items-center gap-1.5 text-zinc-600"
+            >
+              <div className="w-px h-10 bg-gradient-to-b from-transparent via-violet-500/30 to-zinc-600" />
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
-            </div>
+            </motion.div>
           </motion.div>
 
-        </div>
+        </motion.div>
       </div>
     </section>
   )

@@ -16,11 +16,18 @@ const links = [
 export default function Nav() {
   const [open, setOpen] = useState(false)
   const [current, setCurrent] = useState(window.location.pathname)
+  const [scrolled, setScrolled] = useState(false)
 
   useEffect(() => {
     const onPop = () => { setCurrent(window.location.pathname); setOpen(false) }
     window.addEventListener('popstate', onPop)
     return () => window.removeEventListener('popstate', onPop)
+  }, [])
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 20)
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
   const handleNav = (e, link) => {
@@ -37,22 +44,23 @@ export default function Nav() {
 
   return (
     <>
-      {/* Sticky wrapper with padding so the pill floats */}
+      {/* Sticky wrapper — compact floating pill */}
       <motion.div
         initial={{ y: -80, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.55, ease: 'easeOut' }}
-        className="sticky top-0 z-50 px-4 pt-3 pb-4"
+        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        className="sticky top-0 z-50 px-4 pt-2.5 pb-3"
       >
-        {/* Glass pill container */}
+        {/* Glass pill container — compact */}
         <div
-          className="mx-auto max-w-5xl rounded-2xl overflow-hidden"
+          className={`mx-auto max-w-4xl rounded-xl overflow-hidden transition-all duration-500 ${scrolled ? 'shadow-2xl shadow-black/40' : ''
+            }`}
           style={{
-            background: 'rgba(10, 8, 22, 0.55)',
-            backdropFilter: 'blur(24px)',
-            WebkitBackdropFilter: 'blur(24px)',
-            border: '1px solid rgba(255,255,255,0.10)',
-            boxShadow: '0 4px 32px rgba(0,0,0,0.45), 0 1px 0 rgba(255,255,255,0.08) inset, 0 0 0 1px rgba(139,92,246,0.08)',
+            background: scrolled ? 'rgba(10, 8, 22, 0.7)' : 'rgba(10, 8, 22, 0.45)',
+            backdropFilter: 'blur(32px)',
+            WebkitBackdropFilter: 'blur(32px)',
+            border: '1px solid rgba(255,255,255,0.08)',
+            boxShadow: `0 4px 32px rgba(0,0,0,0.45), 0 1px 0 rgba(255,255,255,0.06) inset, 0 0 0 1px rgba(139,92,246,${scrolled ? '0.12' : '0.06'})`,
           }}
         >
           {/* Top shimmer line */}
@@ -63,30 +71,30 @@ export default function Nav() {
             }}
           />
 
-          <div className="px-5 flex items-center justify-between h-13" style={{ height: '52px' }}>
+          <div className="px-4 flex items-center justify-between" style={{ height: '44px' }}>
             {/* Logo */}
             <a
               href="/"
               onClick={(e) => handleNav(e, { path: '/' })}
               className="flex items-center gap-2 group"
             >
-              <span className="font-etna font-extrabold text-2xl tracking-tight bg-gradient-to-r from-white to-zinc-400 bg-clip-text text-transparent">W.</span>
+              <span className="font-etna font-extrabold text-xl tracking-tight bg-gradient-to-r from-white to-zinc-400 bg-clip-text text-transparent group-hover:from-violet-300 group-hover:to-pink-300 transition-all duration-300">W.</span>
             </a>
 
             {/* Desktop links */}
-            <nav className="hidden md:flex items-center gap-1">
+            <nav className="hidden md:flex items-center gap-0.5">
               {links.map((link) => (
                 <a
                   key={link.label}
                   href={link.path}
                   onClick={(e) => handleNav(e, link)}
-                  className={`relative px-4 py-2 text-sm font-medium rounded-full transition-colors duration-200 ${isActive(link) ? 'text-white' : 'text-zinc-400 hover:text-white'
+                  className={`relative px-3.5 py-1.5 text-[13px] font-medium rounded-lg transition-colors duration-200 ${isActive(link) ? 'text-white' : 'text-zinc-400 hover:text-white'
                     }`}
                 >
                   {isActive(link) && (
                     <motion.span
                       layoutId="nav-pill"
-                      className="absolute inset-0 rounded-full bg-white/10 border border-white/10"
+                      className="absolute inset-0 rounded-lg bg-white/10 border border-white/10"
                       transition={{ type: 'spring', stiffness: 400, damping: 35 }}
                     />
                   )}
@@ -96,10 +104,11 @@ export default function Nav() {
               <a
                 href="/contact"
                 onClick={(e) => { e.preventDefault(); navigate('/contact') }}
-                className="ml-2 relative inline-flex items-center gap-1.5 px-5 py-2 rounded-full text-sm font-semibold text-white bg-gradient-to-r from-violet-600 to-pink-500 shadow-md shadow-violet-500/30 hover:shadow-violet-500/60 hover:scale-105 active:scale-95 transition-all duration-200"
+                className="ml-2 relative inline-flex items-center gap-1.5 px-4 py-1.5 rounded-lg text-[13px] font-semibold text-white bg-gradient-to-r from-violet-600 to-pink-500 shadow-md shadow-violet-500/30 hover:shadow-violet-500/60 hover:scale-105 active:scale-95 transition-all duration-200 overflow-hidden group"
               >
-                Devis gratuit
-                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+                <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/15 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
+                <span className="relative">Devis gratuit</span>
+                <svg className="relative w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
               </a>
             </nav>
 
@@ -109,32 +118,32 @@ export default function Nav() {
               onClick={() => setOpen(o => !o)}
               className="md:hidden flex flex-col gap-1.5 p-2 rounded-lg hover:bg-white/5 transition-colors"
             >
-              <motion.span animate={{ rotate: open ? 45 : 0, y: open ? 8 : 0 }} className="block w-6 h-0.5 bg-white origin-center transition-all" />
-              <motion.span animate={{ opacity: open ? 0 : 1, scaleX: open ? 0 : 1 }} className="block w-6 h-0.5 bg-white" />
-              <motion.span animate={{ rotate: open ? -45 : 0, y: open ? -8 : 0 }} className="block w-6 h-0.5 bg-white origin-center transition-all" />
+              <motion.span animate={{ rotate: open ? 45 : 0, y: open ? 8 : 0 }} className="block w-5 h-0.5 bg-white origin-center transition-all" />
+              <motion.span animate={{ opacity: open ? 0 : 1, scaleX: open ? 0 : 1 }} className="block w-5 h-0.5 bg-white" />
+              <motion.span animate={{ rotate: open ? -45 : 0, y: open ? -8 : 0 }} className="block w-5 h-0.5 bg-white origin-center transition-all" />
             </button>
           </div>
         </div>
 
-        {/* Mobile menu — extends below the pill */}
+        {/* Mobile menu */}
         <AnimatePresence>
           {open && (
             <motion.div
               key="mobile-menu"
-              initial={{ opacity: 0, y: -8 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.2, ease: 'easeInOut' }}
-              className="md:hidden mx-auto max-w-5xl mt-2 rounded-2xl overflow-hidden"
+              initial={{ opacity: 0, y: -8, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -8, scale: 0.98 }}
+              transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+              className="md:hidden mx-auto max-w-4xl mt-2 rounded-xl overflow-hidden"
               style={{
-                background: 'rgba(10, 8, 22, 0.80)',
-                backdropFilter: 'blur(24px)',
-                WebkitBackdropFilter: 'blur(24px)',
-                border: '1px solid rgba(255,255,255,0.09)',
-                boxShadow: '0 8px 32px rgba(0,0,0,0.5)',
+                background: 'rgba(10, 8, 22, 0.85)',
+                backdropFilter: 'blur(32px)',
+                WebkitBackdropFilter: 'blur(32px)',
+                border: '1px solid rgba(255,255,255,0.08)',
+                boxShadow: '0 8px 40px rgba(0,0,0,0.5)',
               }}
             >
-              <div className="px-5 py-4 space-y-1">
+              <div className="px-4 py-3 space-y-1">
                 {links.map((link, i) => (
                   <motion.a
                     key={link.label}
@@ -143,7 +152,7 @@ export default function Nav() {
                     initial={{ opacity: 0, x: -10 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: i * 0.05 }}
-                    className={`block px-4 py-3 rounded-xl text-sm font-medium transition-colors ${isActive(link) ? 'bg-white/10 text-white' : 'text-zinc-400 hover:text-white hover:bg-white/5'
+                    className={`block px-4 py-2.5 rounded-lg text-sm font-medium transition-colors ${isActive(link) ? 'bg-white/10 text-white' : 'text-zinc-400 hover:text-white hover:bg-white/5'
                       }`}
                   >
                     {link.label}
@@ -152,7 +161,7 @@ export default function Nav() {
                 <a
                   href="/contact"
                   onClick={(e) => { e.preventDefault(); navigate('/contact'); setOpen(false) }}
-                  className="mt-2 w-full flex items-center justify-center gap-2 px-5 py-3 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-violet-600 to-pink-500 shadow shadow-violet-500/30"
+                  className="mt-2 w-full flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold text-white bg-gradient-to-r from-violet-600 to-pink-500 shadow shadow-violet-500/30"
                 >
                   Devis gratuit
                 </a>
