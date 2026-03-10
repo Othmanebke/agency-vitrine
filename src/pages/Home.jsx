@@ -1,5 +1,5 @@
 import React, { useRef } from 'react'
-import { motion, useReducedMotion, useMotionValue, useSpring } from 'framer-motion'
+import { motion, useReducedMotion, useMotionValue, useSpring, useScroll, useTransform } from 'framer-motion'
 import { useSEO } from '../hooks/useSEO'
 import Nav from '../components/Nav'
 import Hero from '../components/Hero'
@@ -8,6 +8,16 @@ import Testimonials from '../components/Testimonials'
 import FAQ from '../components/FAQ'
 import Packages from '../components/Packages'
 import Footer from '../components/Footer'
+import {
+  MarqueeBand,
+  ScrollTextReveal,
+  HorizontalScroll,
+  HorizontalSlide,
+  ScrollSkewWrapper,
+  Scroll3DCard,
+  ParallaxSection,
+  MagneticTitle,
+} from '../components/ScrollEffects'
 
 /* ─── Service Icons (animated SVGs) ─── */
 function IconWeb() {
@@ -144,73 +154,151 @@ function BentoCard({ service, index }) {
   const Icon = service.icon
 
   return (
-    <motion.article
-      ref={ref}
-      variants={{
-        hidden: { opacity: 0, y: 30, filter: 'blur(8px)' },
-        visible: {
-          opacity: 1,
-          y: 0,
-          filter: 'blur(0px)',
-          transition: { delay: index * 0.1, duration: 0.6, ease: [0.22, 1, 0.36, 1] }
-        }
-      }}
-      whileHover={shouldReduce ? {} : { y: -8, boxShadow: '0 24px 80px rgba(139,92,246,0.2)' }}
-      whileTap={shouldReduce ? {} : { scale: 0.98 }}
-      onMouseMove={handleMove}
-      onMouseLeave={handleLeave}
-      className={`group relative overflow-hidden rounded-2xl cursor-default transition-colors duration-500 ${service.span} ${service.size === 'large'
-        ? 'p-8 md:p-10'
-        : service.size === 'tall'
-          ? 'p-8'
-          : 'p-6 md:p-8'
-        }`}
-      style={{
-        rotateX: springRX,
-        rotateY: springRY,
-        transformPerspective: 800,
-        background: 'rgba(255,255,255,0.03)',
-        backdropFilter: 'blur(12px)',
-        WebkitBackdropFilter: 'blur(12px)',
-        border: '1px solid rgba(255,255,255,0.07)',
-      }}
-      tabIndex={0}
-      role="listitem"
-      aria-label={service.title}
-    >
-      {/* Gradient border on hover */}
-      <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-        style={{
-          background: 'linear-gradient(135deg, rgba(139,92,246,0.3), rgba(236,72,153,0.2), rgba(139,92,246,0.1))',
-          padding: '1px',
-          WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
-          WebkitMaskComposite: 'xor',
-          maskComposite: 'exclude',
+    <Scroll3DCard index={index} className={service.span}>
+      <motion.article
+        ref={ref}
+        variants={{
+          hidden: { opacity: 0, y: 30, filter: 'blur(8px)' },
+          visible: {
+            opacity: 1,
+            y: 0,
+            filter: 'blur(0px)',
+            transition: { delay: index * 0.1, duration: 0.6, ease: [0.22, 1, 0.36, 1] }
+          }
         }}
-      />
-
-      {/* Hover glow */}
-      <div
-        className="absolute -top-20 -right-20 w-[200px] h-[200px] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"
-        style={{ background: 'radial-gradient(circle, rgba(139,92,246,0.15) 0%, transparent 70%)' }}
-        aria-hidden
-      />
-
-      {/* Icon with hover animation */}
-      <motion.div
-        className="text-zinc-300 mb-5 group-hover:text-violet-300 transition-colors duration-500"
-        whileHover={shouldReduce ? {} : { scale: 1.15, rotate: 5 }}
-        transition={{ type: 'spring', stiffness: 300, damping: 15 }}
+        whileHover={shouldReduce ? {} : { y: -8, boxShadow: '0 24px 80px rgba(139,92,246,0.2)' }}
+        whileTap={shouldReduce ? {} : { scale: 0.98 }}
+        onMouseMove={handleMove}
+        onMouseLeave={handleLeave}
+        className={`group relative overflow-hidden rounded-2xl cursor-default transition-colors duration-500 h-full ${service.size === 'large'
+            ? 'p-8 md:p-10'
+            : service.size === 'tall'
+              ? 'p-8'
+              : 'p-6 md:p-8'
+          }`}
+        style={{
+          rotateX: springRX,
+          rotateY: springRY,
+          transformPerspective: 800,
+          background: 'rgba(255,255,255,0.03)',
+          backdropFilter: 'blur(12px)',
+          WebkitBackdropFilter: 'blur(12px)',
+          border: '1px solid rgba(255,255,255,0.07)',
+        }}
+        tabIndex={0}
+        role="listitem"
+        aria-label={service.title}
       >
-        <Icon />
-      </motion.div>
+        {/* Gradient border on hover */}
+        <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+          style={{
+            background: 'linear-gradient(135deg, rgba(139,92,246,0.3), rgba(236,72,153,0.2), rgba(139,92,246,0.1))',
+            padding: '1px',
+            WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+            WebkitMaskComposite: 'xor',
+            mask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+            maskComposite: 'exclude',
+          }}
+        />
 
-      <h3 className="font-bold mb-3 text-lg group-hover:text-white transition-colors duration-300">{service.title}</h3>
-      <p className="text-zinc-400 text-sm leading-relaxed group-hover:text-zinc-300 transition-colors duration-300">{service.desc}</p>
+        {/* Hover glow */}
+        <div
+          className="absolute -top-20 -right-20 w-[200px] h-[200px] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"
+          style={{ background: 'radial-gradient(circle, rgba(139,92,246,0.15) 0%, transparent 70%)' }}
+          aria-hidden
+        />
 
-      {/* Bottom gradient line */}
-      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-violet-500/0 to-transparent group-hover:via-violet-500/60 transition-all duration-500" />
-    </motion.article>
+        {/* Icon */}
+        <motion.div
+          className="text-zinc-300 mb-5 group-hover:text-violet-300 transition-colors duration-500"
+          whileHover={shouldReduce ? {} : { scale: 1.15, rotate: 5 }}
+          transition={{ type: 'spring', stiffness: 300, damping: 15 }}
+        >
+          <Icon />
+        </motion.div>
+
+        <h3 className="font-bold mb-3 text-lg group-hover:text-white transition-colors duration-300">{service.title}</h3>
+        <p className="text-zinc-400 text-sm leading-relaxed group-hover:text-zinc-300 transition-colors duration-300">{service.desc}</p>
+
+        {/* Bottom gradient line */}
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-violet-500/0 to-transparent group-hover:via-violet-500/60 transition-all duration-500" />
+      </motion.article>
+    </Scroll3DCard>
+  )
+}
+
+/* ─── Horizontal Scroll Showcase Items ─── */
+const showcaseItems = [
+  {
+    num: '01',
+    title: 'Analyse &\nStratégie',
+    desc: 'Audit complet de ton écosystème digital. On identifie les leviers, les freins, et on construit une roadmap sur-mesure.',
+    color: 'from-violet-500/20 to-indigo-500/10',
+    accent: 'violet',
+  },
+  {
+    num: '02',
+    title: 'Design &\nPrototypage',
+    desc: 'Maquettes haute fidélité, design system cohérent, et prototypes interactifs pour valider chaque pixel.',
+    color: 'from-pink-500/20 to-rose-500/10',
+    accent: 'pink',
+  },
+  {
+    num: '03',
+    title: 'Développement\nSur-Mesure',
+    desc: 'Code propre, performant, accessible. React, Next.js, WordPress — on choisit la stack qui te correspond.',
+    color: 'from-emerald-500/20 to-teal-500/10',
+    accent: 'emerald',
+  },
+  {
+    num: '04',
+    title: 'Lancement &\nOptimisation',
+    desc: 'Déploiement, SEO, monitoring et optimisation continue pour des résultats qui durent.',
+    color: 'from-amber-500/20 to-orange-500/10',
+    accent: 'amber',
+  },
+]
+
+function ShowcaseCard({ item, index }) {
+  const shouldReduce = useReducedMotion()
+
+  return (
+    <motion.div
+      initial={shouldReduce ? {} : { opacity: 0, scale: 0.9 }}
+      whileInView={shouldReduce ? {} : { opacity: 1, scale: 1 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.6, delay: 0.1 }}
+      className="relative w-[80vw] md:w-[40vw] max-w-xl flex-shrink-0"
+    >
+      <div
+        className={`relative h-[60vh] max-h-[500px] rounded-3xl p-8 md:p-12 flex flex-col justify-between overflow-hidden bg-gradient-to-br ${item.color}`}
+        style={{
+          border: '1px solid rgba(255,255,255,0.08)',
+          backdropFilter: 'blur(12px)',
+        }}
+      >
+        {/* Large number background */}
+        <span className="absolute -right-4 -top-8 text-[12rem] font-black text-white/[0.03] leading-none select-none pointer-events-none">
+          {item.num}
+        </span>
+
+        <div>
+          <span className={`text-xs font-mono tracking-widest uppercase text-${item.accent}-400/80`}>
+            Étape {item.num}
+          </span>
+          <h3 className="text-3xl md:text-4xl font-black mt-4 leading-tight whitespace-pre-line">
+            {item.title}
+          </h3>
+        </div>
+
+        <p className="text-zinc-400 text-sm md:text-base leading-relaxed max-w-sm">
+          {item.desc}
+        </p>
+
+        {/* Bottom shimmer */}
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+      </div>
+    </motion.div>
   )
 }
 
@@ -229,35 +317,81 @@ export default function Home() {
       <main role="main">
         <Hero />
 
-        {/* ─── Bento Grid Services ─── */}
-        <section id="services" className="max-w-6xl mx-auto px-6 py-24">
-          <motion.div
-            initial={shouldReduce ? {} : { opacity: 0, y: 20, filter: 'blur(8px)' }}
-            whileInView={shouldReduce ? {} : { opacity: 1, y: 0, filter: 'blur(0px)' }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <p className="text-xs uppercase tracking-widest text-violet-400 mb-3 font-semibold">Ce qu'on fait</p>
-            <h2 className="text-3xl md:text-5xl lg:text-6xl font-black mb-4 glow-title">Nos services</h2>
-            <p className="text-zinc-400 max-w-xl mb-14">Tout ce dont tu as besoin pour exister et performer en ligne.</p>
-          </motion.div>
+        {/* ─── Marquee Band ─── */}
+        <MarqueeBand />
 
-          <motion.div
-            className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5 auto-rows-auto"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.15 }}
-            variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.1 } } }}
-            role="list"
-            aria-label="Nos services"
-          >
-            {services.map((s, i) => (
-              <BentoCard key={s.title} service={s} index={i} />
-            ))}
-          </motion.div>
+        {/* ─── Bento Grid Services ─── */}
+        <ParallaxSection>
+          <section id="services" className="max-w-6xl mx-auto px-6 py-24">
+            <motion.div
+              initial={shouldReduce ? {} : { opacity: 0, y: 20, filter: 'blur(8px)' }}
+              whileInView={shouldReduce ? {} : { opacity: 1, y: 0, filter: 'blur(0px)' }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <p className="text-xs uppercase tracking-widest text-violet-400 mb-3 font-semibold">Ce qu'on fait</p>
+              <MagneticTitle>
+                <h2 className="text-3xl md:text-5xl lg:text-6xl font-black mb-4 glow-title">Nos services</h2>
+              </MagneticTitle>
+              <p className="text-zinc-400 max-w-xl mb-14">Tout ce dont tu as besoin pour exister et performer en ligne.</p>
+            </motion.div>
+
+            <motion.div
+              className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5 auto-rows-auto"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.15 }}
+              variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.1 } } }}
+              role="list"
+              aria-label="Nos services"
+            >
+              {services.map((s, i) => (
+                <BentoCard key={s.title} service={s} index={i} />
+              ))}
+            </motion.div>
+          </section>
+        </ParallaxSection>
+
+        {/* ─── Big Statement — Character Reveal ─── */}
+        <section className="max-w-5xl mx-auto px-6 py-24 md:py-32">
+          <ScrollTextReveal
+            text="Nous ne faisons pas de sites web. Nous créons des expériences digitales qui transforment tes visiteurs en clients."
+            className="text-3xl md:text-5xl lg:text-6xl font-black leading-tight tracking-tight"
+          />
         </section>
 
-        <Process />
+        {/* ─── Horizontal Scroll Process ─── */}
+        <div className="relative">
+          <div className="max-w-6xl mx-auto px-6 pt-16 pb-8">
+            <motion.div
+              initial={shouldReduce ? {} : { opacity: 0, y: 20, filter: 'blur(8px)' }}
+              whileInView={shouldReduce ? {} : { opacity: 1, y: 0, filter: 'blur(0px)' }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
+              <p className="text-xs uppercase tracking-widest text-violet-400 mb-3 font-semibold">Notre processus</p>
+              <MagneticTitle>
+                <h2 className="text-3xl md:text-5xl lg:text-6xl font-black glow-title">Comment on travaille</h2>
+              </MagneticTitle>
+            </motion.div>
+          </div>
+
+          <HorizontalScroll itemCount={4}>
+            {showcaseItems.map((item, i) => (
+              <HorizontalSlide key={item.num} className="gap-8">
+                <ShowcaseCard item={item} index={i} />
+              </HorizontalSlide>
+            ))}
+          </HorizontalScroll>
+        </div>
+
+        {/* ─── Process (with skew effect) ─── */}
+        <ScrollSkewWrapper>
+          <Process />
+        </ScrollSkewWrapper>
+
+        {/* ─── Another Marquee ─── */}
+        <MarqueeBand />
 
         <Testimonials />
 
