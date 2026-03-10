@@ -4,6 +4,7 @@ import { useSEO } from '../hooks/useSEO'
 import Nav from '../components/Nav'
 import Hero from '../components/Hero'
 import Process from '../components/Process'
+import Portfolio from '../components/Portfolio'
 import Testimonials from '../components/Testimonials'
 import FAQ from '../components/FAQ'
 import Packages from '../components/Packages'
@@ -171,10 +172,10 @@ function BentoCard({ service, index }) {
         onMouseMove={handleMove}
         onMouseLeave={handleLeave}
         className={`group relative overflow-hidden rounded-2xl cursor-default transition-colors duration-500 h-full ${service.size === 'large'
-            ? 'p-8 md:p-10'
-            : service.size === 'tall'
-              ? 'p-8'
-              : 'p-6 md:p-8'
+          ? 'p-8 md:p-10'
+          : service.size === 'tall'
+            ? 'p-8'
+            : 'p-6 md:p-8'
           }`}
         style={{
           rotateX: springRX,
@@ -390,6 +391,8 @@ export default function Home() {
           <Process />
         </ScrollSkewWrapper>
 
+        <Portfolio />
+
         {/* ─── Another Marquee ─── */}
         <MarqueeBand />
 
@@ -398,6 +401,7 @@ export default function Home() {
         <FAQ />
 
         <Packages />
+
 
       </main>
 
