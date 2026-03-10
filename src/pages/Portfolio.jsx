@@ -16,7 +16,7 @@ const projects = [
     tech: ['WordPress', 'SEO', 'Tailwind'],
     color: 'from-amber-500/20 to-orange-600/10',
     accent: '#f59e0b',
-    image: new URL('../assets/portfolio/p1.jpg', import.meta.url).href
+    image: new URL('../assets/portfolio/p1.webp', import.meta.url).href
   },
   {
     id: 2,
@@ -27,7 +27,7 @@ const projects = [
     tech: ['Next.js', 'Framer', 'Stripe'],
     color: 'from-rose-500/20 to-red-600/10',
     accent: '#f43f5e',
-    image: new URL('../assets/portfolio/p2.jpg', import.meta.url).href
+    image: new URL('../assets/portfolio/p2.webp', import.meta.url).href
   },
   {
     id: 3,
@@ -38,7 +38,7 @@ const projects = [
     tech: ['Google Maps', 'SEO On-Page', 'Copywriting'],
     color: 'from-orange-500/20 to-yellow-600/10',
     accent: '#f97316',
-    image: new URL('../assets/portfolio/p3.jpg', import.meta.url).href
+    image: new URL('../assets/portfolio/p3.webp', import.meta.url).href
   },
   {
     id: 4,
@@ -49,7 +49,7 @@ const projects = [
     tech: ['Figma', 'Illustrator', 'React'],
     color: 'from-pink-500/20 to-fuchsia-600/10',
     accent: '#ec4899',
-    image: new URL('../assets/portfolio/p4.jpg', import.meta.url).href
+    image: new URL('../assets/portfolio/p4.webp', import.meta.url).href
   },
   {
     id: 5,
@@ -60,7 +60,7 @@ const projects = [
     tech: ['Shopify', 'Liquid', 'Tailwind'],
     color: 'from-zinc-500/20 to-slate-600/10',
     accent: '#a1a1aa',
-    image: new URL('../assets/portfolio/p5.jpg', import.meta.url).href
+    image: new URL('../assets/portfolio/p5.webp', import.meta.url).href
   },
   {
     id: 6,
@@ -71,7 +71,7 @@ const projects = [
     tech: ['React', 'Google Tag Manager', 'Ads'],
     color: 'from-indigo-500/20 to-violet-600/10',
     accent: '#8b5cf6',
-    image: new URL('../assets/portfolio/p6.jpg', import.meta.url).href
+    image: new URL('../assets/portfolio/p6.webp', import.meta.url).href
   },
   {
     id: 7,
@@ -82,7 +82,7 @@ const projects = [
     tech: ['React', 'Recharts', 'Tailwind'],
     color: 'from-sky-500/20 to-blue-600/10',
     accent: '#0ea5e9',
-    image: new URL('../assets/portfolio/p7.jpg', import.meta.url).href
+    image: new URL('../assets/portfolio/p7.webp', import.meta.url).href
   },
   {
     id: 8,
@@ -93,7 +93,7 @@ const projects = [
     tech: ['Node.js', 'PostgreSQL', 'Express'],
     color: 'from-emerald-500/20 to-teal-600/10',
     accent: '#10b981',
-    image: new URL('../assets/portfolio/p8.jpg', import.meta.url).href
+    image: new URL('../assets/portfolio/p8.webp', import.meta.url).href
   },
   {
     id: 9,
@@ -104,7 +104,7 @@ const projects = [
     tech: ['Shopify Plus', 'Framer Motion', 'React'],
     color: 'from-violet-500/20 to-purple-600/10',
     accent: '#a78bfa',
-    image: new URL('../assets/portfolio/p9.jpg', import.meta.url).href
+    image: new URL('../assets/portfolio/p9.webp', import.meta.url).href
   },
   {
     id: 10,
@@ -115,7 +115,7 @@ const projects = [
     tech: ['Three.js', 'Vite', 'GSAP'],
     color: 'from-lime-500/20 to-green-600/10',
     accent: '#84cc16',
-    image: new URL('../assets/portfolio/p10.jpg', import.meta.url).href
+    image: new URL('../assets/portfolio/p10.webp', import.meta.url).href
   }
 ]
 
@@ -196,6 +196,7 @@ function PortfolioCarouselCard({ project, onSelect }) {
           <motion.img
             src={project.image}
             alt={project.title}
+            loading="lazy"
             className="w-full h-full object-cover object-top grayscale-[0.3] group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-105 opacity-80 group-hover:opacity-100"
             onError={e => { e.currentTarget.style.display = 'none'; e.currentTarget.parentElement.style.background = '#111' }}
           />
@@ -307,6 +308,7 @@ function StackMarquee() {
               alt={s.name}
               width={52}
               height={52}
+              loading="lazy"
               className="object-contain opacity-60 group-hover:opacity-100 transition-opacity duration-300"
               style={{ width: 52, height: 52 }}
             />
@@ -351,7 +353,7 @@ export default function PortfolioPage() {
             <h2 className="text-4xl font-black mb-8">Nos réalisations</h2>
             {projects.map(p => (
               <div key={p.id} className="p-8 border border-white/10 rounded-3xl bg-white/5 flex flex-col gap-4">
-                <img src={p.image} alt={p.title} className="w-full h-auto rounded-xl object-cover" />
+                <img src={p.image} alt={p.title} loading="lazy" className="w-full h-auto rounded-xl object-cover" />
                 <h3 className="text-3xl font-bold mt-4">{p.title} <span className="text-zinc-400 font-light">{p.subtitle}</span></h3>
                 <p className="text-zinc-400 mb-2">{p.desc}</p>
                 <div className="flex gap-2 flex-wrap">
@@ -447,7 +449,7 @@ export default function PortfolioPage() {
                 </div>
 
                 <div className="w-full md:w-1/2 relative bg-black/50 overflow-hidden min-h-[300px]">
-                  <img src={selectedProject.image} alt={selectedProject.title} className="w-full h-full object-cover object-top opacity-90" />
+                  <img src={selectedProject.image} alt={selectedProject.title} loading="lazy" className="w-full h-full object-cover object-top opacity-90" />
                   <button
                     onClick={() => setSelectedProject(null)}
                     className="absolute top-6 right-6 w-10 h-10 rounded-full bg-black/50 border border-white/20 flex items-center justify-center text-white backdrop-blur-md hover:bg-white hover:text-black transition-colors"

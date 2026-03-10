@@ -4,7 +4,7 @@ import SplashScreen from './components/SplashScreen'
 import ChatBot from './components/ChatBot'
 import CookieBanner from './components/CookieBanner'
 
-function ShootingStars() {
+const ShootingStars = React.memo(function ShootingStars() {
   const canvasRef = useRef(null)
   const shouldReduce = useReducedMotion()
 
@@ -84,10 +84,10 @@ function ShootingStars() {
 
   if (shouldReduce) return null
   return <canvas ref={canvasRef} className="fixed inset-0 pointer-events-none z-[0]" aria-hidden />
-}
+})
 
 /* ─── Enhanced Custom Cursor ─── */
-function CursorGlow() {
+const CursorGlow = React.memo(function CursorGlow() {
   const x = useMotionValue(-200)
   const y = useMotionValue(-200)
   const springX = useSpring(x, { stiffness: 120, damping: 18 })
@@ -197,7 +197,7 @@ function CursorGlow() {
       )}
     </>
   )
-}
+})
 
 function ScrollProgressBar() {
   const { scrollYProgress } = useScroll()
@@ -222,7 +222,7 @@ const About = React.lazy(() => import('./pages/About'))
 const Contact = React.lazy(() => import('./pages/Contact'))
 const MentionsLegales = React.lazy(() => import('./pages/MentionsLegales'))
 
-function GlobalBackground() {
+const GlobalBackground = React.memo(function GlobalBackground() {
   return (
     <div className="fixed inset-0 -z-10 overflow-hidden" aria-hidden>
       {/* base */}
@@ -271,7 +271,7 @@ function GlobalBackground() {
       />
     </div>
   )
-}
+})
 
 export default function App() {
   const [path, setPath] = useState(window.location.pathname)
