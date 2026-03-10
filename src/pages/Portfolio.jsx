@@ -1,76 +1,254 @@
-import React, { useState, useRef } from 'react'
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
+import React, { useRef } from 'react'
+import { motion, useScroll, useTransform, useSpring, useReducedMotion } from 'framer-motion'
 import Nav from '../components/Nav'
 import Footer from '../components/Footer'
 import { useSEO } from '../hooks/useSEO'
 
+// User's original 10 projects, enhanced for the SaaS carousel format
 const projects = [
-  { title: 'Site vitrine — La Boulangerie', desc: 'Création de site vitrine moderne avec menu, horaires & prise de contact en ligne', tag: 'Site vitrine', color: 'from-amber-500/20 to-orange-600/10', img: new URL('../assets/portfolio/p1.jpg', import.meta.url).href },
-  { title: 'Refonte — Restaurant Gastronomique', desc: 'Refonte complète : nouveau design, réservation en ligne & optimisation mobile', tag: 'Refonte', color: 'from-rose-500/20 to-red-600/10', img: new URL('../assets/portfolio/p2.jpg', import.meta.url).href },
-  { title: 'SEO Local — Thai Food', desc: 'Stratégie SEO local, fiche Google Business, pages ciblées par quartier', tag: 'SEO', color: 'from-orange-500/20 to-yellow-600/10', img: new URL('../assets/portfolio/p3.jpg', import.meta.url).href },
-  { title: 'Branding — Brows Creative', desc: 'Identité visuelle complète : logo, charte, supports & site de booking', tag: 'Branding', color: 'from-pink-500/20 to-fuchsia-600/10', img: new URL('../assets/portfolio/p4.jpg', import.meta.url).href },
-  { title: 'E-commerce — Montres Design', desc: 'Boutique en ligne haut de gamme, fiches produit & tunnel de vente optimisé', tag: 'E-commerce', color: 'from-zinc-500/20 to-slate-600/10', img: new URL('../assets/portfolio/p5.jpg', import.meta.url).href },
-  { title: 'Landing — Artisan Local', desc: 'Landing page haute conversion, formulaire de devis & tracking Google Ads', tag: 'Landing', color: 'from-indigo-500/20 to-violet-600/10', img: new URL('../assets/portfolio/p6.jpg', import.meta.url).href },
-  { title: 'SaaS — Dashboard Analytics', desc: 'Interface admin React avec tableaux de bord, graphiques & gestion utilisateurs', tag: 'SaaS', color: 'from-sky-500/20 to-blue-600/10', img: new URL('../assets/portfolio/p7.jpg', import.meta.url).href },
-  { title: 'Full Stack — Plateforme Web', desc: 'Application full stack : authentification, base de données & API REST', tag: 'App Web', color: 'from-emerald-500/20 to-teal-600/10', img: new URL('../assets/portfolio/p8.jpg', import.meta.url).href },
-  { title: 'E-commerce — Mode & Lifestyle', desc: 'Boutique Shopify sur-mesure, intégration paiement & gestion des stocks', tag: 'E-commerce', color: 'from-violet-500/20 to-purple-600/10', img: new URL('../assets/portfolio/p9.jpg', import.meta.url).href },
-  { title: 'Portfolio — Studio Créatif', desc: 'Portfolio interactif fullscreen, galerie filtrable & formulaire de contact', tag: 'Site vitrine', color: 'from-lime-500/20 to-green-600/10', img: new URL('../assets/portfolio/p10.jpg', import.meta.url).href },
+  {
+    id: 1,
+    title: 'Boulangerie',
+    subtitle: 'Site Vitrine',
+    category: 'Site vitrine',
+    desc: 'Création de site vitrine moderne avec menu, horaires & prise de contact en ligne.',
+    tech: ['WordPress', 'SEO', 'Tailwind'],
+    color: 'from-amber-500/20 to-orange-600/10',
+    accent: '#f59e0b',
+    image: new URL('../assets/portfolio/p1.jpg', import.meta.url).href
+  },
+  {
+    id: 2,
+    title: 'Restaurant',
+    subtitle: 'Gastronomique',
+    category: 'Refonte',
+    desc: 'Refonte complète : nouveau design, réservation en ligne & optimisation mobile.',
+    tech: ['Next.js', 'Framer', 'Stripe'],
+    color: 'from-rose-500/20 to-red-600/10',
+    accent: '#f43f5e',
+    image: new URL('../assets/portfolio/p2.jpg', import.meta.url).href
+  },
+  {
+    id: 3,
+    title: 'Thai Food',
+    subtitle: 'SEO Local',
+    category: 'SEO',
+    desc: 'Stratégie SEO local, fiche Google Business, pages ciblées par quartier pour booster les visites.',
+    tech: ['Google Maps', 'SEO On-Page', 'Copywriting'],
+    color: 'from-orange-500/20 to-yellow-600/10',
+    accent: '#f97316',
+    image: new URL('../assets/portfolio/p3.jpg', import.meta.url).href
+  },
+  {
+    id: 4,
+    title: 'Brows',
+    subtitle: 'Creative',
+    category: 'Branding',
+    desc: 'Identité visuelle complète : logo, charte, supports & site de booking pour un salon premium.',
+    tech: ['Figma', 'Illustrator', 'React'],
+    color: 'from-pink-500/20 to-fuchsia-600/10',
+    accent: '#ec4899',
+    image: new URL('../assets/portfolio/p4.jpg', import.meta.url).href
+  },
+  {
+    id: 5,
+    title: 'Montres',
+    subtitle: 'Design',
+    category: 'E-commerce',
+    desc: 'Boutique en ligne haut de gamme, fiches produit & tunnel de vente optimisé pour la conversion.',
+    tech: ['Shopify', 'Liquid', 'Tailwind'],
+    color: 'from-zinc-500/20 to-slate-600/10',
+    accent: '#a1a1aa',
+    image: new URL('../assets/portfolio/p5.jpg', import.meta.url).href
+  },
+  {
+    id: 6,
+    title: 'Artisan',
+    subtitle: 'Local',
+    category: 'Landing',
+    desc: 'Landing page haute conversion, formulaire de devis & tracking Google Ads intégré.',
+    tech: ['React', 'Google Tag Manager', 'Ads'],
+    color: 'from-indigo-500/20 to-violet-600/10',
+    accent: '#8b5cf6',
+    image: new URL('../assets/portfolio/p6.jpg', import.meta.url).href
+  },
+  {
+    id: 7,
+    title: 'Dashboard',
+    subtitle: 'Analytics',
+    category: 'SaaS',
+    desc: 'Interface admin React avec tableaux de bord, graphiques & gestion sécurisée des utilisateurs.',
+    tech: ['React', 'Recharts', 'Tailwind'],
+    color: 'from-sky-500/20 to-blue-600/10',
+    accent: '#0ea5e9',
+    image: new URL('../assets/portfolio/p7.jpg', import.meta.url).href
+  },
+  {
+    id: 8,
+    title: 'Plateforme',
+    subtitle: 'Web',
+    category: 'App Web',
+    desc: 'Application full stack sur-mesure : authentification, base de données performante & API REST.',
+    tech: ['Node.js', 'PostgreSQL', 'Express'],
+    color: 'from-emerald-500/20 to-teal-600/10',
+    accent: '#10b981',
+    image: new URL('../assets/portfolio/p8.jpg', import.meta.url).href
+  },
+  {
+    id: 9,
+    title: 'Lifestyle',
+    subtitle: 'Mode',
+    category: 'E-commerce',
+    desc: 'Boutique Shopify sur-mesure immersive, intégration paiement fluide & gestion des stocks en temps réel.',
+    tech: ['Shopify Plus', 'Framer Motion', 'React'],
+    color: 'from-violet-500/20 to-purple-600/10',
+    accent: '#a78bfa',
+    image: new URL('../assets/portfolio/p9.jpg', import.meta.url).href
+  },
+  {
+    id: 10,
+    title: 'Studio',
+    subtitle: 'Créatif',
+    category: 'Site Vitrine',
+    desc: 'Portfolio interactif fullscreen, galerie filtrable dynamique & formulaire de contact innovant.',
+    tech: ['Three.js', 'Vite', 'GSAP'],
+    color: 'from-lime-500/20 to-green-600/10',
+    accent: '#84cc16',
+    image: new URL('../assets/portfolio/p10.jpg', import.meta.url).href
+  }
 ]
 
-function Lightbox({ project, onClose }) {
-  if (!project) return null
+/* --- Animated Word Reveal for Descriptions --- */
+function AnimatedWords({ text }) {
+  const words = text.split(" ")
+  const container = {
+    hidden: { opacity: 0 },
+    visible: (i = 1) => ({
+      opacity: 1,
+      transition: { staggerChildren: 0.05, delayChildren: 0.2 * i }
+    })
+  }
+  const child = {
+    visible: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { type: "spring", damping: 16, stiffness: 200 } },
+    hidden: { opacity: 0, y: 15, filter: 'blur(8px)' }
+  }
+
+  return (
+    <motion.div style={{ overflow: "hidden", display: "flex", flexWrap: "wrap", gap: "0.3em" }} variants={container} initial="hidden" whileInView="visible" viewport={{ once: true }}>
+      {words.map((word, index) => (
+        <motion.span variants={child} key={index}>
+          {word}
+        </motion.span>
+      ))}
+    </motion.div>
+  )
+}
+
+/* --- Animated Title Character by Character --- */
+function AnimatedTitle({ title, subtitle, accent }) {
+  const chars = title.split("")
+  const child = {
+    visible: { opacity: 1, scale: 1, rotateY: 0, transition: { type: "spring", damping: 12, stiffness: 200 } },
+    hidden: { opacity: 0, scale: 0.8, rotateY: 90 }
+  }
+
   return (
     <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-md p-4 sm:p-8"
-      role="dialog"
-      aria-modal="true"
-      onClick={onClose}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.5 }}
+      variants={{ visible: { transition: { staggerChildren: 0.08 } } }}
+      className="flex flex-col"
     >
-      <motion.div
-        initial={{ scale: 0.88, opacity: 0, y: 24 }}
-        animate={{ scale: 1, opacity: 1, y: 0 }}
-        exit={{ scale: 0.88, opacity: 0, y: 24 }}
-        transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-        className="relative max-w-3xl w-full bg-[#0d0d1a] border border-white/10 rounded-3xl overflow-hidden shadow-2xl shadow-violet-900/30"
-        onClick={e => e.stopPropagation()}
+      <div className="flex" style={{ perspective: "1000px" }}>
+        {chars.map((char, index) => (
+          <motion.span variants={child} key={index} className="text-5xl md:text-7xl lg:text-[6rem] font-black tracking-tighter" style={{ color: accent, textShadow: `0 0 30px ${accent}40` }}>
+            {char}
+          </motion.span>
+        ))}
+      </div>
+      <motion.span
+        variants={{ hidden: { opacity: 0, x: -20 }, visible: { opacity: 1, x: 0, transition: { delay: chars.length * 0.08 } } }}
+        className="text-3xl md:text-5xl lg:text-7xl font-extralight tracking-tight text-white mt-[-0.5rem]"
       >
-        {/* close btn */}
-        <button
-          aria-label="Fermer"
-          onClick={onClose}
-          className="absolute top-4 right-4 z-20 w-9 h-9 rounded-full bg-white/10 hover:bg-violet-500/30 border border-white/10 hover:border-violet-500/40 flex items-center justify-center text-white transition-all text-sm"
-        >✕</button>
+        {subtitle}
+      </motion.span>
+    </motion.div>
+  )
+}
 
-        {/* image full */}
-        <div className="relative w-full bg-black" style={{ aspectRatio: '16/9' }}>
-          <img
-            src={project.img}
+
+function PortfolioCarouselCard({ project }) {
+  const shouldReduce = useReducedMotion()
+
+  return (
+    <div className="w-[85vw] md:w-[65vw] lg:w-[50vw] h-[75vh] md:h-[650px] flex-shrink-0 flex items-center justify-center px-4 md:px-6">
+      <motion.div
+        className={`group relative w-full h-full rounded-[2rem] md:rounded-[3rem] overflow-hidden bg-gradient-to-br ${project.color} border border-white/10`}
+        whileHover={shouldReduce ? {} : { borderColor: project.accent + '80', boxShadow: `0 0 40px ${project.accent}20` }}
+        transition={{ duration: 0.5 }}
+      >
+        {/* Background Image with Hover Scale */}
+        <div className="absolute inset-0 z-0 overflow-hidden rounded-[inherit]">
+          <div className="absolute inset-0 bg-gradient-to-t from-[#050510] via-black/60 to-black/20 z-10" />
+          <motion.img
+            src={project.image}
             alt={project.title}
-            className="w-full h-full object-contain"
-            onError={e => { e.currentTarget.parentElement.style.background = '#111'; e.currentTarget.style.display = 'none' }}
+            className="w-full h-full object-cover object-top grayscale-[0.5] group-hover:grayscale-0 transition-all duration-700 group-hover:scale-105"
+            onError={e => { e.currentTarget.style.display = 'none'; e.currentTarget.parentElement.style.background = '#111' }}
           />
-          {/* gradient overlay bottom */}
-          <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-[#0d0d1a] to-transparent" />
-          {/* tag badge */}
-          <span className="absolute top-4 left-4 text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full bg-black/50 border border-violet-500/30 text-violet-300 backdrop-blur-sm">
-            {project.tag}
-          </span>
         </div>
 
-        {/* info */}
-        <div className="px-7 pb-7 pt-3">
-          <h3 className="text-2xl font-black mb-2 leading-tight">{project.title}</h3>
-          <p className="text-zinc-400 text-sm leading-relaxed">{project.desc}</p>
-          <div className="mt-5 flex items-center gap-3">
-            <div className={`flex-1 h-px bg-gradient-to-r ${project.color} opacity-60`} />
-            <span className="text-[10px] text-zinc-600 uppercase tracking-widest">Wexor Studio</span>
+        {/* Card Content container */}
+        <div className="relative z-20 h-full p-8 md:p-12 lg:p-16 flex flex-col justify-end">
+
+          <div className="flex items-center gap-4 mb-6 md:mb-8">
+            <span className="text-xs font-mono tracking-widest uppercase border border-white/20 px-4 py-1.5 rounded-full backdrop-blur-md" style={{ color: project.accent, borderColor: project.accent + '40', background: project.accent + '10' }}>
+              {project.category}
+            </span>
+            <div className="h-px bg-white/20 flex-grow" />
+            <span className="text-white/40 font-mono text-sm tracking-widest hidden md:block">
+              {project.id < 10 ? `0${project.id}` : project.id}
+            </span>
           </div>
+
+          <div className="mb-8">
+            <AnimatedTitle title={project.title} subtitle={project.subtitle} accent={project.accent} />
+          </div>
+
+          <div className="text-zinc-300 text-sm md:text-lg mb-8 md:mb-12 max-w-lg leading-relaxed font-light">
+            <AnimatedWords text={project.desc} />
+          </div>
+
+          <div className="flex flex-wrap items-center justify-between gap-6">
+            {/* Tech Stack */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.6 }}
+              className="flex flex-wrap gap-2"
+            >
+              {project.tech.map(t => (
+                <span key={t} className="text-xs font-semibold text-white/70 bg-white/5 border border-white/10 px-3 py-1.5 rounded-lg">
+                  {t}
+                </span>
+              ))}
+            </motion.div>
+
+            {/* CTA */}
+            <motion.button
+              whileHover={{ scale: 1.05, backgroundColor: 'rgba(255,255,255,0.1)' }}
+              whileTap={{ scale: 0.95 }}
+              className="h-12 w-12 rounded-full border border-white/30 flex items-center justify-center text-white backdrop-blur-md group-hover:border-white transition-colors"
+              aria-label="Voir le projet"
+            >
+              <svg className="w-5 h-5 -rotate-45 group-hover:rotate-0 transition-transform duration-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              </svg>
+            </motion.button>
+          </div>
+
         </div>
       </motion.div>
-    </motion.div>
+    </div>
   )
 }
 
@@ -80,225 +258,157 @@ const SI = 'https://cdn.simpleicons.org'
 
 // Inline SVGs for logos that are black and invisible on dark background
 const OPENAI_SVG = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%2310a37f' d='M22.28 9.29a5.68 5.68 0 0 0-.49-4.67 5.74 5.74 0 0 0-6.17-2.75A5.73 5.73 0 0 0 11.28 0a5.74 5.74 0 0 0-5.47 3.98 5.72 5.72 0 0 0-3.83 2.77 5.75 5.75 0 0 0 .71 6.74 5.68 5.68 0 0 0 .49 4.67 5.74 5.74 0 0 0 6.17 2.75 5.7 5.7 0 0 0 4.34 1.87 5.74 5.74 0 0 0 5.47-3.98 5.72 5.72 0 0 0 3.83-2.77 5.75 5.75 0 0 0-.71-6.74zm-8.55 11.99a4.25 4.25 0 0 1-2.73-1c.03-.02.09-.05.13-.07l4.53-2.62a.73.73 0 0 0 .37-.64V10.7l1.91 1.1a.07.07 0 0 1 .04.05v5.29a4.27 4.27 0 0 1-4.25 4.14zM3.89 17.67a4.25 4.25 0 0 1-.51-2.85l.13.08 4.53 2.62a.74.74 0 0 0 .74 0l5.53-3.2v2.21a.07.07 0 0 1-.03.06L9.7 19.24a4.27 4.27 0 0 1-5.81-1.57zM2.81 8.17A4.25 4.25 0 0 1 5.03 6.1v5.37a.73.73 0 0 0 .37.64l5.53 3.19-1.91 1.1a.07.07 0 0 1-.07 0L4.38 13.8a4.27 4.27 0 0 1-1.57-5.63zm15.69 3.66-5.53-3.2 1.91-1.1a.07.07 0 0 1 .07 0l4.57 2.64a4.27 4.27 0 0 1-.66 7.7V12.47a.73.73 0 0 0-.36-.64zm1.9-2.87-.13-.08-4.53-2.61a.74.74 0 0 0-.74 0L9.47 9.47V7.26a.07.07 0 0 1 .03-.06l4.57-2.64a4.27 4.27 0 0 1 6.33 4.4zm-11.98 3.94-1.91-1.1a.07.07 0 0 1-.04-.05V6.46a4.27 4.27 0 0 1 7-3.28 3.6 3.6 0 0 0-.13.07L8.81 5.87a.73.73 0 0 0-.37.64zm1.04-2.24 2.46-1.42 2.46 1.42v2.83l-2.46 1.42-2.46-1.42z'/%3E%3C/svg%3E`
-// Vercel — blanc sur fond transparent
-const VERCEL_SVG = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23e2e2e2' d='M12 1L24 22H0L12 1z'/%3E%3C/svg%3E`
-// GitHub — blanc/gris clair
-const GITHUB_SVG = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23c9d1d9' d='M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12C24 5.37 18.63 0 12 0z'/%3E%3C/svg%3E`
-// Framer — violet clair
-const FRAMER_SVG = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%238b5cf6' d='M4 0h16v8h-8zm0 8h8l8 8H4zm0 8h8v8z'/%3E%3C/svg%3E`
-// Node.js — vert (devicons wordmark)
-const NODEJS_SVG = `${DV}/nodejs/nodejs-plain-wordmark.svg`
-
-const stacks = [
-  { name: 'HTML5', icon: `${DV}/html5/html5-original.svg`, glow: 'rgba(227,79,38,0.6)' },
-  { name: 'CSS3', icon: `${DV}/css3/css3-original.svg`, glow: 'rgba(21,114,182,0.6)' },
-  { name: 'JavaScript', icon: `${DV}/javascript/javascript-original.svg`, glow: 'rgba(247,223,30,0.6)' },
-  { name: 'React', icon: `${DV}/react/react-original.svg`, glow: 'rgba(97,218,251,0.6)' },
-  { name: 'Tailwind', icon: `${DV}/tailwindcss/tailwindcss-original.svg`, glow: 'rgba(6,182,212,0.6)' },
-  { name: 'Vite', icon: `${DV}/vitejs/vitejs-original.svg`, glow: 'rgba(100,108,255,0.6)' },
-  { name: 'Vercel', icon: VERCEL_SVG, glow: 'rgba(226,226,226,0.45)' },
-  { name: 'WordPress', icon: `${DV}/wordpress/wordpress-original.svg`, glow: 'rgba(33,117,155,0.6)' },
-  { name: 'Node.js', icon: `${SI}/nodedotjs/5fa04e`, glow: 'rgba(95,160,78,0.6)' },
-  { name: 'TypeScript', icon: `${DV}/typescript/typescript-original.svg`, glow: 'rgba(49,120,198,0.6)' },
-  { name: 'Figma', icon: `${DV}/figma/figma-original.svg`, glow: 'rgba(242,78,30,0.6)' },
-  { name: 'OpenAI', icon: OPENAI_SVG, glow: 'rgba(16,163,127,0.6)' },
-  { name: 'Framer', icon: FRAMER_SVG, glow: 'rgba(139,92,246,0.6)' },
-  { name: 'GitHub', icon: GITHUB_SVG, glow: 'rgba(201,209,217,0.5)' },
-]
-
-function StackMarquee() {
-  const doubled = [...stacks, ...stacks]
-  return (
-    <section className="relative py-14 overflow-hidden select-none">
-      {/* fade edges */}
-      <div className="pointer-events-none absolute inset-y-0 left-0 w-32 z-10 bg-gradient-to-r from-[#050510] to-transparent" />
-      <div className="pointer-events-none absolute inset-y-0 right-0 w-32 z-10 bg-gradient-to-l from-[#050510] to-transparent" />
-
-      {/* label */}
-      <p className="text-center text-[10px] uppercase tracking-widest text-zinc-600 mb-8 font-semibold">Stack &amp; outils</p>
-
-      {/* track */}
-      <div className="flex items-center animate-marquee" style={{ width: 'max-content' }}>
-        {doubled.map((s, i) => (
-          <div
-            key={i}
-            className="mx-6 group cursor-default transition-all"
-            onMouseEnter={e => { e.currentTarget.querySelector('img').style.filter = `drop-shadow(0 0 12px ${s.glow}) drop-shadow(0 0 4px ${s.glow})` }}
-            onMouseLeave={e => { e.currentTarget.querySelector('img').style.filter = `drop-shadow(0 0 0px transparent)` }}
-          >
-            <img
-              src={s.icon}
-              alt={s.name}
-              width={52}
-              height={52}
-              className="object-contain opacity-60 group-hover:opacity-100 transition-opacity duration-300"
-              style={{ width: 52, height: 52 }}
-            />
-          </div>
-        ))}
-      </div>
-    </section>
-  )
+208: const VERCEL_SVG = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23e2e2e2' d='M12 1L24 22H0L12 1z'/%3E%3C/svg%3E`
+209: const GITHUB_SVG = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23c9d1d9' d='M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12C24 5.37 18.63 0 12 0z'/%3E%3C/svg%3E`
+210: const FRAMER_SVG = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%238b5cf6' d='M4 0h16v8h-8zm0 8h8l8 8H4zm0 8h8v8z'/%3E%3C/svg%3E`
+211:
+212: const stacks = [
+  213: { name: 'HTML5', icon: `${DV}/html5/html5-original.svg`, glow: 'rgba(227,79,38,0.6)' },
+  214: { name: 'CSS3', icon: `${DV}/css3/css3-original.svg`, glow: 'rgba(21,114,182,0.6)' },
+  215: { name: 'JavaScript', icon: `${DV}/javascript/javascript-original.svg`, glow: 'rgba(247,223,30,0.6)' },
+  216: { name: 'React', icon: `${DV}/react/react-original.svg`, glow: 'rgba(97,218,251,0.6)' },
+  217: { name: 'Tailwind', icon: `${DV}/tailwindcss/tailwindcss-original.svg`, glow: 'rgba(6,182,212,0.6)' },
+  218: { name: 'Vite', icon: `${DV}/vitejs/vitejs-original.svg`, glow: 'rgba(100,108,255,0.6)' },
+  219: { name: 'Vercel', icon: VERCEL_SVG, glow: 'rgba(226,226,226,0.45)' },
+  220: { name: 'WordPress', icon: `${DV}/wordpress/wordpress-original.svg`, glow: 'rgba(33,117,155,0.6)' },
+  221: { name: 'Node.js', icon: `${SI}/nodedotjs/5fa04e`, glow: 'rgba(95,160,78,0.6)' },
+  222: { name: 'TypeScript', icon: `${DV}/typescript/typescript-original.svg`, glow: 'rgba(49,120,198,0.6)' },
+  223: { name: 'Figma', icon: `${DV}/figma/figma-original.svg`, glow: 'rgba(242,78,30,0.6)' },
+  224: { name: 'OpenAI', icon: OPENAI_SVG, glow: 'rgba(16,163,127,0.6)' },
+  225: { name: 'Framer', icon: FRAMER_SVG, glow: 'rgba(139,92,246,0.6)' },
+  226: { name: 'GitHub', icon: GITHUB_SVG, glow: 'rgba(201,209,217,0.5)' },
+  227: ]
+228:
+229: function StackMarquee() {
+  230: const doubled = [...stacks, ...stacks]
+  231: return (
+    232: <section className="relative py-14 overflow-hidden select-none bg-[#050510]">
+      233:       {/* fade edges */}
+      234:       <div className="pointer-events-none absolute inset-y-0 left-0 w-32 z-10 bg-gradient-to-r from-[#050510] to-transparent" />
+      235:       <div className="pointer-events-none absolute inset-y-0 right-0 w-32 z-10 bg-gradient-to-l from-[#050510] to-transparent" />
+      236:
+      237:       {/* label */}
+      238:       <p className="text-center text-[10px] uppercase tracking-widest text-zinc-600 mb-8 font-semibold">Stack &amp; outils</p>
+      239:
+      240:       {/* track */}
+      241:       <div className="flex items-center animate-marquee" style={{ width: 'max-content' }}>
+        242:         {doubled.map((s, i) => (
+          243:           <div
+244:             key={i}
+        245:             className="mx-6 group cursor-default transition-all"
+        246:             onMouseEnter={e => { e.currentTarget.querySelector('img').style.filter = `drop-shadow(0 0 12px ${s.glow}) drop-shadow(0 0 4px ${s.glow})` }}
+        247:             onMouseLeave={e => { e.currentTarget.querySelector('img').style.filter = `drop-shadow(0 0 0px transparent)` }}
+248:           >
+        249:             <img
+250:               src={s.icon}
+        251:               alt={s.name}
+        252:               width={52}
+        253:               height={52}
+        254:               className="object-contain opacity-60 group-hover:opacity-100 transition-opacity duration-300"
+        255:               style={{ width: 52, height: 52 }}
+256:             />
+        257:           </div>
+258:         ))}
+      259:       </div>
+  260:     </section >
+    261:   )
+  262:
 }
-
-const VISIBLE = 3 // cards visible at once on desktop
-
-export default function Portfolio() {
-  const [active, setActive] = useState(0)
-  const [lightbox, setLightbox] = useState(null)
-  const [direction, setDirection] = useState(0)
-  const shouldReduce = useReducedMotion()
-  const dragX = useRef(0)
-
-  useSEO({
-    title: 'Portfolio — Wexor | Sites, Refontes, Branding & SEO',
-    description: 'Découvrez les réalisations Wexor : sites vitrines, e-commerce, refontes, branding et campagnes SEO. Des projets concrets livrés avec soin.',
-    path: '/portfolio',
+263:
+264: export default function PortfolioPage() {
+  265: const containerRef = useRef(null)
+  266: const shouldReduce = useReducedMotion()
+  267:
+  268: useSEO({
+    269: title: 'Portfolio — Wexor | Sites, Refontes, Branding & SEO',
+    270: description: 'Découvrez les réalisations Wexor : sites vitrines, e-commerce, refontes, branding et campagnes SEO. Des projets concrets livrés avec soin.',
+    271: path: '/portfolio',
+    272:   })
+  273:
+  274: const { scrollYProgress } = useScroll({
+    275: target: containerRef,
+    276: offset: ['start start', 'end end']
+277:
   })
-
-  const go = (dir) => {
-    setDirection(dir)
-    setActive(i => (i + dir + projects.length) % projects.length)
-  }
-
-  // indices to show: prev, active, next (looping)
-  const indices = [-1, 0, 1].map(offset => (active + offset + projects.length) % projects.length)
-
-  return (
-    <div className="min-h-screen text-white">
-      <Nav />
-
-      <main role="main">
-        {/* header */}
-        <motion.header
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-          className="max-w-6xl mx-auto px-6 pt-16 pb-12 text-center"
-        >
-          <p className="text-xs uppercase tracking-widest text-violet-400 mb-3 font-semibold">Nos réalisations</p>
-          <h1 className="text-4xl md:text-5xl font-black">Portfolio</h1>
-          <p className="text-zinc-400 mt-4 max-w-xl mx-auto text-sm md:text-base">
-            Des projets concrets, livrés avec soin.
-          </p>
-        </motion.header>
-
-        {/* carousel */}
-        <section className="relative max-w-6xl mx-auto px-6 pb-24 select-none">
-          {/* cards track */}
-          <div
-            className="relative flex items-center justify-center gap-4 md:gap-6 overflow-hidden py-8"
-            onMouseDown={e => { dragX.current = e.clientX }}
-            onMouseUp={e => {
-              const diff = dragX.current - e.clientX
-              if (Math.abs(diff) > 40) go(diff > 0 ? 1 : -1)
-            }}
-            onTouchStart={e => { dragX.current = e.touches[0].clientX }}
-            onTouchEnd={e => {
-              const diff = dragX.current - e.changedTouches[0].clientX
-              if (Math.abs(diff) > 40) go(diff > 0 ? 1 : -1)
-            }}
-          >
-            {indices.map((projectIdx, pos) => {
-              const isCenter = pos === 1
-              const p = projects[projectIdx]
-              return (
-                <motion.article
-                  key={projectIdx}
-                  layout
-                  animate={{
-                    scale: isCenter ? 1 : 0.82,
-                    opacity: isCenter ? 1 : 0.45,
-                    filter: isCenter ? 'blur(0px)' : 'blur(1px)',
-                  }}
-                  transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                  className={`relative flex-shrink-0 rounded-2xl overflow-hidden border cursor-pointer transition-colors
-                    ${isCenter
-                      ? 'w-full max-w-sm md:max-w-md border-violet-500/40 shadow-2xl shadow-violet-500/10'
-                      : 'hidden md:block w-full max-w-xs border-white/[0.07]'
-                    }`}
-                  onClick={() => isCenter ? setLightbox(p) : go(pos === 0 ? -1 : 1)}
-                  role="button"
-                  tabIndex={isCenter ? 0 : -1}
-                  aria-label={isCenter ? `Voir ${p.title}` : pos === 0 ? 'Projet précédent' : 'Projet suivant'}
-                >
-                  {/* image area */}
-                  <div className={`h-52 md:h-60 bg-gradient-to-br ${p.color} flex items-center justify-center relative overflow-hidden`}>
-                    <img
-                      src={p.img}
-                      alt={p.title}
-                      className="absolute inset-0 w-full h-full object-cover object-top"
-                      onError={e => { e.currentTarget.style.display = 'none' }}
-                    />
-                    {isCenter && (
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                    )}
-                    <span className="absolute top-3 left-3 text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full bg-black/40 border border-white/10 text-violet-300">
-                      {p.tag}
-                    </span>
-                    {isCenter && (
-                      <div className="absolute bottom-3 right-3 w-8 h-8 rounded-full bg-white/10 border border-white/20 flex items-center justify-center text-xs">
-                        ↗
-                      </div>
-                    )}
-                  </div>
-                  {/* info */}
-                  <div className={`p-5 bg-white/[0.03] ${isCenter ? '' : 'hidden md:block'}`}>
-                    <h3 className="font-bold text-sm md:text-base leading-snug mb-1">{p.title}</h3>
-                    <p className="text-xs text-zinc-500">{p.desc}</p>
-                  </div>
-                </motion.article>
-              )
-            })}
-          </div>
-
-          {/* prev / next buttons */}
-          <button
-            onClick={() => go(-1)}
-            aria-label="Projet précédent"
-            className="absolute left-0 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/[0.05] border border-white/[0.10] hover:bg-white/10 hover:border-violet-500/40 flex items-center justify-center text-white transition-colors z-10"
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7" /></svg>
-          </button>
-          <button
-            onClick={() => go(1)}
-            aria-label="Projet suivant"
-            className="absolute right-0 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/[0.05] border border-white/[0.10] hover:bg-white/10 hover:border-violet-500/40 flex items-center justify-center text-white transition-colors z-10"
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" /></svg>
-          </button>
-
-          {/* dots */}
-          <div className="flex justify-center gap-2 mt-6" role="tablist" aria-label="Navigation projets">
-            {projects.map((_, i) => (
-              <button
-                key={i}
-                role="tab"
-                aria-selected={i === active}
-                aria-label={`Projet ${i + 1}`}
-                onClick={() => { setDirection(i > active ? 1 : -1); setActive(i) }}
-                className={`rounded-full transition-all duration-300 ${i === active
-                  ? 'w-6 h-2 bg-violet-500'
-                  : 'w-2 h-2 bg-white/20 hover:bg-white/40'
-                  }`}
-              />
-            ))}
-          </div>
-
-          {/* counter */}
-          <p className="text-center text-xs text-zinc-600 mt-4">
-            {active + 1} / {projects.length}
-          </p>
-        </section>
-        {/* tech stack marquee */}
-        <StackMarquee />
-      </main>
-
-      <Footer />
-
-      <AnimatePresence>
-        {lightbox && <Lightbox project={lightbox} onClose={() => setLightbox(null)} />}
-      </AnimatePresence>
-    </div>
-  )
+  278:
+  279: const totalItems = projects.length
+  280:
+  281:   // Calculate horizontal movement
+  282: const xPercent = useTransform(scrollYProgress, [0, 1], [0, -(totalItems - 1) * 100])
+  283: const smoothX = useSpring(xPercent, { stiffness: 80, damping: 25 })
+  284:
+  285:   // Title fade out when scrolling horizontally starts
+  286: const titleOpacity = useTransform(scrollYProgress, [0, 0.05], [1, 0])
+  287: const titleY = useTransform(scrollYProgress, [0, 0.05], [0, -50])
+  288:
+  289: return (
+    290: <div className="min-h-screen text-white bg-[#050510]">
+      291:       <Nav />
+      292:
+      293:       <main role="main">
+        294:
+        295:         {shouldReduce ? (
+          296: <section className="py-24 max-w-7xl mx-auto px-6 space-y-12">
+          297:                 <h2 className="text-4xl font-black">Nos réalisations</h2>
+          298:                 {projects.map(p => (
+            299:                     <div key={p.id} className="p-8 border border-white/10 rounded-3xl bg-white/5">
+            300:                         <h3 className="text-3xl font-bold mb-2">{p.title} <span className="text-zinc-400 font-light">{p.subtitle}</span></h3>
+            301:                         <p className="text-zinc-400 mb-6">{p.desc}</p>
+            302:                         <div className="flex gap-2">
+              303:                             {p.tech.map(t => <span key={t} className="px-3 py-1 bg-black/50 rounded-full text-xs">{t}</span>)}
+              304:                         </div>
+            305:                     </div>
+306:                 ))}
+          307:             </section>
+308:         ) : (
+        309:             <section ref={containerRef} style={{ height: `${totalItems * 100}vh` }} className="relative w-full bg-[#050510]">
+          310:
+          311:                 {/* Sticky container that stays in view while we scroll vertically */}
+          312:                 <div className="sticky top-0 h-screen w-full flex flex-col justify-center overflow-hidden">
+            313:
+            314:                     {/* Sticky Header fixed in the background/top left */}
+            315:                     <motion.div 
+316:                         style={{ opacity: titleOpacity, y: titleY }}
+            317:                         className="absolute top-[12%] left-[8%] md:left-[10%] z-0"
+318:                     >
+            319:                         <div className="flex items-center gap-3 mb-2">
+              320:                             <div className="w-2 h-2 rounded-full bg-violet-500 animate-pulse" />
+              321:                             <p className="text-xs uppercase tracking-widest text-violet-400 font-semibold font-mono">Nos réalisations</p>
+              322:                         </div>
+            323:                         <h2 className="text-5xl md:text-7xl lg:text-8xl font-black text-white/10 tracking-tighter" style={{ WebkitTextStroke: '1px rgba(255,255,255,0.2)' }}>
+              324:                             PORTFOLIO
+              325:                         </h2>
+            326:                         <p className="text-zinc-400 max-w-md mt-4 text-sm md:text-base">
+              327:                           Scrollez vers le bas pour explorer nos projets.
+              328:                         </p>
+            329:                     </motion.div>
+          330:
+          331:                     {/* The horizontal sliding deck */}
+          332:                     <motion.div
+333:                         style={{ x: useTransform(smoothX, v => `${v / totalItems}%`) }}
+          334:                         className="flex items-center w-full z-10 pt-16 md:pt-0"
+335:                     >
+          336:                         {/* Left padding so the first card isn't stuck to the screen edge */}
+          337:                         <div className="w-[5vw] md:w-[10vw] flex-shrink-0" />
+          338:
+          339:                         {projects.map((project) => (
+            340:                             <PortfolioCarouselCard key={project.id} project={project} />
+341:                         ))}
+          342:
+          343:                         {/* Right padding so the last card doesn't hit the right edge perfectly */}
+          344:                         <div className="w-[10vw] md:w-[25vw] flex-shrink-0" />
+          345:                     </motion.div>
+        346:
+        347:                 </div>
+  348:             </section >
+    349:         )
 }
+350:
+351: {/* Tech Stack Marquee kept from original page */ }
+352: <StackMarquee />
+353:       </main >
+  354:
+355: <Footer />
+356:     </div >
+  357:   )
+358: }

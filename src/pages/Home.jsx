@@ -4,7 +4,6 @@ import { useSEO } from '../hooks/useSEO'
 import Nav from '../components/Nav'
 import Hero from '../components/Hero'
 import Process from '../components/Process'
-import Portfolio from '../components/Portfolio'
 import Testimonials from '../components/Testimonials'
 import FAQ from '../components/FAQ'
 import Packages from '../components/Packages'
@@ -390,8 +389,6 @@ export default function Home() {
         <ScrollSkewWrapper>
           <Process />
         </ScrollSkewWrapper>
-
-        <Portfolio />
 
         {/* ─── Another Marquee ─── */}
         <MarqueeBand />
