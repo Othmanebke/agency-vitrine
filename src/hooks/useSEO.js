@@ -27,8 +27,9 @@ function setLink(rel, href) {
  * @param {string} title       — ex: "À propos — Wexor"
  * @param {string} description — ~155 caractères max
  * @param {string} path        — ex: "/about"
+ * @param {string} image       — ex: "https://wexor.vercel.app/og-image.jpg"
  */
-export function useSEO({ title, description, path = '/' }) {
+export function useSEO({ title, description, path = '/', image = 'https://wexor.vercel.app/og-image.jpg' }) {
   useEffect(() => {
     const url = BASE_URL + path
 
@@ -41,8 +42,11 @@ export function useSEO({ title, description, path = '/' }) {
     setMeta('property', 'og:description', description)
     setMeta('property', 'og:url', url)
 
+    setMeta('property', 'og:image', image)
+
     setMeta('name', 'twitter:title', title)
     setMeta('name', 'twitter:description', description)
     setMeta('name', 'twitter:url', url)
-  }, [title, description, path])
+    setMeta('name', 'twitter:image', image)
+  }, [title, description, path, image])
 }
