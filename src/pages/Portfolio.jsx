@@ -163,14 +163,14 @@ function AnimatedTitle({ title, subtitle, accent }) {
     >
       <div className="flex" style={{ perspective: "1000px" }}>
         {chars.map((char, index) => (
-          <motion.span variants={child} key={index} className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter" style={{ color: accent, textShadow: `0 0 30px ${accent}40` }}>
+          <motion.span variants={child} key={index} className="text-3xl md:text-4xl lg:text-5xl font-black tracking-tighter" style={{ color: accent, textShadow: `0 0 30px ${accent}40` }}>
             {char}
           </motion.span>
         ))}
       </div>
       <motion.span
         variants={{ hidden: { opacity: 0, x: -20 }, visible: { opacity: 1, x: 0, transition: { delay: chars.length * 0.08 } } }}
-        className="text-2xl md:text-3xl lg:text-4xl font-extralight tracking-tight text-white mt-1"
+        className="text-xl md:text-2xl lg:text-3xl font-extralight tracking-tight text-white mt-1"
       >
         {subtitle}
       </motion.span>
@@ -183,7 +183,7 @@ function PortfolioCarouselCard({ project, onSelect }) {
   const shouldReduce = useReducedMotion()
 
   return (
-    <div className="w-[85vw] md:w-[70vw] lg:w-[60vw] h-[75vh] md:h-[700px] flex-shrink-0 flex items-center justify-center px-4 md:px-6">
+    <div className="w-[85vw] md:w-[60vw] lg:w-[50vw] h-[65vh] md:h-[550px] flex-shrink-0 flex items-center justify-center px-4 md:px-6">
       <motion.div
         className={`group relative w-full h-full rounded-[2rem] md:rounded-[3rem] overflow-hidden bg-gradient-to-br ${project.color} border border-white/10`}
         whileHover={shouldReduce ? {} : { borderColor: project.accent + '80', boxShadow: `0 0 40px ${project.accent}20` }}
@@ -202,9 +202,9 @@ function PortfolioCarouselCard({ project, onSelect }) {
         </div>
 
         {/* Card Content container - moved slightly down to give image more room at the top */}
-        <div className="relative z-20 h-full p-6 md:p-10 lg:p-14 flex flex-col justify-end">
+        <div className="relative z-20 h-full p-5 md:p-8 lg:p-10 flex flex-col justify-end">
 
-          <div className="flex items-center gap-4 mb-4 md:mb-6">
+          <div className="flex items-center gap-4 mb-3 md:mb-5">
             <span className="text-[10px] md:text-xs font-mono tracking-widest uppercase border border-white/20 px-3 py-1.5 rounded-full backdrop-blur-md" style={{ color: project.accent, borderColor: project.accent + '40', background: project.accent + '10' }}>
               {project.category}
             </span>
@@ -218,7 +218,7 @@ function PortfolioCarouselCard({ project, onSelect }) {
             <AnimatedTitle title={project.title} subtitle={project.subtitle} accent={project.accent} />
           </div>
 
-          <div className="text-zinc-300 text-sm md:text-lg mb-6 md:mb-10 max-w-2xl leading-relaxed font-light drop-shadow-md">
+          <div className="text-zinc-300 text-xs md:text-base mb-5 md:mb-8 max-w-xl leading-relaxed font-light drop-shadow-md">
             <AnimatedWords text={project.desc} />
           </div>
 
@@ -240,7 +240,7 @@ function PortfolioCarouselCard({ project, onSelect }) {
               onClick={onSelect}
               whileHover={{ scale: 1.05, backgroundColor: 'rgba(255,255,255,0.15)' }}
               whileTap={{ scale: 0.95 }}
-              className="h-10 w-10 md:h-14 md:w-14 rounded-full border border-white/30 flex items-center justify-center text-white backdrop-blur-md group-hover:border-white transition-colors bg-white/5"
+              className="h-10 w-10 md:h-12 md:w-12 rounded-full border border-white/30 flex items-center justify-center text-white backdrop-blur-md group-hover:border-white transition-colors bg-white/5"
               aria-label="Voir le projet"
             >
               <svg className="w-5 h-5 md:w-6 md:h-6 -rotate-45 group-hover:rotate-0 transition-transform duration-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -367,14 +367,14 @@ export default function PortfolioPage() {
 
               {/* Sticky Header positioned at the top */}
               <motion.div
-                className="w-full px-[5vw] md:px-[10vw] mb-4 md:mb-10 lg:mb-14 z-20 flex flex-col md:flex-row md:items-end justify-between gap-6"
+                className="w-full px-[5vw] md:px-[20vw] lg:px-[25vw] mb-4 md:mb-8 lg:mb-10 z-20 flex flex-col md:flex-row md:items-end justify-between gap-6"
               >
                 <div>
-                  <div className="flex items-center gap-3 mb-2 md:mb-4">
+                  <div className="flex items-center gap-3 mb-2 md:mb-3">
                     <div className="w-2 h-2 rounded-full bg-violet-500 animate-pulse" />
                     <p className="text-[10px] md:text-xs uppercase tracking-widest text-violet-400 font-semibold font-mono">Nos réalisations</p>
                   </div>
-                  <h2 className="text-4xl md:text-6xl lg:text-7xl font-black text-white tracking-tighter">
+                  <h2 className="text-3xl md:text-5xl lg:text-6xl font-black text-white tracking-tighter">
                     PORTFOLIO
                   </h2>
                 </div>
@@ -388,15 +388,15 @@ export default function PortfolioPage() {
                 style={{ x: useTransform(smoothX, v => `${v / totalItems}%`) }}
                 className="flex items-center w-max z-10 pb-10"
               >
-                {/* Left padding so the first card isn't stuck to the screen edge */}
-                <div className="w-[5vw] md:w-[10vw] flex-shrink-0" />
+                {/* Left padding so the first card is centered: (100vw - 50vw)/2 = 25vw */}
+                <div className="w-[7.5vw] md:w-[20vw] lg:w-[25vw] flex-shrink-0" />
 
                 {projects.map((project) => (
                   <PortfolioCarouselCard key={project.id} project={project} onSelect={() => setSelectedProject(project)} />
                 ))}
 
-                {/* Right padding so the last card doesn't hit the right edge perfectly */}
-                <div className="w-[10vw] md:w-[25vw] flex-shrink-0" />
+                {/* Right padding so the last card is centered */}
+                <div className="w-[7.5vw] md:w-[20vw] lg:w-[25vw] flex-shrink-0" />
               </motion.div>
             </div>
           </section>
