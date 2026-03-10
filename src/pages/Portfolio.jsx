@@ -182,7 +182,7 @@ function PortfolioCarouselCard({ project }) {
   const shouldReduce = useReducedMotion()
 
   return (
-    <div className="w-[85vw] md:w-[65vw] lg:w-[50vw] h-[75vh] md:h-[650px] flex-shrink-0 flex items-center justify-center px-4 md:px-6">
+    <div className="w-[85vw] md:w-[70vw] lg:w-[60vw] h-[75vh] md:h-[700px] flex-shrink-0 flex items-center justify-center px-4 md:px-6">
       <motion.div
         className={`group relative w-full h-full rounded-[2rem] md:rounded-[3rem] overflow-hidden bg-gradient-to-br ${project.color} border border-white/10`}
         whileHover={shouldReduce ? {} : { borderColor: project.accent + '80', boxShadow: `0 0 40px ${project.accent}20` }}
@@ -190,33 +190,34 @@ function PortfolioCarouselCard({ project }) {
       >
         {/* Background Image with Hover Scale */}
         <div className="absolute inset-0 z-0 overflow-hidden rounded-[inherit]">
-          <div className="absolute inset-0 bg-gradient-to-t from-[#050510] via-black/60 to-black/20 z-10" />
+          {/* Lighter overlay to let the beautiful image show through more */}
+          <div className="absolute inset-0 bg-gradient-to-t from-[#050510] via-[#050510]/80 md:via-[#050510]/40 to-transparent z-10" />
           <motion.img
             src={project.image}
             alt={project.title}
-            className="w-full h-full object-cover object-top grayscale-[0.5] group-hover:grayscale-0 transition-all duration-700 group-hover:scale-105"
+            className="w-full h-full object-cover object-top grayscale-[0.3] group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-105 opacity-80 group-hover:opacity-100"
             onError={e => { e.currentTarget.style.display = 'none'; e.currentTarget.parentElement.style.background = '#111' }}
           />
         </div>
 
-        {/* Card Content container */}
-        <div className="relative z-20 h-full p-8 md:p-12 lg:p-16 flex flex-col justify-end">
+        {/* Card Content container - moved slightly down to give image more room at the top */}
+        <div className="relative z-20 h-full p-6 md:p-10 lg:p-14 flex flex-col justify-end">
 
-          <div className="flex items-center gap-4 mb-6 md:mb-8">
-            <span className="text-xs font-mono tracking-widest uppercase border border-white/20 px-4 py-1.5 rounded-full backdrop-blur-md" style={{ color: project.accent, borderColor: project.accent + '40', background: project.accent + '10' }}>
+          <div className="flex items-center gap-4 mb-4 md:mb-6">
+            <span className="text-[10px] md:text-xs font-mono tracking-widest uppercase border border-white/20 px-3 py-1.5 rounded-full backdrop-blur-md" style={{ color: project.accent, borderColor: project.accent + '40', background: project.accent + '10' }}>
               {project.category}
             </span>
             <div className="h-px bg-white/20 flex-grow" />
-            <span className="text-white/40 font-mono text-sm tracking-widest hidden md:block">
+            <span className="text-white/40 font-mono text-xs md:text-sm tracking-widest hidden md:block">
               {project.id < 10 ? `0${project.id}` : project.id}
             </span>
           </div>
 
-          <div className="mb-8">
+          <div className="mb-4 md:mb-6">
             <AnimatedTitle title={project.title} subtitle={project.subtitle} accent={project.accent} />
           </div>
 
-          <div className="text-zinc-300 text-sm md:text-lg mb-8 md:mb-12 max-w-lg leading-relaxed font-light">
+          <div className="text-zinc-300 text-sm md:text-lg mb-6 md:mb-10 max-w-2xl leading-relaxed font-light drop-shadow-md">
             <AnimatedWords text={project.desc} />
           </div>
 
@@ -224,10 +225,10 @@ function PortfolioCarouselCard({ project }) {
             {/* Tech Stack */}
             <motion.div
               initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.6 }}
-              className="flex flex-wrap gap-2"
+              className="flex flex-wrap gap-2 md:gap-3"
             >
               {project.tech.map(t => (
-                <span key={t} className="text-xs font-semibold text-white/70 bg-white/5 border border-white/10 px-3 py-1.5 rounded-lg">
+                <span key={t} className="text-[10px] md:text-xs font-semibold text-white/80 bg-black/40 backdrop-blur-md border border-white/10 px-3 py-1.5 rounded-lg">
                   {t}
                 </span>
               ))}
@@ -235,12 +236,12 @@ function PortfolioCarouselCard({ project }) {
 
             {/* CTA */}
             <motion.button
-              whileHover={{ scale: 1.05, backgroundColor: 'rgba(255,255,255,0.1)' }}
+              whileHover={{ scale: 1.05, backgroundColor: 'rgba(255,255,255,0.15)' }}
               whileTap={{ scale: 0.95 }}
-              className="h-12 w-12 rounded-full border border-white/30 flex items-center justify-center text-white backdrop-blur-md group-hover:border-white transition-colors"
+              className="h-10 w-10 md:h-14 md:w-14 rounded-full border border-white/30 flex items-center justify-center text-white backdrop-blur-md group-hover:border-white transition-colors bg-white/5"
               aria-label="Voir le projet"
             >
-              <svg className="w-5 h-5 -rotate-45 group-hover:rotate-0 transition-transform duration-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg className="w-5 h-5 md:w-6 md:h-6 -rotate-45 group-hover:rotate-0 transition-transform duration-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
               </svg>
             </motion.button>
