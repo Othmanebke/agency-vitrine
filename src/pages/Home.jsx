@@ -11,7 +11,9 @@ import Footer from '../components/Footer'
 import {
   MagneticTitle,
   MarqueeBand,
-  ScrollTextReveal
+  ScrollTextReveal,
+  HorizontalScroll,
+  HorizontalSlide
 } from '../components/ScrollEffects'
 
 /* ─── Service Icons (animated SVGs) ─── */
@@ -350,11 +352,13 @@ export default function Home() {
             </motion.div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-6xl mx-auto px-6 mb-16">
+          <HorizontalScroll itemCount={4}>
             {showcaseItems.map((item, i) => (
-              <ShowcaseCard key={item.num} item={item} index={i} />
+              <HorizontalSlide key={item.num} className="gap-8">
+                <ShowcaseCard item={item} index={i} />
+              </HorizontalSlide>
             ))}
-          </div>
+          </HorizontalScroll>
         </div>
 
         {/* ─── Process ─── */}
