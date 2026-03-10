@@ -6,7 +6,6 @@ import Hero from '../components/Hero'
 import Process from '../components/Process'
 import Testimonials from '../components/Testimonials'
 import FAQ from '../components/FAQ'
-import Packages from '../components/Packages'
 import Footer from '../components/Footer'
 import {
   MagneticTitle,
@@ -370,9 +369,6 @@ export default function Home() {
         <Testimonials />
 
         <FAQ />
-
-        <Packages />
-
 
       </main>
 
