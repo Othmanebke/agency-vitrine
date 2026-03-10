@@ -59,150 +59,163 @@ function TiltCard({ children, className, highlight }) {
 }
 
 export default function Packages() {
+  const shouldReduce = useReducedMotion()
+
   return (
-    <section id="packages" className="max-w-6xl mx-auto px-6 py-20">
+    <section id="packages" className="max-w-6xl mx-auto px-6 pb-20">
+
+      {/* ─── MAIN HERO PRICING CARD ─── */}
       <motion.div
-        initial={{ opacity: 0, y: 16 }}
-        whileInView={{ opacity: 1, y: 0 }}
+        initial={shouldReduce ? {} : { opacity: 0, y: 20 }}
+        whileInView={shouldReduce ? {} : { opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        transition={{ duration: 0.5 }}
-        className="mb-14"
+        transition={{ duration: 0.6 }}
+        className="mb-16"
       >
-        <p className="text-xs uppercase tracking-widest text-violet-400 mb-3 font-semibold">Ce que ça coûte</p>
-        <h2 className="text-3xl md:text-4xl font-black mb-10">Tarifs & offres</h2>
-
-        {/* Site packages */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
-          {/* ⭐ Featured card: Site sur-mesure */}
+        <div className="group relative w-full rounded-[2.5rem] p-1 bg-[#0c0716] overflow-hidden transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_40px_100px_rgba(139,92,246,0.2)]">
+          {/* Animated Aurora BG */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-          >
-            <TiltCard
-              highlight
-              className="relative p-7 bg-gradient-to-b from-violet-600/25 via-violet-900/10 to-pink-600/10 border border-violet-500/50 rounded-2xl shadow-2xl shadow-violet-500/20 h-full"
-            >
-              {/* Badge */}
-              <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-gradient-to-r from-violet-600 to-pink-500 text-white text-xs font-bold shadow-lg shadow-violet-500/40 whitespace-nowrap">
-                ⭐ Notre offre phare
+            className="absolute -inset-[1px] opacity-40 group-hover:opacity-100 transition-opacity duration-1000 z-0"
+            style={{
+              background: 'linear-gradient(135deg, #7c3aed, #ec4899, #6366f1, #7c3aed)',
+              backgroundSize: '300% 300%',
+            }}
+            animate={shouldReduce ? {} : { backgroundPosition: ['0% 0%', '100% 100%', '0% 0%'] }}
+            transition={{ duration: 8, repeat: Infinity, ease: 'linear' }}
+          />
+
+          <div className="relative z-10 bg-[#0c0716] h-full w-full rounded-[2.3rem] p-8 md:p-12 lg:p-16 flex flex-col lg:flex-row gap-12 lg:gap-20 justify-between">
+
+            {/* Left side: Context */}
+            <div className="flex-1">
+              <span className="inline-block px-4 py-1.5 rounded-full bg-gradient-to-r from-violet-600 to-pink-500 text-white text-xs font-bold shadow-lg shadow-violet-500/40 mb-6 uppercase tracking-widest">
+                L'Offre Phare
               </span>
-
-              <h3 className="font-black text-xl mb-2 text-white">Site sur-mesure</h3>
-              <p className="text-4xl font-black mb-1 bg-gradient-to-r from-violet-300 to-pink-300 bg-clip-text text-transparent">
-                500 <span className="text-xl text-zinc-400 font-normal">—</span> 5 000€
+              <h3 className="text-4xl md:text-5xl lg:text-6xl font-black mb-6 text-white tracking-tight">Le Site Web<br /><span className="bg-gradient-to-r from-violet-400 to-pink-400 bg-clip-text text-transparent">Sur-Mesure</span></h3>
+              <p className="text-zinc-400 text-lg mb-8 leading-relaxed max-w-md">
+                Un site rapide, performant et optimisé pour Google. Pensé comme ton meilleur commercial automatisé.
               </p>
-              <p className="text-sm text-zinc-400 mb-1">selon périmètre</p>
-              <p className="text-sm text-zinc-400 mb-5">Développé en code ou sous WordPress — selon tes besoins.</p>
 
-              <ul className="space-y-2.5 mb-7">
-                {['Responsive (mobile & desktop)', 'Optimisation SEO incluse', 'Maintenance 1 an offerte', 'Révisions incluses'].map(f => (
-                  <li key={f} className="flex items-center gap-2.5 text-sm text-zinc-300">
-                    <span className="flex-shrink-0 w-5 h-5 rounded-full bg-violet-500/20 flex items-center justify-center">
-                      <svg className="w-3 h-3 text-violet-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>
-                    </span>
-                    {f}
-                  </li>
-                ))}
-              </ul>
+              <div className="flex flex-col gap-2">
+                <p className="text-sm font-semibold uppercase tracking-widest text-violet-400 mb-2">Technologies</p>
+                <div className="flex gap-3 text-sm text-zinc-300 font-mono">
+                  <span className="px-3 py-1 rounded bg-white/5 border border-white/10">React</span>
+                  <span className="px-3 py-1 rounded bg-white/5 border border-white/10">WordPress</span>
+                  <span className="px-3 py-1 rounded bg-white/5 border border-white/10">Next.js</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Right side: Mechanics & Pricing */}
+            <div className="flex-[1.2] flex flex-col justify-between p-8 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-xl">
+              <div>
+                <div className="flex items-baseline gap-2 mb-2">
+                  <span className="text-sm text-zinc-500 font-medium">À partir de</span>
+                  <span className="text-5xl lg:text-6xl font-black tracking-tighter text-white">500€</span>
+                  <span className="text-lg text-zinc-500">— 5k€</span>
+                </div>
+                <p className="text-xs text-zinc-500 mb-8">*Tarif exact via devis, selon la complexité et le volume de pages.</p>
+
+                <ul className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
+                  {['Design Ultra-Premium', 'Code très rapide', 'Optimisé SEO On-Page', 'Accessible Mobile First', 'Copywriting inclus*', 'Formation CMS / Admin'].map(feature => (
+                    <li key={feature} className="flex items-start gap-3 text-zinc-300 font-medium">
+                      <svg className="w-5 h-5 text-violet-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
+              </div>
 
               <a
                 href="/contact"
                 onClick={e => { e.preventDefault(); history.pushState({}, '', '/contact'); window.dispatchEvent(new PopStateEvent('popstate')) }}
-                className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-violet-600 to-pink-500 shadow-lg shadow-violet-500/30 hover:scale-105 hover:shadow-violet-500/50 transition-all duration-200"
+                className="w-full relative group/btn flex items-center justify-center gap-2 py-4 rounded-xl text-lg font-bold text-white bg-white/5 border border-white/10 overflow-hidden transition-all duration-300 hover:border-violet-500/50"
               >
-                Démarrer mon projet
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+                <div className="absolute inset-0 bg-gradient-to-r from-violet-600 to-pink-500 opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300" />
+                <span className="relative z-10 flex items-center gap-2">
+                  Démarrer mon projet
+                  <svg className="w-5 h-5 group-hover/btn:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+                </span>
               </a>
-            </TiltCard>
-          </motion.div>
+            </div>
 
-          {/* Regular card: Flyers & Refonte */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-          >
-            <TiltCard className="p-7 bg-white/[0.03] border border-white/[0.07] rounded-2xl h-full flex flex-col">
-              <h3 className="font-bold text-lg mb-2">Flyers & Refonte</h3>
-              <p className="text-zinc-400 leading-relaxed flex-1">Supports print et refonte de site : tarifs sur devis — audit préalable pour estimer le temps et le budget.</p>
-              <a
-                href="/contact"
-                onClick={e => { e.preventDefault(); history.pushState({}, '', '/contact'); window.dispatchEvent(new PopStateEvent('popstate')) }}
-                className="mt-6 inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/5 border border-white/10 text-sm font-medium hover:border-violet-500/40 hover:text-white transition-colors"
-              >
-                Obtenir un devis
-              </a>
-            </TiltCard>
-          </motion.div>
+          </div>
         </div>
+      </motion.div>
 
-        {/* Social packs */}
-        <p className="text-sm font-semibold text-zinc-300 mb-5">Packs Présence Réseaux (indicatifs)</p>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+      {/* ─── SOCIAL PACKS BENTO GRID ─── */}
+      <div className="mb-16">
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+        >
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+            <div>
+              <h3 className="text-3xl font-black mb-2">Packs Présence Réseaux</h3>
+              <p className="text-zinc-400">Pour développer une communauté soudée et accroître tes ventes organiques.</p>
+            </div>
+          </div>
+        </motion.div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {plans.map((plan, i) => (
             <motion.div
               key={plan.name}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={shouldReduce ? {} : { opacity: 0, y: 20 }}
+              whileInView={shouldReduce ? {} : { opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: i * 0.1 }}
+              transition={{ duration: 0.4, delay: i * 0.15 }}
             >
-              <TiltCard
-                highlight={plan.highlight}
-                className={`relative p-6 rounded-2xl border h-full ${plan.highlight
-                  ? 'bg-gradient-to-b from-violet-600/20 to-pink-600/10 border-violet-500/50 shadow-xl shadow-violet-500/10'
-                  : 'bg-white/[0.03] border-white/[0.07]'
+              <motion.div
+                whileHover={shouldReduce ? {} : { y: -8, boxShadow: plan.highlight ? '0 24px 80px rgba(236,72,153,0.15)' : '0 24px 80px rgba(139,92,246,0.1)' }}
+                className={`relative flex flex-col h-full rounded-[2rem] p-8 border hover:border-white/20 transition-all duration-300 ${plan.highlight
+                  ? 'bg-gradient-to-br from-pink-600/10 to-violet-600/10 border-pink-500/30'
+                  : 'bg-[#0c0716] border-white/5'
                   }`}
               >
                 {plan.badge && (
-                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-gradient-to-r from-violet-600 to-pink-500 text-white text-xs font-bold shadow">
+                  <span className="absolute -top-3 right-8 px-4 py-1 rounded-full bg-pink-500 text-white text-xs font-bold shadow-lg shadow-pink-500/40">
                     {plan.badge}
                   </span>
                 )}
-                <div className="text-lg font-bold mb-1">{plan.name}</div>
-                <div className="text-zinc-500 text-sm mb-4">{plan.desc}</div>
-                <div className="text-3xl font-black mb-5">
-                  {plan.price}<span className="text-sm text-zinc-500 font-normal">{plan.period}</span>
+
+                <div className="mb-6">
+                  <h4 className="text-2xl font-black mb-1">{plan.name}</h4>
+                  <p className="text-zinc-500 text-sm font-medium">{plan.desc}</p>
                 </div>
-                <ul className="space-y-2 mb-6">
+
+                <div className="flex items-baseline gap-1 mb-8">
+                  <span className="text-5xl font-black tracking-tighter">{plan.price}</span>
+                  <span className="text-zinc-500 font-medium">{plan.period}</span>
+                </div>
+
+                <ul className="flex-1 space-y-4 mb-8">
                   {plan.features.map(f => (
-                    <li key={f} className="flex items-start gap-2 text-sm text-zinc-400">
-                      <svg className="w-4 h-4 text-violet-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" /></svg>
+                    <li key={f} className="flex items-start gap-3 text-sm text-zinc-300">
+                      <svg className={`w-5 h-5 flex-shrink-0 mt-0.5 ${plan.highlight ? 'text-pink-400' : 'text-violet-400'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" /></svg>
                       {f}
                     </li>
                   ))}
                 </ul>
+
                 <a
                   href="/contact"
                   onClick={e => { e.preventDefault(); history.pushState({}, '', '/contact'); window.dispatchEvent(new PopStateEvent('popstate')) }}
-                  className={`w-full flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-semibold transition-all ${plan.highlight
-                    ? 'bg-gradient-to-r from-violet-600 to-pink-500 text-white shadow-md shadow-violet-500/30 hover:scale-105'
-                    : 'bg-white/5 border border-white/10 text-zinc-300 hover:border-violet-500/40'
+                  className={`w-full py-4 rounded-xl text-sm font-bold text-center transition-all ${plan.highlight
+                    ? 'bg-gradient-to-r from-pink-500 to-violet-500 text-white shadow-lg'
+                    : 'bg-white/5 border border-white/10 text-white hover:bg-white/10'
                     }`}
                 >
-                  Choisir {plan.name}
+                  Choisir le pack {plan.name}
                 </a>
-              </TiltCard>
+              </motion.div>
             </motion.div>
           ))}
         </div>
-      </motion.div>
-
-      <p className="text-xs text-zinc-600">Les tarifs sont indicatifs et peuvent varier selon la taille du projet. Contacte-nous pour un devis précis.</p>
-
-      <div className="mt-10 text-center">
-        <a
-          href="/contact"
-          onClick={e => { e.preventDefault(); history.pushState({}, '', '/contact'); window.dispatchEvent(new PopStateEvent('popstate')) }}
-          className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full font-semibold text-white bg-gradient-to-r from-violet-600 to-pink-500 shadow-lg shadow-violet-500/25 hover:scale-105 hover:shadow-violet-500/50 transition-all"
-        >
-          Demander un devis gratuit
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
-        </a>
       </div>
+
     </section>
   )
 }
