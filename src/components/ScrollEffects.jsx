@@ -2,46 +2,79 @@ import React, { useRef } from 'react'
 import { motion, useScroll, useTransform, useSpring, useReducedMotion } from 'framer-motion'
 
 /* ─────────────────────────────────────────────────────────
-   1) INFINITE MARQUEE BAND — giant text scrolling between sections
+   1) MODERN MARQUEE — pills/tags scrolling continuously like SaaS sites
    ───────────────────────────────────────────────────────── */
-export function MarqueeBand() {
-    const ref = useRef(null)
-    const shouldReduce = useReducedMotion()
-    const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] })
-    const x1 = useTransform(scrollYProgress, [0, 1], ['0%', '-50%'])
-    const x2 = useTransform(scrollYProgress, [0, 1], ['-50%', '0%'])
 
-    const words = 'DESIGN · DÉVELOPPEMENT · SEO · STRATÉGIE · BRANDING · PERFORMANCE · '
+const marqueeItems = [
+    { text: 'Design UI/UX', color: 'violet' },
+    { text: 'Développement', color: 'pink' },
+    { text: 'SEO', color: 'indigo' },
+    { text: 'Stratégie Digitale', color: 'violet' },
+    { text: 'Branding', color: 'pink' },
+    { text: 'Performance', color: 'emerald' },
+    { text: 'React & Next.js', color: 'indigo' },
+    { text: 'WordPress', color: 'violet' },
+    { text: 'IA & Automation', color: 'pink' },
+    { text: 'Community Management', color: 'emerald' },
+    { text: 'Identité Visuelle', color: 'violet' },
+    { text: 'E-commerce', color: 'indigo' },
+]
+
+const colorMap = {
+    violet: { bg: 'rgba(139,92,246,0.12)', border: 'rgba(139,92,246,0.25)', text: 'rgb(196,181,253)', glow: 'rgba(139,92,246,0.4)' },
+    pink: { bg: 'rgba(236,72,153,0.12)', border: 'rgba(236,72,153,0.25)', text: 'rgb(249,168,212)', glow: 'rgba(236,72,153,0.4)' },
+    indigo: { bg: 'rgba(99,102,241,0.12)', border: 'rgba(99,102,241,0.25)', text: 'rgb(165,180,252)', glow: 'rgba(99,102,241,0.4)' },
+    emerald: { bg: 'rgba(52,211,153,0.12)', border: 'rgba(52,211,153,0.25)', text: 'rgb(110,231,183)', glow: 'rgba(52,211,153,0.4)' },
+}
+
+function MarqueeRow({ items, direction = 'left', speed = 35 }) {
+    const doubled = [...items, ...items, ...items]
 
     return (
-        <div ref={ref} className="relative py-16 md:py-24 overflow-hidden select-none" aria-hidden>
-            {/* Gradient fades on edges */}
-            <div className="absolute left-0 top-0 bottom-0 w-32 z-10 bg-gradient-to-r from-[#050510] to-transparent" />
-            <div className="absolute right-0 top-0 bottom-0 w-32 z-10 bg-gradient-to-l from-[#050510] to-transparent" />
-
-            {/* Row 1 — moves left on scroll */}
+        <div className="flex overflow-hidden py-2">
             <motion.div
-                style={shouldReduce ? {} : { x: x1 }}
-                className="flex whitespace-nowrap mb-4"
+                className="flex gap-3 md:gap-4"
+                animate={{ x: direction === 'left' ? ['0%', '-33.33%'] : ['-33.33%', '0%'] }}
+                transition={{ duration: speed, repeat: Infinity, ease: 'linear' }}
             >
-                {[...Array(4)].map((_, i) => (
-                    <span key={i} className="text-6xl md:text-8xl lg:text-[7rem] font-black text-white/[0.04] tracking-tight mr-4" style={{ WebkitTextStroke: '1px rgba(139,92,246,0.15)' }}>
-                        {words}
-                    </span>
-                ))}
+                {doubled.map((item, i) => {
+                    const c = colorMap[item.color]
+                    return (
+                        <div
+                            key={i}
+                            className="flex-shrink-0 px-5 md:px-6 py-2.5 md:py-3 rounded-full text-sm md:text-base font-medium whitespace-nowrap transition-all duration-300 hover:scale-110"
+                            style={{
+                                background: c.bg,
+                                border: `1px solid ${c.border}`,
+                                color: c.text,
+                                backdropFilter: 'blur(8px)',
+                            }}
+                            onMouseEnter={(e) => {
+                                e.currentTarget.style.boxShadow = `0 0 20px ${c.glow}`
+                                e.currentTarget.style.borderColor = c.text
+                            }}
+                            onMouseLeave={(e) => {
+                                e.currentTarget.style.boxShadow = 'none'
+                                e.currentTarget.style.borderColor = c.border
+                            }}
+                        >
+                            {item.text}
+                        </div>
+                    )
+                })}
             </motion.div>
+        </div>
+    )
+}
 
-            {/* Row 2 — moves right on scroll */}
-            <motion.div
-                style={shouldReduce ? {} : { x: x2 }}
-                className="flex whitespace-nowrap"
-            >
-                {[...Array(4)].map((_, i) => (
-                    <span key={i} className="text-6xl md:text-8xl lg:text-[7rem] font-black text-white/[0.04] tracking-tight mr-4" style={{ WebkitTextStroke: '1px rgba(236,72,153,0.12)' }}>
-                        {words}
-                    </span>
-                ))}
-            </motion.div>
+export function MarqueeBand() {
+    const row1 = marqueeItems.slice(0, 6)
+    const row2 = marqueeItems.slice(6, 12)
+
+    return (
+        <div className="relative py-12 md:py-16 overflow-hidden select-none" aria-hidden>
+            <MarqueeRow items={row1} direction="left" speed={30} />
+            <MarqueeRow items={row2} direction="right" speed={35} />
         </div>
     )
 }
@@ -102,6 +135,7 @@ function ScrollChar({ char, progress, start, end }) {
 
 /* ─────────────────────────────────────────────────────────
    3) HORIZONTAL SCROLL SECTION — vertical scroll → horizontal movement
+   FIXED: proper width calculation using % of total children width
    ───────────────────────────────────────────────────────── */
 export function HorizontalScroll({ children, itemCount = 4 }) {
     const ref = useRef(null)
@@ -111,15 +145,24 @@ export function HorizontalScroll({ children, itemCount = 4 }) {
         offset: ['start start', 'end end']
     })
 
-    const x = useTransform(scrollYProgress, [0, 1], ['0%', `-${(itemCount - 1) * 100 / itemCount}%`])
-    const smoothX = useSpring(x, { stiffness: 100, damping: 30 })
+    // Move from 0 to -(100% * (items - 1)) for the flex container
+    const xPercent = useTransform(scrollYProgress, [0, 1], [0, -(itemCount - 1) * 100])
+    const smoothX = useSpring(xPercent, { stiffness: 80, damping: 25 })
+
+    if (shouldReduce) {
+        return (
+            <section className="max-w-6xl mx-auto px-6 py-16">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">{children}</div>
+            </section>
+        )
+    }
 
     return (
         <section ref={ref} style={{ height: `${itemCount * 100}vh` }} className="relative">
             <div className="sticky top-0 h-screen flex items-center overflow-hidden">
                 <motion.div
-                    style={shouldReduce ? {} : { x: smoothX }}
-                    className="flex"
+                    style={{ x: useTransform(smoothX, v => `${v / itemCount}%`) }}
+                    className="flex pl-[10vw]"
                 >
                     {children}
                 </motion.div>
@@ -130,7 +173,7 @@ export function HorizontalScroll({ children, itemCount = 4 }) {
 
 export function HorizontalSlide({ children, className = '' }) {
     return (
-        <div className={`w-screen h-screen flex-shrink-0 flex items-center justify-center px-8 md:px-16 ${className}`}>
+        <div className={`w-[85vw] md:w-[45vw] h-auto flex-shrink-0 flex items-center justify-center px-3 md:px-5 ${className}`}>
             {children}
         </div>
     )
@@ -201,10 +244,6 @@ export function Scroll3DCard({ children, className = '', index = 0 }) {
    ───────────────────────────────────────────────────────── */
 export function ParallaxSection({ children, className = '' }) {
     const ref = useRef(null)
-    const { scrollYProgress } = useScroll({
-        target: ref,
-        offset: ['start end', 'end start']
-    })
 
     return (
         <div ref={ref} className={`relative overflow-hidden ${className}`}>
@@ -234,7 +273,6 @@ export function ParallaxSection({ children, className = '' }) {
 }
 
 function ParallaxLayer({ children, speed = 0, className = '' }) {
-    const ref = useRef(null)
     const shouldReduce = useReducedMotion()
     const { scrollYProgress } = useScroll({
         offset: ['start end', 'end start']
