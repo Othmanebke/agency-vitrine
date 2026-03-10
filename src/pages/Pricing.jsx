@@ -3,7 +3,7 @@ import Packages from '../components/Packages'
 import Nav from '../components/Nav'
 import Footer from '../components/Footer'
 import { useSEO } from '../hooks/useSEO'
-import { ScrollTextReveal, MagneticTitle } from '../components/ScrollEffects'
+import { MagneticTitle } from '../components/ScrollEffects'
 import { motion, useReducedMotion } from 'framer-motion'
 
 export default function Pricing() {
@@ -31,10 +31,29 @@ export default function Pricing() {
           </motion.div>
 
           <MagneticTitle>
-            <ScrollTextReveal
-              text="Combien vaut vraiment ton image de marque ?"
-              className="text-4xl md:text-6xl lg:text-7xl font-black leading-none mb-6 text-white tracking-tighter mx-auto max-w-4xl inline-block"
-            />
+            <motion.h1
+              className="text-4xl md:text-5xl lg:text-7xl font-black leading-none mb-6 tracking-tighter mx-auto max-w-4xl flex flex-wrap justify-center gap-x-[0.25em] gap-y-2"
+              variants={{
+                hidden: { opacity: 0 },
+                visible: { opacity: 1, transition: { staggerChildren: 0.12, delayChildren: 0.2 } }
+              }}
+              initial={shouldReduce ? "visible" : "hidden"}
+              whileInView="visible"
+              viewport={{ once: true }}
+            >
+              {"Combien vaut vraiment ton image de marque ?".split(" ").map((word, i) => (
+                <motion.span
+                  key={i}
+                  variants={{
+                    hidden: { opacity: 0, y: 40, filter: 'blur(12px)' },
+                    visible: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] } }
+                  }}
+                  className={word.toLowerCase() === 'vraiment' ? 'bg-gradient-to-r from-pink-500 to-rose-400 bg-clip-text text-transparent drop-shadow-sm' : 'text-white'}
+                >
+                  {word}
+                </motion.span>
+              ))}
+            </motion.h1>
           </MagneticTitle>
 
           <motion.p
