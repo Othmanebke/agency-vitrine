@@ -157,14 +157,13 @@ function BentoCard({ service, index }) {
       }}
       whileHover={shouldReduce ? {} : { y: -8, boxShadow: '0 24px 80px rgba(139,92,246,0.2)' }}
       whileTap={shouldReduce ? {} : { scale: 0.98 }}
-      style={{ rotateX: springRX, rotateY: springRY, transformPerspective: 800 }}
       onMouseMove={handleMove}
       onMouseLeave={handleLeave}
       className={`group relative overflow-hidden rounded-2xl cursor-default transition-colors duration-500 ${service.span} ${service.size === 'large'
-          ? 'p-8 md:p-10'
-          : service.size === 'tall'
-            ? 'p-8'
-            : 'p-6 md:p-8'
+        ? 'p-8 md:p-10'
+        : service.size === 'tall'
+          ? 'p-8'
+          : 'p-6 md:p-8'
         }`}
       style={{
         rotateX: springRX,
