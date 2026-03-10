@@ -5,117 +5,132 @@ import Nav from '../components/Nav'
 import Footer from '../components/Footer'
 import { useSEO } from '../hooks/useSEO'
 
-// User's original 10 projects, enhanced for the SaaS carousel format
 const projects = [
   {
     id: 1,
-    title: 'Boulangerie',
-    subtitle: 'Site Vitrine',
-    category: 'Site vitrine',
-    desc: 'Création de site vitrine moderne avec menu, horaires & prise de contact en ligne.',
-    tech: ['WordPress', 'SEO', 'Tailwind'],
-    color: 'from-amber-500/20 to-orange-600/10',
-    accent: '#f59e0b',
-    image: new URL('../assets/portfolio/p1.webp', import.meta.url).href
+    title: 'Ajt',
+    subtitle: 'Blog',
+    category: 'Blog',
+    desc: 'Création d\'un blog ultra-rapide et optimisé pour le SEO avec une interface de lecture épurée.',
+    tech: ['React', 'Tailwind', 'Next.js'],
+    color: 'from-blue-500/20 to-indigo-600/10',
+    accent: '#3b82f6',
+    image: new URL('../assets/portfolio/Ajt-Blog-REACTTAILWINDnext.png', import.meta.url).href,
+    challenge: "Créer un blog au design épuré, très rapide au chargement et irréprochable au niveau SEO.",
+    solution: "Développement sur-mesure sous Next.js avec Tailwind. Architecture pensée pour les Core Web Vitals.",
+    results: "Temps de chargement < 0.5s et excellente indexation organique."
   },
   {
     id: 2,
-    title: 'Restaurant',
-    subtitle: 'Gastronomique',
-    category: 'Refonte',
-    desc: 'Refonte complète : nouveau design, réservation en ligne & optimisation mobile.',
-    tech: ['Next.js', 'Framer', 'Stripe'],
-    color: 'from-rose-500/20 to-red-600/10',
-    accent: '#f43f5e',
-    image: new URL('../assets/portfolio/p2.webp', import.meta.url).href
+    title: 'Brows',
+    subtitle: 'Creative',
+    category: 'E-commerce',
+    desc: 'Boutique en ligne et site de réservation premium pour un salon de beauté spécialisé dans le regard.',
+    tech: ['WordPress', 'WooCommerce'],
+    color: 'from-pink-500/20 to-fuchsia-600/10',
+    accent: '#ec4899',
+    image: new URL('../assets/portfolio/BROWSCREATIVE-SalonCILS&Sourcils-WordpressWoocommerce.png', import.meta.url).href,
+    challenge: "Digitaliser l'offre d'un salon de beauté haut de gamme et vendre des produits en ligne.",
+    solution: "Création d'une boutique WooCommerce avec un design premium rose/fuchsia et module de réservation.",
+    results: "+40% de réservations en ligne et lancement réussi de la gamme e-commerce."
   },
   {
     id: 3,
-    title: 'Thai Food',
-    subtitle: 'SEO Local',
-    category: 'SEO',
-    desc: 'Stratégie SEO local, fiche Google Business, pages ciblées par quartier pour booster les visites.',
-    tech: ['Google Maps', 'SEO On-Page', 'Copywriting'],
-    color: 'from-orange-500/20 to-yellow-600/10',
-    accent: '#f97316',
-    image: new URL('../assets/portfolio/p3.webp', import.meta.url).href
+    title: 'Forma',
+    subtitle: 'Immobilier',
+    category: 'Agence Immo',
+    desc: 'Plateforme immobilière moderne avec recherche avancée, filtres dynamiques et fiches détaillées.',
+    tech: ['Next.js', 'Tailwind', 'React'],
+    color: 'from-emerald-500/20 to-teal-600/10',
+    accent: '#10b981',
+    image: new URL('../assets/portfolio/FORMA-agenceimmo-NEXTtailwindReact.png', import.meta.url).href,
+    challenge: "Moderniser l'image de l'agence et faciliter la recherche de biens immobiliers.",
+    solution: "Application React/Next.js dotée d'un moteur de recherche avec filtres avancés et géolocalisation.",
+    results: "Augmentation significative des leads qualifiés via les fiches de propriétés."
   },
   {
     id: 4,
-    title: 'Brows',
-    subtitle: 'Creative',
-    category: 'Branding',
-    desc: 'Identité visuelle complète : logo, charte, supports & site de booking pour un salon premium.',
-    tech: ['Figma', 'Illustrator', 'React'],
-    color: 'from-pink-500/20 to-fuchsia-600/10',
-    accent: '#ec4899',
-    image: new URL('../assets/portfolio/p4.webp', import.meta.url).href
+    title: 'Luxe Cars',
+    subtitle: 'Location',
+    category: 'Web App',
+    desc: 'Application web de réservation de véhicules de luxe avec tunnel de conversion fluide et gestion des flottes.',
+    tech: ['React', 'Vite', 'Tailwind CSS'],
+    color: 'from-zinc-500/20 to-slate-600/10',
+    accent: '#a1a1aa',
+    image: new URL('../assets/portfolio/luxecarsLocationDeVoitureReactViteTailwindCss.png', import.meta.url).href,
+    challenge: "Mettre en place un système de réservation fluide pour une flotte de véhicules de prestige.",
+    solution: "Interface React/Vite ultra-dynamique avec calendrier interactif et paiement intégré.",
+    results: "Expérience client premium et réduction des appels téléphoniques de réservation."
   },
   {
     id: 5,
-    title: 'Montres',
-    subtitle: 'Design',
+    title: 'Maison',
+    subtitle: 'Parfumerie',
     category: 'E-commerce',
-    desc: 'Boutique en ligne haut de gamme, fiches produit & tunnel de vente optimisé pour la conversion.',
-    tech: ['Shopify', 'Liquid', 'Tailwind'],
-    color: 'from-zinc-500/20 to-slate-600/10',
-    accent: '#a1a1aa',
-    image: new URL('../assets/portfolio/p5.webp', import.meta.url).href
+    desc: 'Boutique e-commerce haut de gamme experte dans la parfumerie de niche avec parcours utilisateur immersif.',
+    tech: ['React', 'Next.js', 'Tailwind'],
+    color: 'from-purple-500/20 to-violet-600/10',
+    accent: '#a855f7',
+    image: new URL('../assets/portfolio/Maison-ecommerceParfumerie-reactnexttailwind.png', import.meta.url).href,
+    challenge: "Retranscrire l'univers olfactif luxueux dans une boutique en ligne ultra-performante.",
+    solution: "Expérience e-commerce Next.js fluide, visuels immersifs et parcours d'achat sans friction.",
+    results: "Positionnement haut de gamme affirmé et hausse du panier moyen."
   },
   {
     id: 6,
-    title: 'Artisan',
-    subtitle: 'Local',
-    category: 'Landing',
-    desc: 'Landing page haute conversion, formulaire de devis & tracking Google Ads intégré.',
-    tech: ['React', 'Google Tag Manager', 'Ads'],
-    color: 'from-indigo-500/20 to-violet-600/10',
-    accent: '#8b5cf6',
-    image: new URL('../assets/portfolio/p6.webp', import.meta.url).href
+    title: 'Maison',
+    subtitle: 'Verdure',
+    category: 'Site Vitrine',
+    desc: 'Site vitrine artisanal pour une boulangerie locale afin de présenter le savoir-faire et commander.',
+    tech: ['HTML', 'CSS', 'JS'],
+    color: 'from-amber-500/20 to-orange-600/10',
+    accent: '#f59e0b',
+    image: new URL('../assets/portfolio/MaisonVerdure-SiteVitrineBoulangerei-HTMLCSSJS.png', import.meta.url).href,
+    challenge: "Créer une vitrine artisanale authentique pour attirer et fidéliser la clientèle locale.",
+    solution: "Design chaleureux (tons ambrés) avec menu dynamique et options de contact directes.",
+    results: "Visibilité en ligne accrue dans le quartier et afflux de nouveaux clients."
   },
   {
     id: 7,
-    title: 'Dashboard',
-    subtitle: 'Analytics',
-    category: 'SaaS',
-    desc: 'Interface admin React avec tableaux de bord, graphiques & gestion sécurisée des utilisateurs.',
-    tech: ['React', 'Recharts', 'Tailwind'],
-    color: 'from-sky-500/20 to-blue-600/10',
-    accent: '#0ea5e9',
-    image: new URL('../assets/portfolio/p7.webp', import.meta.url).href
+    title: 'NeuroFlow',
+    subtitle: 'SaaS IA',
+    category: 'App Web',
+    desc: 'Interface d\'application SaaS propulsée par l\'intelligence artificielle avec un dashboard interactif en temps réel.',
+    tech: ['Vite', 'Tailwind', 'React'],
+    color: 'from-cyan-500/20 to-blue-600/10',
+    accent: '#06b6d4',
+    image: new URL('../assets/portfolio/NeuroFlow-SAAS-IA-VITETailwindreact.png', import.meta.url).href,
+    challenge: "Concevoir une interface utilisateur intuitive pour un outil d'Intelligence Artificielle complexe.",
+    solution: "Dashboard analytique en React/Vite, data-visualisation en temps réel et mode sombre épuré.",
+    results: "Adoption rapide par les utilisateurs B2B grâce à une UX grandement simplifiée."
   },
   {
     id: 8,
-    title: 'Plateforme',
-    subtitle: 'Web',
-    category: 'App Web',
-    desc: 'Application full stack sur-mesure : authentification, base de données performante & API REST.',
-    tech: ['Node.js', 'PostgreSQL', 'Express'],
-    color: 'from-emerald-500/20 to-teal-600/10',
-    accent: '#10b981',
-    image: new URL('../assets/portfolio/p8.webp', import.meta.url).href
+    title: 'Sora',
+    subtitle: 'Thai Food',
+    category: 'Restaurant',
+    desc: 'Site vitrine élégant pour un restaurant thaïlandais, intégrant le menu digital et la réservation de tables.',
+    tech: ['HTML', 'CSS', 'JS'],
+    color: 'from-rose-500/20 to-red-600/10',
+    accent: '#f43f5e',
+    image: new URL('../assets/portfolio/SORA-RESTAUTHAI-HTMLCSSJS.png', import.meta.url).href,
+    challenge: "Moderniser la présence en ligne du restaurant et digitaliser la prise de réservations.",
+    solution: "Site vitrine vibrant et immersif intégrant le menu visuel et un module de réservation direct.",
+    results: "Salles pleines le week-end et retours très positifs sur l'esthétique du site."
   },
   {
     id: 9,
-    title: 'Lifestyle',
-    subtitle: 'Mode',
-    category: 'E-commerce',
-    desc: 'Boutique Shopify sur-mesure immersive, intégration paiement fluide & gestion des stocks en temps réel.',
-    tech: ['Shopify Plus', 'Framer Motion', 'React'],
-    color: 'from-violet-500/20 to-purple-600/10',
-    accent: '#a78bfa',
-    image: new URL('../assets/portfolio/p9.webp', import.meta.url).href
-  },
-  {
-    id: 10,
-    title: 'Studio',
-    subtitle: 'Créatif',
-    category: 'Site Vitrine',
-    desc: 'Portfolio interactif fullscreen, galerie filtrable dynamique & formulaire de contact innovant.',
-    tech: ['Three.js', 'Vite', 'GSAP'],
-    color: 'from-lime-500/20 to-green-600/10',
-    accent: '#84cc16',
-    image: new URL('../assets/portfolio/p10.webp', import.meta.url).href
+    title: 'Wondercut',
+    subtitle: 'Concept',
+    category: 'Barber Shop',
+    desc: 'Univers digital pensé pour un concept de barbier urbain avec prise de rendez-vous en ligne ultra-simplifiée.',
+    tech: ['Next.js', 'Tailwind'],
+    color: 'from-yellow-500/20 to-amber-600/10',
+    accent: '#eab308',
+    image: new URL('../assets/portfolio/WONDERCUT-Concetdesignbarbeur-nexttailwinnd.png', import.meta.url).href,
+    challenge: "Capter une clientèle urbaine et jeune avec un univers visuel fort et très assumé.",
+    solution: "Design 'Dark & Gold' sous Next.js/Tailwind avec intégration directe de l'agenda de réservation.",
+    results: "Agenda rempli 2 semaines à l'avance et renforcement de l'identité de marque."
   }
 ]
 
@@ -435,9 +450,24 @@ export default function PortfolioPage() {
                   <h3 className="text-4xl md:text-5xl font-black text-white mb-2">{selectedProject.title}</h3>
                   <p className="text-2xl font-light text-white/50 mb-6">{selectedProject.subtitle}</p>
 
-                  <p className="text-zinc-300 text-lg leading-relaxed mb-10">
+                  <p className="text-zinc-300 text-lg leading-relaxed mb-8">
                     {selectedProject.desc}
                   </p>
+
+                  <div className="space-y-4 mb-8">
+                    <div>
+                      <h4 className="text-white/70 font-bold uppercase tracking-widest text-xs mb-1">Le Défi</h4>
+                      <p className="text-zinc-400 text-sm leading-relaxed">{selectedProject.challenge}</p>
+                    </div>
+                    <div>
+                      <h4 className="text-white/70 font-bold uppercase tracking-widest text-xs mb-1">Notre Solution</h4>
+                      <p className="text-zinc-400 text-sm leading-relaxed">{selectedProject.solution}</p>
+                    </div>
+                    <div>
+                      <h4 className="text-white/70 font-bold uppercase tracking-widest text-xs mb-1">Résultats</h4>
+                      <p className="text-green-400 text-sm font-medium leading-relaxed">{selectedProject.results}</p>
+                    </div>
+                  </div>
 
                   <div className="flex flex-wrap gap-2 mt-auto">
                     {selectedProject.tech.map(t => (

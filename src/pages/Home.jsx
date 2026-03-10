@@ -366,6 +366,70 @@ export default function Home() {
         {/* ─── Marquee Band ─── */}
         <MarqueeBand />
 
+        {/* ─── Portfolio Preview ─── */}
+        <section className="max-w-6xl mx-auto px-6 py-24 text-center">
+          <motion.div
+            initial={shouldReduce ? {} : { opacity: 0, y: 20, filter: 'blur(8px)' }}
+            whileInView={shouldReduce ? {} : { opacity: 1, y: 0, filter: 'blur(0px)' }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <p className="text-xs uppercase tracking-widest text-pink-400 mb-3 font-semibold">Nos réalisations</p>
+            <MagneticTitle>
+              <h2 className="text-3xl md:text-5xl lg:text-6xl font-black mb-12 glow-title">Projets Récents</h2>
+            </MagneticTitle>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-left mb-12">
+            {[
+              {
+                title: 'Brows',
+                category: 'E-commerce',
+                image: new URL('../assets/portfolio/BROWSCREATIVE-SalonCILS&Sourcils-WordpressWoocommerce.png', import.meta.url).href,
+                accent: '#ec4899',
+                color: 'from-pink-500/20 to-fuchsia-600/10'
+              },
+              {
+                title: 'Luxe Cars',
+                category: 'Web App',
+                image: new URL('../assets/portfolio/luxecarsLocationDeVoitureReactViteTailwindCss.png', import.meta.url).href,
+                accent: '#a1a1aa',
+                color: 'from-zinc-500/20 to-slate-600/10'
+              },
+              {
+                title: 'Maison Parfumerie',
+                category: 'E-commerce',
+                image: new URL('../assets/portfolio/Maison-ecommerceParfumerie-reactnexttailwind.png', import.meta.url).href,
+                accent: '#a855f7',
+                color: 'from-purple-500/20 to-violet-600/10'
+              }
+            ].map((p, i) => (
+              <motion.div
+                key={p.title}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.15, duration: 0.5 }}
+                whileHover={{ y: -8, boxShadow: `0 24px 80px ${p.accent}20` }}
+                className={`relative h-[400px] rounded-[2rem] overflow-hidden bg-gradient-to-br ${p.color} border border-white/10 group`}
+              >
+                <div className="absolute inset-0 bg-gradient-to-t from-[#050510] via-[#050510]/40 to-transparent z-10" />
+                <img src={p.image} alt={p.title} className="w-full h-full object-cover object-top opacity-60 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700" />
+                <div className="absolute bottom-0 left-0 right-0 p-8 z-20">
+                  <span className="text-[10px] font-mono tracking-widest uppercase border border-white/20 px-3 py-1.5 rounded-full mb-3 inline-block" style={{ color: p.accent, borderColor: p.accent + '40', background: p.accent + '10' }}>
+                    {p.category}
+                  </span>
+                  <h3 className="text-2xl font-black text-white">{p.title}</h3>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          <a href="/portfolio" className="inline-flex items-center gap-2 px-8 py-4 rounded-full font-bold text-white bg-white/5 border border-white/10 hover:bg-white/10 transition-colors">
+            Voir tout le portfolio
+          </a>
+        </section>
+
         <Testimonials />
 
         <FAQ />
