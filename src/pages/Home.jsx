@@ -15,6 +15,42 @@ import {
   HorizontalSlide
 } from '../components/ScrollEffects'
 
+/* ─── Pink keyword animated text reveal ─── */
+function PinkRevealText({ text, pinkWords = [], className = '' }) {
+  const shouldReduce = useReducedMotion()
+  const words = text.split(' ')
+  return (
+    <p className={`flex flex-wrap justify-center gap-x-[0.32em] gap-y-1 ${className}`}>
+      {words.map((word, i) => {
+        const clean = word.replace(/[.,!?']/g, '').toLowerCase()
+        const isPink = pinkWords.some(kw => clean === kw.toLowerCase())
+        return (
+          <motion.span
+            key={i}
+            initial={shouldReduce ? {} : { opacity: 0, y: 28, filter: 'blur(10px)', scale: 0.92 }}
+            whileInView={shouldReduce ? {} : { opacity: 1, y: 0, filter: 'blur(0px)', scale: 1 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ delay: i * 0.045, duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+            className={isPink ? 'text-pink-400 relative' : 'relative'}
+            style={isPink ? { textShadow: '0 0 28px rgba(244,114,182,0.55), 0 0 6px rgba(244,114,182,0.3)' } : {}}
+          >
+            {isPink && (
+              <motion.span
+                className="absolute inset-0 rounded blur-md bg-pink-400/20 -z-10"
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.045 + 0.3, duration: 0.4 }}
+              />
+            )}
+            {word}
+          </motion.span>
+        )
+      })}
+    </p>
+  )
+}
+
 /* ─── Service Icons (animated SVGs) ─── */
 function IconWeb() {
   return (
@@ -329,9 +365,10 @@ export default function Home() {
 
         {/* ─── Big Statement ─── */}
         <section className="max-w-5xl mx-auto px-6 py-24 md:py-32 text-center">
-          <ScrollTextReveal
+          <PinkRevealText
             text="Nous ne faisons pas de sites web. Nous créons des expériences digitales qui transforment tes visiteurs en clients."
-            className="text-3xl md:text-5xl lg:text-6xl font-black leading-tight tracking-tight inline-block"
+            pinkWords={['expériences', 'digitales', 'transforment', 'clients.']}
+            className="text-3xl md:text-5xl lg:text-6xl font-black leading-tight tracking-tight"
           />
         </section>
 
@@ -446,9 +483,10 @@ export default function Home() {
             [ le meilleur investissement ]
           </motion.div>
 
-          <ScrollTextReveal
+          <PinkRevealText
             text="Ton site web ne devrait pas être une dépense. C'est le meilleur commercial de ton entreprise, ouvert 24h/24 et 7j/7 pour convertir tes visiteurs en clients."
-            className="text-3xl md:text-5xl font-black leading-tight tracking-tight inline-block"
+            pinkWords={['meilleur', 'commercial', 'convertir', 'clients.']}
+            className="text-3xl md:text-5xl font-black leading-tight tracking-tight"
           />
 
           <motion.div
