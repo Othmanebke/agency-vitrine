@@ -11,6 +11,8 @@ import {
   MagneticTitle,
   MarqueeBand,
   ScrollTextReveal,
+  HorizontalScroll,
+  HorizontalSlide
 } from '../components/ScrollEffects'
 
 /* ─── Pink keyword animated text reveal ─── */
@@ -238,12 +240,78 @@ function BentoCard({ service, index }) {
 }
 
 /* ─── Horizontal Scroll Showcase Items ─── */
-const steps = [
-  { num: '01', title: 'Analyse', sub: 'On cerne tes objectifs et ta cible.', accent: '#8b5cf6' },
-  { num: '02', title: 'Design', sub: 'Maquettes propres, validées avec toi.', accent: '#ec4899' },
-  { num: '03', title: 'Développement', sub: 'Code rapide, SEO-ready, responsive.', accent: '#10b981' },
-  { num: '04', title: 'Lancement', sub: 'En ligne en moins de 10 jours.', accent: '#f59e0b' },
+const showcaseItems = [
+  {
+    num: '01',
+    title: 'Analyse &\nStratégie',
+    desc: 'Audit complet de ton écosystème digital. On identifie les leviers, les freins, et on construit une roadmap sur-mesure.',
+    color: 'from-violet-500/20 to-indigo-500/10',
+    accent: 'violet',
+  },
+  {
+    num: '02',
+    title: 'Design &\nPrototypage',
+    desc: 'Maquettes haute fidélité, design system cohérent, et prototypes interactifs pour valider chaque pixel.',
+    color: 'from-pink-500/20 to-rose-500/10',
+    accent: 'pink',
+  },
+  {
+    num: '03',
+    title: 'Développement\nSur-Mesure',
+    desc: 'Code propre, performant, accessible. React, Next.js, WordPress — on choisit la stack qui te correspond.',
+    color: 'from-emerald-500/20 to-teal-500/10',
+    accent: 'emerald',
+  },
+  {
+    num: '04',
+    title: 'Lancement &\nOptimisation',
+    desc: 'Déploiement, SEO, monitoring et optimisation continue pour des résultats qui durent.',
+    color: 'from-amber-500/20 to-orange-500/10',
+    accent: 'amber',
+  },
 ]
+
+function ShowcaseCard({ item, index }) {
+  const shouldReduce = useReducedMotion()
+
+  return (
+    <motion.div
+      initial={shouldReduce ? {} : { opacity: 0, scale: 0.9 }}
+      whileInView={shouldReduce ? {} : { opacity: 1, scale: 1 }}
+      whileHover={shouldReduce ? {} : { y: -8 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.6, delay: 0.1 }}
+      className="relative w-full max-w-xl mx-auto group"
+    >
+      <div
+        className={`relative h-[60vh] max-h-[500px] rounded-3xl p-8 md:p-12 flex flex-col justify-between overflow-hidden bg-gradient-to-br ${item.color} transition-all duration-500 group-hover:shadow-[0_24px_80px_rgba(139,92,246,0.15)]`}
+        style={{
+          border: '1px solid rgba(255,255,255,0.08)',
+          backdropFilter: 'blur(12px)',
+        }}
+      >
+        <span className="absolute -right-4 -top-8 text-[12rem] font-black text-white/[0.03] leading-none select-none pointer-events-none">
+          {item.num}
+        </span>
+
+        <div>
+          <span className={`text-xs font-mono tracking-widest uppercase text-${item.accent}-400/80`}>
+            Étape {item.num}
+          </span>
+          <h3 className="text-3xl md:text-4xl font-black mt-4 leading-tight whitespace-pre-line">
+            {item.title}
+          </h3>
+        </div>
+
+        <p className="text-zinc-400 text-sm md:text-base leading-relaxed max-w-sm">
+          {item.desc}
+        </p>
+
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+      </div>
+    </motion.div>
+  )
+}
 
 export default function Home() {
   const shouldReduce = useReducedMotion()
@@ -302,41 +370,30 @@ export default function Home() {
           />
         </section>
 
-        {/* ─── Process Steps ─── */}
-        <section className="max-w-6xl mx-auto px-6 py-24">
-          <motion.div
-            initial={shouldReduce ? {} : { opacity: 0, y: 20, filter: 'blur(8px)' }}
-            whileInView={shouldReduce ? {} : { opacity: 1, y: 0, filter: 'blur(0px)' }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="mb-16"
-          >
-            <p className="text-xs uppercase tracking-widest text-violet-400 mb-3 font-semibold">Notre processus</p>
-            <MagneticTitle>
-              <h2 className="text-3xl md:text-5xl lg:text-6xl font-black glow-title">Comment on travaille</h2>
-            </MagneticTitle>
-          </motion.div>
-
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-white/5 rounded-2xl overflow-hidden border border-white/5">
-            {steps.map((step, i) => (
-              <motion.div
-                key={step.num}
-                initial={shouldReduce ? {} : { opacity: 0, y: 24 }}
-                whileInView={shouldReduce ? {} : { opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                className="group bg-[#050510] p-8 md:p-10 flex flex-col gap-4 hover:bg-white/[0.03] transition-colors"
-              >
-                <span className="text-5xl md:text-6xl font-black leading-none" style={{ color: step.accent, textShadow: `0 0 40px ${step.accent}40` }}>
-                  {step.num}
-                </span>
-                <h3 className="text-lg md:text-xl font-bold text-white tracking-tight">{step.title}</h3>
-                <p className="text-zinc-500 text-sm leading-relaxed">{step.sub}</p>
-                <div className="mt-auto w-8 h-[2px] rounded-full transition-all duration-500 group-hover:w-16" style={{ background: step.accent }} />
-              </motion.div>
-            ))}
+        {/* ─── Horizontal Scroll Process ─── */}
+        <div className="relative">
+          <div className="max-w-6xl mx-auto px-6 pt-16 pb-8">
+            <motion.div
+              initial={shouldReduce ? {} : { opacity: 0, y: 20, filter: 'blur(8px)' }}
+              whileInView={shouldReduce ? {} : { opacity: 1, y: 0, filter: 'blur(0px)' }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
+              <p className="text-xs uppercase tracking-widest text-violet-400 mb-3 font-semibold">Notre processus</p>
+              <MagneticTitle>
+                <h2 className="text-3xl md:text-5xl lg:text-6xl font-black glow-title">Comment on travaille</h2>
+              </MagneticTitle>
+            </motion.div>
           </div>
-        </section>
+
+          <HorizontalScroll itemCount={4}>
+            {showcaseItems.map((item, i) => (
+              <HorizontalSlide key={item.num} className="gap-8">
+                <ShowcaseCard item={item} index={i} />
+              </HorizontalSlide>
+            ))}
+          </HorizontalScroll>
+        </div>
 
         {/* ─── Process ─── */}
         <Process />
