@@ -230,17 +230,36 @@ export default function About() {
           </motion.div>
 
           <h1 className="text-4xl md:text-6xl xl:text-7xl font-black leading-[1.08] tracking-tight mb-8">
-            <MagneticTitle className="block">
-              <WordReveal text="On ne crée pas des sites." />
-            </MagneticTitle>
-            <MagneticTitle className="block mt-2">
-              <WordReveal text="On construit des leviers" />
-            </MagneticTitle>
-            <MagneticTitle className="block mt-2">
-              <span className="text-gradient">
-                <WordReveal text="de croissance." />
-              </span>
-            </MagneticTitle>
+            {/* ligne 1 — depuis la droite */}
+            <motion.div
+              initial={{ opacity: 0, x: 100 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.75, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <MagneticTitle className="block">
+                On ne crée pas des <span className="text-pink-400">sites</span>.
+              </MagneticTitle>
+            </motion.div>
+            {/* ligne 2 — depuis la gauche */}
+            <motion.div
+              initial={{ opacity: 0, x: -100 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.75, delay: 0.28, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <MagneticTitle className="block mt-2">
+                On construit des <span className="text-pink-400">leviers</span>
+              </MagneticTitle>
+            </motion.div>
+            {/* ligne 3 — depuis la droite */}
+            <motion.div
+              initial={{ opacity: 0, x: 100 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.75, delay: 0.46, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <MagneticTitle className="block mt-2">
+                <span className="text-gradient">de croissance.</span>
+              </MagneticTitle>
+            </motion.div>
           </h1>
 
           <motion.p
