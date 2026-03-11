@@ -69,7 +69,7 @@ export default function Pricing() {
 
         <Packages />
 
-        <Process />
+        <Process title="La méthode" titleAccent="Wexor" />
       </main>
 
       <Footer />

@@ -32,7 +32,7 @@ const outcomes = [
   { value: '0€', label: 'de frais cachés' },
 ]
 
-export default function Process() {
+export default function Process({ title = 'Notre méthode', titleAccent = 'simple et efficace' }) {
   const shouldReduce = useReducedMotion()
 
   return (
@@ -48,13 +48,13 @@ export default function Process() {
       >
         <p className="text-xs uppercase tracking-widest text-violet-400 mb-3 font-semibold font-mono">Comment on travaille</p>
         <h2 className="text-3xl md:text-5xl font-black leading-tight tracking-tight">
-          Notre méthode{' '}
+          {title}{' '}
           <span style={{
             background: 'linear-gradient(135deg, #8b5cf6, #ec4899)',
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
             backgroundClip: 'text',
-          }}>simple et efficace</span>
+          }}>{titleAccent}</span>
         </h2>
       </motion.div>
 
