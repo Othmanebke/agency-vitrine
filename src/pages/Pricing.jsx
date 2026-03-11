@@ -4,6 +4,7 @@ import Nav from '../components/Nav'
 import Footer from '../components/Footer'
 import { useSEO } from '../hooks/useSEO'
 import { MagneticTitle } from '../components/ScrollEffects'
+import Process from '../components/Process'
 import { motion, useReducedMotion } from 'framer-motion'
 
 export default function Pricing() {
@@ -68,38 +69,7 @@ export default function Pricing() {
 
         <Packages />
 
-        {/* VISUAL TIMELINE "COMMENT ÇA MARCHE" */}
-        <section className="max-w-6xl mx-auto px-6 py-24 mb-12 relative overflow-hidden">
-          <div className="absolute top-1/2 left-0 right-0 h-px bg-gradient-to-r from-transparent via-violet-500/20 to-transparent hidden md:block" />
-
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-5xl font-black tracking-tight mb-4">La méthode Wexor</h2>
-            <p className="text-zinc-400">On va à l'essentiel, sans te faire perdre de temps.</p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative z-10">
-            {[
-              { num: '01', title: 'Audit & Stratégie', desc: 'On analyse ton marché et on définit l\'arborescence idéale de ton site lors d\'un call de 30min.' },
-              { num: '02', title: 'Design & Code', desc: 'On crée une maquette sur-mesure hyper premium, et on développe ton site avec une tech ultra rapide.' },
-              { num: '03', title: 'Lancement', desc: 'Déploiement en ligne, optimisation SEO, et formation (si besoin) pour que tu sois autonome.' }
-            ].map((step, idx) => (
-              <motion.div
-                key={step.num}
-                initial={shouldReduce ? {} : { opacity: 0, y: 20 }}
-                whileInView={shouldReduce ? {} : { opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: idx * 0.15 }}
-                className="bg-[#0c0716] p-8 rounded-[2rem] border border-white/5 hover:border-violet-500/40 hover:bg-white/[0.03] hover:-translate-y-2 transition-all duration-300 group"
-              >
-                <div className="text-5xl font-black text-white/5 mb-6 group-hover:text-violet-500/20 transition-colors">
-                  {step.num}
-                </div>
-                <h3 className="text-xl font-bold mb-3">{step.title}</h3>
-                <p className="text-zinc-400 text-sm leading-relaxed">{step.desc}</p>
-              </motion.div>
-            ))}
-          </div>
-        </section>
+        <Process />
       </main>
 
       <Footer />

@@ -3,7 +3,6 @@ import { motion, useReducedMotion, useMotionValue, useSpring, useScroll, useTran
 import { useSEO } from '../hooks/useSEO'
 import Nav from '../components/Nav'
 import Hero from '../components/Hero'
-import Process from '../components/Process'
 import Testimonials from '../components/Testimonials'
 import FAQ from '../components/FAQ'
 import Footer from '../components/Footer'
@@ -394,9 +393,6 @@ export default function Home() {
             ))}
           </HorizontalScroll>
         </div>
-
-        {/* ─── Process ─── */}
-        <Process />
 
         {/* ─── Marquee Band ─── */}
         <MarqueeBand />
