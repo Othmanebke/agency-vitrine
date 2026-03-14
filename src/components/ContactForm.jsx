@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import { motion } from 'framer-motion'
 
 const FORMSPREE_ENDPOINT = (import.meta.env.VITE_FORMSPREE || '').trim()
+const SAFE_FORMSPREE_ENDPOINT = 'https://formspree.io/f/xjgaekqe'
+const LEGACY_FORMSPREE_ENDPOINTS = ['https://formspree.io/f/xbdakzyg']
 const USE_SERVERLESS = import.meta.env.VITE_USE_SERVERLESS === 'true'
 
 export default function ContactForm(){
@@ -27,8 +29,12 @@ export default function ContactForm(){
   async function handleSubmit(e){
     e.preventDefault()
     setStatus('sending')
-    const hasFormspree = FORMSPREE_ENDPOINT && !FORMSPREE_ENDPOINT.includes('YOUR_FORMSPREE_ENDPOINT')
-    const endpoint = USE_SERVERLESS ? '/api/contact' : (hasFormspree ? FORMSPREE_ENDPOINT : '/api/contact')
+    const hasCustomFormspree = FORMSPREE_ENDPOINT && !FORMSPREE_ENDPOINT.includes('YOUR_FORMSPREE_ENDPOINT')
+    const isLegacyEndpoint = LEGACY_FORMSPREE_ENDPOINTS.includes(FORMSPREE_ENDPOINT)
+    const effectiveFormspreeEndpoint = (hasCustomFormspree && !isLegacyEndpoint)
+      ? FORMSPREE_ENDPOINT
+      : SAFE_FORMSPREE_ENDPOINT
+    const endpoint = USE_SERVERLESS ? '/api/contact' : effectiveFormspreeEndpoint
     try {
       const res = await fetch(endpoint, {
         method: 'POST',
