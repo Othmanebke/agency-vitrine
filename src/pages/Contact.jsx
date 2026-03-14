@@ -7,8 +7,9 @@ import { useSEO } from '../hooks/useSEO'
 
 export default function Contact() {
   useSEO({
-    title: 'Contact — Wexor | Devis Gratuit en 48 h',
-    description: 'Demandez un devis gratuit à Wexor — réponse garantie en moins de 48 h. Création de site, refonte, SEO ou print : décrivez votre projet.',
+    title: 'Contact — Création de site web | Wexor',
+    description: 'Demandez un devis gratuit pour votre création de site web, refonte ou SEO local. Wexor, développeur web freelance en Île-de-France et partout en France.',
+    keywords: 'contact développeur web freelance, devis création site web, refonte site internet, SEO local, freelance web Île-de-France',
     path: '/contact',
   })
 

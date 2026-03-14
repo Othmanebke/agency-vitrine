@@ -29,24 +29,28 @@ function setLink(rel, href) {
  * @param {string} path        — ex: "/about"
  * @param {string} image       — ex: "https://wexor.vercel.app/og-image.jpg"
  */
-export function useSEO({ title, description, path = '/', image = 'https://wexor.vercel.app/og-image.jpg' }) {
+export function useSEO({ title, description, path = '/', image = 'https://wexor.vercel.app/og-image.jpg', keywords = '' }) {
   useEffect(() => {
     const url = BASE_URL + path
 
     document.title = title
 
     setMeta('name', 'description', description)
+    if (keywords) setMeta('name', 'keywords', keywords)
+    setMeta('name', 'robots', 'index, follow')
     setLink('canonical', url)
 
+    setMeta('property', 'og:type', 'website')
     setMeta('property', 'og:title', title)
     setMeta('property', 'og:description', description)
     setMeta('property', 'og:url', url)
 
     setMeta('property', 'og:image', image)
 
+    setMeta('name', 'twitter:card', 'summary_large_image')
     setMeta('name', 'twitter:title', title)
     setMeta('name', 'twitter:description', description)
     setMeta('name', 'twitter:url', url)
     setMeta('name', 'twitter:image', image)
-  }, [title, description, path, image])
+  }, [title, description, path, image, keywords])
 }

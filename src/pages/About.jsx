@@ -201,9 +201,10 @@ const navTo = (path) => {
 
 export default function About() {
   useSEO({
-    title: "À propos — Wexor | Agence Digitale",
+    title: "À propos — Développeur web freelance | Wexor",
     description:
-      "Othmane Bouakline, fondateur de Wexor — agence digitale Bac+5 spécialisée en création de sites sur-mesure, refonte, SEO et supports print pour TPE et PME.",
+      "Othmane Bouakline, développeur web freelance et fondateur de Wexor. Création de site web sur-mesure, refonte et SEO pour TPE/PME en Île-de-France et partout en France.",
+    keywords: "développeur web freelance, création de site web, agence digitale, SEO local, refonte site web, freelance Île-de-France",
     path: "/about",
   });
 
