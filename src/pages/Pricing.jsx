@@ -21,7 +21,7 @@ export default function Pricing() {
 
       <main role="main">
         {/* MARKETING HEADER */}
-        <header className="max-w-6xl mx-auto px-6 pt-32 pb-16 text-center">
+        <header className="max-w-6xl mx-auto px-6 pt-14 pb-16 text-center">
           <motion.div
             initial={shouldReduce ? {} : { opacity: 0, y: -20 }}
             animate={shouldReduce ? {} : { opacity: 1, y: 0 }}

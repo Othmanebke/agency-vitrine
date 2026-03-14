@@ -212,10 +212,10 @@ export default function About() {
     <div className="min-h-screen text-white">
       <Nav />
 
-      <main role="main" className="pt-24">
+      <main role="main">
 
         {/* 1. Hero Cinématique */}
-        <header className="relative max-w-6xl mx-auto px-6 py-28 text-center overflow-hidden">
+        <header className="relative max-w-6xl mx-auto px-6 pt-14 pb-24 text-center overflow-hidden">
           <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
             <div className="w-[720px] h-[420px] rounded-full bg-violet-600/20 blur-3xl" />
           </div>

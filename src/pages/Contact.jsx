@@ -17,7 +17,7 @@ export default function Contact() {
     <div className="min-h-screen text-white">
       <Nav />
       <main role="main">
-        <section className="max-w-5xl mx-auto px-6 py-20">
+        <section className="max-w-5xl mx-auto px-6 pt-14 pb-20">
           {/* header */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
