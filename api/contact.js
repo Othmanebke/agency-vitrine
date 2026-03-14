@@ -3,24 +3,33 @@
 
 const sgMail = require('@sendgrid/mail')
 
+function escapeHtml(value) {
+  return String(value || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/\"/g, '&quot;')
+    .replace(/'/g, '&#039;')
+}
+
 module.exports = async (req, res) => {
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST')
     return res.status(405).json({ message: 'Method not allowed' })
   }
 
-  const { name, email, message } = req.body || {}
+  const { name, email, phone, subject, message } = req.body || {}
 
   if (!name || !email || !message) {
     return res.status(400).json({ message: 'Missing fields' })
   }
 
   const apiKey = process.env.SENDGRID_API_KEY
-  const to = process.env.SENDGRID_TO
-  const from = process.env.SENDGRID_FROM || `no-reply@${process.env.VERCEL_URL || 'example.com'}`
+  const to = process.env.SENDGRID_TO || 'othmane.bouakline.pro@gmail.com'
+  const from = process.env.SENDGRID_FROM || to
 
-  if (!apiKey || !to) {
-    console.error('SendGrid not configured. Missing SENDGRID_API_KEY or SENDGRID_TO')
+  if (!apiKey) {
+    console.error('SendGrid not configured. Missing SENDGRID_API_KEY')
     return res.status(500).json({ message: 'Email provider not configured' })
   }
 
@@ -29,12 +38,15 @@ module.exports = async (req, res) => {
   const msg = {
     to,
     from,
-    subject: `Nouveau message de ${name} via le site`,
+    replyTo: email,
+    subject: `Nouveau message: ${subject || 'Demande de contact'} (${name})`,
     html: `
-      <p><strong>Nom:</strong> ${name}</p>
-      <p><strong>Email:</strong> ${email}</p>
+      <p><strong>Nom:</strong> ${escapeHtml(name)}</p>
+      <p><strong>Email:</strong> ${escapeHtml(email)}</p>
+      <p><strong>Téléphone:</strong> ${escapeHtml(phone || 'Non renseigné')}</p>
+      <p><strong>Type de projet:</strong> ${escapeHtml(subject || 'Non renseigné')}</p>
       <p><strong>Message:</strong></p>
-      <div>${message.replace(/\n/g, '<br/>')}</div>
+      <div>${escapeHtml(message).replace(/\n/g, '<br/>')}</div>
     `
   }
 

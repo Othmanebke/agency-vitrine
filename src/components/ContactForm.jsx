@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { motion } from 'framer-motion'
 
-const DEFAULT_ENDPOINT = import.meta.env.VITE_FORMSPREE || 'https://formspree.io/f/YOUR_FORMSPREE_ENDPOINT'
+const FORMSPREE_ENDPOINT = (import.meta.env.VITE_FORMSPREE || '').trim()
 const USE_SERVERLESS = import.meta.env.VITE_USE_SERVERLESS === 'true'
 
 export default function ContactForm(){
@@ -27,11 +27,12 @@ export default function ContactForm(){
   async function handleSubmit(e){
     e.preventDefault()
     setStatus('sending')
-    const endpoint = USE_SERVERLESS ? '/api/contact' : DEFAULT_ENDPOINT
+    const hasFormspree = FORMSPREE_ENDPOINT && !FORMSPREE_ENDPOINT.includes('YOUR_FORMSPREE_ENDPOINT')
+    const endpoint = USE_SERVERLESS ? '/api/contact' : (hasFormspree ? FORMSPREE_ENDPOINT : '/api/contact')
     try {
       const res = await fetch(endpoint, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
         body: JSON.stringify(values),
       })
       if (res.ok) { setStatus('success'); setValues({ name: '', email: '', phone: '', subject: '', message: '' }) }

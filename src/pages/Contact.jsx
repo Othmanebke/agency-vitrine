@@ -43,7 +43,7 @@ export default function Contact() {
               className="lg:col-span-2 space-y-8"
             >
               {[
-                { icon: '📩', label: 'Email', value: '<a href="mailto:onovaweb.pro@gmail.com" class="hover:text-violet-400 transition-colors">onovaweb.pro@gmail.com</a>' },
+                { icon: '📩', label: 'Email', value: '<a href="mailto:othmane.bouakline.pro@gmail.com" class="hover:text-violet-400 transition-colors">othmane.bouakline.pro@gmail.com</a>' },
                 { icon: '📞', label: 'Téléphone', value: '<a href="tel:+33660805337" class="hover:text-violet-400 transition-colors">06 60 80 53 37</a>' },
                 { icon: '📍', label: 'Disponibilité', value: 'France &amp; remote' },
               ].map(item => (

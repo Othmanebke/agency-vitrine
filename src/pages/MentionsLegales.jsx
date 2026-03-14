@@ -39,8 +39,8 @@ export default function MentionsLegales() {
               <p><strong className="text-white">Responsable de la publication :</strong> Othman Bouakline</p>
               <p><strong className="text-white">Statut :</strong> Auto-entrepreneur</p>
               <p><strong className="text-white">Email :</strong>{' '}
-                <a href="mailto:onovaweb.pro@gmail.com" className="text-violet-400 hover:text-violet-300 transition-colors">
-                  onovaweb.pro@gmail.com
+                <a href="mailto:othmane.bouakline.pro@gmail.com" className="text-violet-400 hover:text-violet-300 transition-colors">
+                  othmane.bouakline.pro@gmail.com
                 </a>
               </p>
               <p><strong className="text-white">Téléphone :</strong>{' '}
@@ -85,8 +85,8 @@ export default function MentionsLegales() {
               </ul>
               <p>
                 Pour exercer ces droits, contactez-nous à{' '}
-                <a href="mailto:onovaweb.pro@gmail.com" className="text-violet-400 hover:text-violet-300 transition-colors">
-                  onovaweb.pro@gmail.com
+                <a href="mailto:othmane.bouakline.pro@gmail.com" className="text-violet-400 hover:text-violet-300 transition-colors">
+                  othmane.bouakline.pro@gmail.com
                 </a>
                 . Nous répondons sous 30 jours ouvrés.
               </p>
