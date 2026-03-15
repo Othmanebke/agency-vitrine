@@ -466,24 +466,6 @@ export default function Home() {
 
         <FAQ />
 
-        <section className="max-w-6xl mx-auto px-6 py-20">
-          <motion.div
-            initial={shouldReduce ? {} : { opacity: 0, y: 24 }}
-            whileInView={shouldReduce ? {} : { opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-            className="rounded-3xl border border-white/10 bg-white/[0.03] p-8 md:p-10"
-          >
-            <p className="text-xs uppercase tracking-widest text-violet-400 mb-3 font-semibold">Zone d'intervention</p>
-            <h2 className="text-2xl md:text-4xl font-black mb-4">Création de site web et SEO local dans votre zone</h2>
-            <p className="text-zinc-300 leading-relaxed max-w-4xl">
-              Wexor accompagne les entreprises qui recherchent un développeur web freelance pour la création de site web,
-              la refonte et le référencement naturel. Intervention en Île-de-France (Paris, Val-de-Marne, Seine-et-Marne)
-              et en remote partout en France.
-            </p>
-          </motion.div>
-        </section>
-
         {/* ─── Final Marketing Statement ─── */}
         <section className="relative max-w-5xl mx-auto px-6 py-32 text-center">
           <motion.div
