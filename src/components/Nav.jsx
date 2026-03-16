@@ -76,9 +76,9 @@ export default function Nav() {
             <a
               href="/"
               onClick={(e) => handleNav(e, { path: '/' })}
-              className="flex items-center gap-2 group"
+              className="flex items-center gap-2 group py-2"
             >
-              <img src="/logo.png" alt="WEXOR Logo" className="h-14 w-auto scale-110 origin-left hover:scale-125 hover:brightness-125 transition-all duration-300" />
+              <img src="/logo.png" alt="WEXOR Logo" className="h-10 w-auto hover:scale-105 origin-left hover:brightness-125 transition-all duration-300" />
             </a>
 
             {/* Desktop links */}

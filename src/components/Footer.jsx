@@ -15,8 +15,8 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-6 py-16 grid grid-cols-1 md:grid-cols-4 gap-10">
         {/* brand */}
         <div className="md:col-span-2">
-          <div className="flex items-center gap-2 mb-2 -ml-2">
-            <img src="/logo.png" alt="WEXOR Logo" className="h-20 w-auto scale-110 origin-left hover:scale-125 hover:brightness-125 transition-all duration-300" />
+          <div className="flex items-center gap-2 mb-4 -ml-2">
+            <img src="/logo.png" alt="WEXOR Logo" className="h-14 w-auto hover:scale-105 origin-left hover:brightness-125 transition-all duration-300" />
           </div>
           <p className="text-sm text-zinc-500 max-w-xs leading-relaxed">Création de sites sur-mesure, identité visuelle et stratégies digitales pour faire grandir ta marque.</p>
           <div className="mt-5 flex gap-3">
