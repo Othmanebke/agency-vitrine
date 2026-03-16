@@ -79,32 +79,45 @@ function Scanlines() {
 // Remove unused constants
 
 export default function SplashScreen({ onDone }) {
-  const [phase, setPhase] = useState('in') // 'in' | 'flash' | 'out'
+  const [step, setStep] = useState(0) // 0: init, 1: X, 2: WEXOR, 3: W., 4: flash, 5: out
   const [mounted, setMounted] = useState(true)
-  const isOut = phase !== 'in'
+  const isOut = step >= 4
 
   useEffect(() => {
-    const t1 = setTimeout(() => setPhase('flash'), 1800)
-    const t2 = setTimeout(() => setPhase('out'), 1950)
-    const t3 = setTimeout(() => {
+    const t1 = setTimeout(() => setStep(1), 500)      // Show X
+    const t2 = setTimeout(() => setStep(2), 1700)     // Show WE OR
+    const t3 = setTimeout(() => setStep(3), 3500)     // EXOR into W, show W.
+    const t4 = setTimeout(() => setStep(4), 5200)     // Flash pulse
+    const t5 = setTimeout(() => setStep(5), 5400)     // Out
+    const t6 = setTimeout(() => {
       setMounted(false)
       sessionStorage.setItem('nw_loaded', '1')
       onDone()
-    }, 2600)
-    return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3) }
-  }, [])
+    }, 6200)                                          // Unmount
+    return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); clearTimeout(t4); clearTimeout(t5); clearTimeout(t6) }
+  }, [onDone])
 
   const tagline = useTypewriter('Agence Digitale · Design & Développement', {
-    startDelay: 500, speed: 28, enabled: !isOut,
+    startDelay: 2500, speed: 28, enabled: !isOut,
   })
-  const counter = useCounter(100, { startDelay: 200, duration: 950, enabled: !isOut })
+  const counter = useCounter(100, { startDelay: 1000, duration: 4000, enabled: !isOut })
+
+  const Glow = ({ letter }) => (
+    <motion.span
+      className="absolute inset-0 text-violet-500/20 blur-lg select-none pointer-events-none"
+      animate={{ opacity: [0.2, 0.5, 0.2] }}
+      transition={{ duration: 2, repeat: Infinity, delay: 0 }}
+    >
+      {letter}
+    </motion.span>
+  )
 
   return (
     <AnimatePresence>
       {mounted && (
         <>
           {/* Flash pulse on exit */}
-          {phase === 'flash' && (
+          {step === 4 && (
             <motion.div
               className="fixed inset-0 z-[100001] pointer-events-none"
               initial={{ opacity: 0 }}
@@ -151,53 +164,116 @@ export default function SplashScreen({ onDone }) {
               transition={{ delay: 0.7, duration: 0.8 }}
             />
 
-            {/* Letters */}
+            {/* Letters with AnimatePresence layout logic */}
             <div
-              className="relative z-[3] flex items-end gap-1 sm:gap-2"
-              style={{ fontFamily: "'Etna', sans-serif", fontWeight: 900, fontSize: 'clamp(3.5rem,15vw,9rem)', letterSpacing: '-0.02em' }}
+              className="relative z-[3] flex items-end justify-center w-full"
+              style={{ fontFamily: "'Etna', sans-serif", fontWeight: 900, fontSize: 'clamp(3.5rem,15vw,9rem)', letterSpacing: '-0.02em', height: 'clamp(5rem, 18vw, 12rem)' }}
             >
-              {"WEXOR".split("").map((letter, idx) => (
-                <motion.span
-                  key={idx}
-                  initial={{ opacity: 0, scale: 0.5, y: 20, filter: 'blur(20px)' }}
-                  animate={isOut
-                    ? { opacity: 0, scale: 1.5, filter: 'blur(20px)', transition: { delay: idx * 0.05 } }
-                    : { opacity: 1, scale: 1, y: 0, filter: 'blur(0px)' }
-                  }
-                  transition={{
-                    duration: 0.7,
-                    delay: idx * 0.1,
-                    ease: [0.22, 1, 0.36, 1],
-                  }}
-                  className="text-white relative"
-                >
-                  {letter}
-                  {/* Subtle letter glow */}
+              <AnimatePresence mode="popLayout">
+                {/* W */}
+                {(step === 2 || step === 3) && (
                   <motion.span
-                    className="absolute inset-0 text-violet-500/20 blur-lg select-none pointer-events-none"
-                    animate={{ opacity: [0.2, 0.5, 0.2] }}
-                    transition={{ duration: 2, repeat: Infinity, delay: idx * 0.2 }}
+                    key="W"
+                    layoutId="W"
+                    initial={{ opacity: 0, x: 50, filter: 'blur(10px)' }}
+                    animate={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
+                    exit={{ opacity: 0, x: -50, filter: 'blur(10px)' }}
+                    transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                    className="text-white relative"
                   >
-                    {letter}
+                    W
+                    <Glow letter="W" />
                   </motion.span>
-                </motion.span>
-              ))}
+                )}
 
-              {/* dot */}
-              <motion.span
-                initial={{ opacity: 0, scale: 0, rotate: -90 }}
-                animate={isOut ? { opacity: 0, scale: 0 } : { opacity: 1, scale: 1, rotate: 0 }}
-                transition={{ delay: isOut ? 0 : 1.2, duration: 0.45, ease: 'backOut' }}
-                className="rounded-full flex-shrink-0"
-                style={{
-                  width: 'clamp(8px,1vw,14px)', height: 'clamp(8px,1vw,14px)',
-                  background: 'linear-gradient(135deg, #8b5cf6, #ec4899)',
-                  boxShadow: '0 0 20px rgba(139,92,246,0.9)',
-                  alignSelf: 'flex-end',
-                  marginBottom: '1rem',
-                  marginLeft: '0.1rem',
-                }}
-              />
+                {/* E */}
+                {step === 2 && (
+                  <motion.span
+                    key="E"
+                    layoutId="E"
+                    initial={{ opacity: 0, x: 50, filter: 'blur(10px)' }}
+                    animate={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
+                    exit={{ opacity: 0, x: -50, filter: 'blur(10px)' }}
+                    transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                    className="text-white relative"
+                  >
+                    E
+                    <Glow letter="E" />
+                  </motion.span>
+                )}
+
+                {/* X */}
+                {(step === 1 || step === 2) && (
+                  <motion.span
+                    key="X"
+                    layoutId="X"
+                    initial={{ opacity: 0, scale: 0.5, filter: 'blur(20px)' }}
+                    animate={{ 
+                      opacity: 1, 
+                      scale: step === 1 ? 1.2 : 1, 
+                      filter: 'blur(0px)' 
+                    }}
+                    exit={{ opacity: 0, x: -100, filter: 'blur(10px)' }}
+                    transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                    className="text-white relative mx-1 sm:mx-2"
+                  >
+                    X
+                    <Glow letter="X" />
+                  </motion.span>
+                )}
+
+                {/* O */}
+                {step === 2 && (
+                  <motion.span
+                    key="O"
+                    layoutId="O"
+                    initial={{ opacity: 0, x: -50, filter: 'blur(10px)' }}
+                    animate={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
+                    exit={{ opacity: 0, x: -150, filter: 'blur(10px)' }}
+                    transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                    className="text-white relative"
+                  >
+                    O
+                    <Glow letter="O" />
+                  </motion.span>
+                )}
+
+                {/* R */}
+                {step === 2 && (
+                  <motion.span
+                    key="R"
+                    layoutId="R"
+                    initial={{ opacity: 0, x: -50, filter: 'blur(10px)' }}
+                    animate={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
+                    exit={{ opacity: 0, x: -200, filter: 'blur(10px)' }}
+                    transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                    className="text-white relative"
+                  >
+                    R
+                    <Glow letter="R" />
+                  </motion.span>
+                )}
+
+                {/* DOT */}
+                {step === 3 && (
+                  <motion.span
+                    key="dot"
+                    layoutId="dot"
+                    initial={{ opacity: 0, scale: 0, rotate: -90, x: 20 }}
+                    animate={{ opacity: 1, scale: 1, rotate: 0, x: 0 }}
+                    transition={{ duration: 0.5, ease: 'backOut', delay: 0.4 }}
+                    className="rounded-full flex-shrink-0"
+                    style={{
+                      width: 'clamp(12px,1.5vw,24px)', height: 'clamp(12px,1.5vw,24px)',
+                      background: 'linear-gradient(135deg, #8b5cf6, #ec4899)',
+                      boxShadow: '0 0 20px rgba(139,92,246,0.9)',
+                      alignSelf: 'flex-end',
+                      marginBottom: 'clamp(1rem,3vw,2rem)',
+                      marginLeft: '0.2rem',
+                    }}
+                  />
+                )}
+              </AnimatePresence>
             </div>
 
             {/* Light Sweep Effect */}
