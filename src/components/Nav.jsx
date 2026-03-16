@@ -78,7 +78,7 @@ export default function Nav() {
               onClick={(e) => handleNav(e, { path: '/' })}
               className="flex items-center gap-2 group"
             >
-              <span className="font-etna font-extrabold text-xl tracking-tight bg-gradient-to-r from-white to-zinc-400 bg-clip-text text-transparent group-hover:from-violet-300 group-hover:to-pink-300 transition-all duration-300">W.</span>
+              <img src="/logo.png" alt="WEXOR Logo" className="h-6 w-auto group-hover:scale-105 group-hover:brightness-125 transition-all duration-300" />
             </a>
 
             {/* Desktop links */}

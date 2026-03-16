@@ -16,7 +16,7 @@ export default function Footer() {
         {/* brand */}
         <div className="md:col-span-2">
           <div className="flex items-center gap-2 mb-4">
-            <span className="font-etna font-extrabold text-2xl tracking-tight">W.</span>
+            <img src="/logo.png" alt="WEXOR Logo" className="h-8 w-auto hover:brightness-125 transition-all duration-300" />
           </div>
           <p className="text-sm text-zinc-500 max-w-xs leading-relaxed">Création de sites sur-mesure, identité visuelle et stratégies digitales pour faire grandir ta marque.</p>
           <div className="mt-5 flex gap-3">
