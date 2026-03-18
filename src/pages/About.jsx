@@ -209,7 +209,7 @@ export default function About() {
   });
 
   return (
-    <div className="min-h-screen text-white">
+    <div className="min-h-screen text-white bg-[#050510]">
       <Nav />
 
       <main role="main">

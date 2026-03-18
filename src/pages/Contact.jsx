@@ -14,7 +14,7 @@ export default function Contact() {
   })
 
   return (
-    <div className="min-h-screen text-white">
+    <div className="min-h-screen text-white bg-[#050510]">
       <Nav />
       <main role="main">
         <section className="max-w-5xl mx-auto px-6 pt-14 pb-20">
