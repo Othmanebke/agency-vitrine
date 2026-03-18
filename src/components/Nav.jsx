@@ -53,7 +53,7 @@ export default function Nav() {
       >
         {/* Glass pill container — compact */}
         <div
-          className={`mx-auto max-w-4xl rounded-xl overflow-hidden transition-all duration-500 ${scrolled ? 'shadow-2xl shadow-black/40' : ''
+          className={`mx-auto max-w-4xl rounded-xl transition-all duration-500 ${scrolled ? 'shadow-2xl shadow-black/40' : ''
             }`}
           style={{
             background: scrolled ? 'rgba(10, 8, 22, 0.7)' : 'rgba(10, 8, 22, 0.45)',
@@ -71,14 +71,14 @@ export default function Nav() {
             }}
           />
 
-          <div className="px-4 flex items-center justify-between" style={{ height: '64px' }}>
+          <div className="px-4 flex items-center justify-between" style={{ height: '68px' }}>
             {/* Logo */}
             <a
               href="/"
               onClick={(e) => handleNav(e, { path: '/' })}
               className="flex items-center gap-2 group"
             >
-              <img src="/logo.png" alt="WEXOR Logo" className="h-11 w-auto hover:scale-105 origin-left hover:brightness-125 transition-all duration-300" />
+              <img src="/logo.png" alt="WEXOR Logo" className="h-14 w-auto hover:scale-105 origin-left hover:brightness-125 transition-all duration-300" />
             </a>
 
             {/* Desktop links */}
