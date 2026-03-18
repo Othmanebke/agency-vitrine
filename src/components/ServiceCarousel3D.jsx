@@ -335,40 +335,6 @@ export default function ServiceCarousel3D() {
         transition={{ duration: 0.9, ease: 'easeInOut' }}
       />
 
-      {/* Section label */}
-      <div className="text-center mb-14 relative z-10 px-6">
-        <motion.div
-          initial={shouldReduce ? {} : { opacity: 0, y: 16 }}
-          whileInView={shouldReduce ? {} : { opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-          className="inline-block mb-4 px-4 py-1.5 rounded-full border border-violet-500/30 bg-violet-500/10 text-violet-300 font-mono text-xs tracking-widest uppercase"
-        >
-          Nos services
-        </motion.div>
-        <motion.h2
-          initial={shouldReduce ? {} : { opacity: 0, y: 20, filter: 'blur(8px)' }}
-          whileInView={shouldReduce ? {} : { opacity: 1, y: 0, filter: 'blur(0px)' }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-          className="text-3xl md:text-5xl font-black tracking-tight text-white"
-        >
-          Ce qu&apos;on peut{' '}
-          <span className="bg-gradient-to-r from-violet-400 to-pink-400 bg-clip-text text-transparent">
-            construire
-          </span>{' '}
-          ensemble
-        </motion.h2>
-        <motion.p
-          initial={shouldReduce ? {} : { opacity: 0 }}
-          whileInView={shouldReduce ? {} : { opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="text-zinc-500 mt-3 text-sm"
-        >
-          Clique sur une card pour voir le détail
-        </motion.p>
-      </div>
 
       {/* 3D Carousel container */}
       <div
