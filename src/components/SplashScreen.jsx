@@ -1,352 +1,255 @@
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, useMotionValue, useMotionTemplate, animate, useReducedMotion } from 'framer-motion'
 import { useState, useEffect } from 'react'
 
-/* ── Typewriter hook ── */
-function useTypewriter(text, { startDelay = 0, speed = 60, enabled = true } = {}) {
-  const [displayed, setDisplayed] = useState('')
-  useEffect(() => {
-    if (!enabled) return
-    let i = 0
-    setDisplayed('')
-    const t0 = setTimeout(() => {
-      const iv = setInterval(() => {
-        i++
-        setDisplayed(text.slice(0, i))
-        if (i >= text.length) clearInterval(iv)
-      }, speed)
-      return () => clearInterval(iv)
-    }, startDelay)
-    return () => clearTimeout(t0)
-  }, [text, startDelay, speed, enabled])
-  return displayed
-}
-
-/* ── Counter hook ── */
-function useCounter(to, { startDelay = 0, duration = 1800, enabled = true } = {}) {
+function useCounter(to, { startDelay = 0, duration = 2600 } = {}) {
   const [val, setVal] = useState(0)
   useEffect(() => {
-    if (!enabled) return
-    const t0 = setTimeout(() => {
+    const t = setTimeout(() => {
       const start = performance.now()
       const tick = (now) => {
         const p = Math.min((now - start) / duration, 1)
         const ease = p === 1 ? 1 : 1 - Math.pow(2, -10 * p)
-        setVal(Math.floor(ease * to))
+        setVal(Math.round(ease * to))
         if (p < 1) requestAnimationFrame(tick)
-        else setVal(to)
       }
       requestAnimationFrame(tick)
     }, startDelay)
-    return () => clearTimeout(t0)
-  }, [to, startDelay, duration, enabled])
+    return () => clearTimeout(t)
+  }, [])
   return val
 }
 
-
-
-/* ── Corner bracket ── */
-function Corner({ pos, delay, isOut }) {
-  const tl = pos === 'tl', tr = pos === 'tr', bl = pos === 'bl', br = pos === 'br'
+/* Floating dot */
+function Dot({ x, y, size, color, duration, delay }) {
   return (
     <motion.div
-      className="absolute w-6 h-6 sm:w-8 sm:h-8 pointer-events-none hidden sm:block"
+      className="absolute rounded-full pointer-events-none"
       style={{
-        top: (tl || tr) ? '2rem' : undefined,
-        bottom: (bl || br) ? '2rem' : undefined,
-        left: (tl || bl) ? '2rem' : undefined,
-        right: (tr || br) ? '2rem' : undefined,
-        borderTop: (tl || tr) ? '1px solid rgba(139,92,246,0.5)' : undefined,
-        borderBottom: (bl || br) ? '1px solid rgba(139,92,246,0.5)' : undefined,
-        borderLeft: (tl || bl) ? '1px solid rgba(139,92,246,0.5)' : undefined,
-        borderRight: (tr || br) ? '1px solid rgba(139,92,246,0.5)' : undefined,
+        left: x, top: y,
+        width: size, height: size,
+        background: color,
+        boxShadow: `0 0 ${size * 3}px ${color}`,
       }}
-      initial={{ opacity: 0, scale: 1.6 }}
-      animate={isOut ? { opacity: 0 } : { opacity: 1, scale: 1 }}
-      transition={{ delay: isOut ? 0 : delay, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+      animate={{ y: [0, -18, 0], opacity: [0.6, 1, 0.6] }}
+      transition={{ duration, delay, repeat: Infinity, ease: 'easeInOut' }}
     />
   )
 }
 
-/* ── Scanlines ── */
-function Scanlines() {
-  return (
-    <div className="absolute inset-0 pointer-events-none z-[1]" style={{
-      backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.06) 2px, rgba(0,0,0,0.06) 4px)',
-    }} />
-  )
-}
-
-// Remove unused constants
-
 export default function SplashScreen({ onDone }) {
-  const [step, setStep] = useState(0) // 0: init, 1: X, 2: WEXOR, 3: W., 4: flash, 5: out
+  const [phase, setPhase] = useState('in') // in | out
   const [mounted, setMounted] = useState(true)
-  const isOut = step >= 4
+  const shouldReduce = useReducedMotion()
+
+  // Iris reveal motion value (mask hole size %)
+  const hole = useMotionValue(0)
+  const maskImage = useMotionTemplate`radial-gradient(circle at 50% 50%, transparent 0%, transparent ${hole}%, white ${hole}%, white 100%)`
+
+  const counter = useCounter(100, { startDelay: 300, duration: 2800 })
+  const isOut = phase === 'out'
 
   useEffect(() => {
-    const t1 = setTimeout(() => setStep(1), 500)      // Show X
-    const t2 = setTimeout(() => setStep(2), 1700)     // Show WE OR
-    const t3 = setTimeout(() => setStep(3), 3500)     // EXOR into W, show W.
-    const t4 = setTimeout(() => setStep(4), 5200)     // Flash pulse
-    const t5 = setTimeout(() => setStep(5), 5400)     // Out
-    const t6 = setTimeout(() => {
-      setMounted(false)
+    // If reduced motion, skip immediately
+    if (shouldReduce) {
       sessionStorage.setItem('nw_loaded', '1')
       onDone()
-    }, 6200)                                          // Unmount
-    return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); clearTimeout(t4); clearTimeout(t5); clearTimeout(t6) }
-  }, [onDone])
+      return
+    }
+    const t1 = setTimeout(() => setPhase('out'), 3400)
+    return () => clearTimeout(t1)
+  }, [shouldReduce, onDone])
 
-  const tagline = useTypewriter('Agence Digitale · Design & Développement', {
-    startDelay: 2500, speed: 28, enabled: !isOut,
-  })
-  const counter = useCounter(100, { startDelay: 1000, duration: 4000, enabled: !isOut })
+  useEffect(() => {
+    if (phase !== 'out') return
+    animate(hole, 160, {
+      duration: 0.85,
+      ease: [0.76, 0, 0.24, 1],
+      onComplete: () => {
+        setMounted(false)
+        sessionStorage.setItem('nw_loaded', '1')
+        onDone()
+      },
+    })
+  }, [phase, hole, onDone])
 
-  const Glow = ({ letter }) => (
-    <motion.span
-      className="absolute inset-0 text-violet-500/20 blur-lg select-none pointer-events-none"
-      animate={{ opacity: [0.2, 0.5, 0.2] }}
-      transition={{ duration: 2, repeat: Infinity, delay: 0 }}
-    >
-      {letter}
-    </motion.span>
-  )
+  if (!mounted) return null
 
   return (
-    <AnimatePresence>
-      {mounted && (
-        <>
-          {/* Flash pulse on exit */}
-          {step === 4 && (
-            <motion.div
-              className="fixed inset-0 z-[100001] pointer-events-none"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: [0, 0.4, 0] }}
-              transition={{ duration: 0.3, ease: 'easeOut' }}
-              style={{ background: 'linear-gradient(135deg, #8b5cf6, #ec4899)' }}
-            />
-          )}
+    <motion.div
+      className="fixed inset-0 z-[100000] flex flex-col items-center justify-center overflow-hidden select-none"
+      style={{ backgroundColor: '#050510', maskImage, WebkitMaskImage: maskImage }}
+    >
 
-          {/* Main panel */}
+      {/* ── Aurora blobs ── */}
+      <motion.div
+        className="absolute pointer-events-none"
+        style={{ width: 700, height: 700, borderRadius: '50%', top: '50%', left: '50%', marginTop: -350, marginLeft: -350 }}
+        initial={{ opacity: 0, scale: 0.4 }}
+        animate={isOut
+          ? { opacity: 0, scale: 0.2 }
+          : { opacity: 1, scale: [1, 1.12, 1] }}
+        transition={isOut
+          ? { duration: 0.3 }
+          : { delay: 0.1, duration: 3.5, repeat: Infinity, ease: 'easeInOut' }}
+      >
+        <div style={{
+          width: '100%', height: '100%', borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(139,92,246,0.28) 0%, rgba(236,72,153,0.14) 45%, transparent 70%)',
+          filter: 'blur(60px)',
+        }} />
+      </motion.div>
+
+      <motion.div
+        className="absolute pointer-events-none"
+        style={{ width: 400, height: 400, borderRadius: '50%', top: '30%', left: '25%' }}
+        initial={{ opacity: 0 }}
+        animate={isOut ? { opacity: 0 } : { opacity: [0.5, 0.8, 0.5], x: [0, 30, 0], y: [0, -20, 0] }}
+        transition={{ delay: 0.3, duration: 5, repeat: Infinity, ease: 'easeInOut' }}
+      >
+        <div style={{
+          width: '100%', height: '100%', borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(99,102,241,0.35) 0%, transparent 65%)',
+          filter: 'blur(50px)',
+        }} />
+      </motion.div>
+
+      <motion.div
+        className="absolute pointer-events-none"
+        style={{ width: 350, height: 350, borderRadius: '50%', bottom: '25%', right: '22%' }}
+        initial={{ opacity: 0 }}
+        animate={isOut ? { opacity: 0 } : { opacity: [0.4, 0.7, 0.4], x: [0, -25, 0], y: [0, 25, 0] }}
+        transition={{ delay: 0.6, duration: 4.5, repeat: Infinity, ease: 'easeInOut' }}
+      >
+        <div style={{
+          width: '100%', height: '100%', borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(236,72,153,0.3) 0%, transparent 65%)',
+          filter: 'blur(50px)',
+        }} />
+      </motion.div>
+
+      {/* ── Floating micro-particles ── */}
+      <Dot x="38%" y="42%" size={5} color="rgba(139,92,246,0.9)" duration={3.2} delay={0.8} />
+      <Dot x="62%" y="38%" size={3} color="rgba(236,72,153,0.85)" duration={4.1} delay={1.3} />
+      <Dot x="44%" y="60%" size={4} color="rgba(167,139,250,0.8)" duration={3.7} delay={0.4} />
+      <Dot x="58%" y="58%" size={3} color="rgba(99,102,241,0.9)" duration={4.5} delay={1.8} />
+      <Dot x="34%" y="55%" size={2} color="rgba(236,72,153,0.7)" duration={3.0} delay={2.2} />
+      <Dot x="66%" y="50%" size={3} color="rgba(139,92,246,0.75)" duration={5.0} delay={0.2} />
+
+      {/* ── Thin ring ── */}
+      <motion.div
+        className="absolute rounded-full pointer-events-none"
+        style={{
+          width: 280, height: 280,
+          border: '1px solid rgba(139,92,246,0.18)',
+          top: '50%', left: '50%',
+          marginTop: -140, marginLeft: -140,
+        }}
+        initial={{ opacity: 0, scale: 0.6 }}
+        animate={isOut ? { opacity: 0, scale: 1.4 } : { opacity: 1, scale: 1 }}
+        transition={{ delay: 0.5, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+      />
+      <motion.div
+        className="absolute rounded-full pointer-events-none"
+        style={{
+          width: 220, height: 220,
+          border: '1px solid rgba(236,72,153,0.12)',
+          top: '50%', left: '50%',
+          marginTop: -110, marginLeft: -110,
+        }}
+        initial={{ opacity: 0, scale: 0.6 }}
+        animate={isOut ? { opacity: 0, scale: 1.4 } : { opacity: 1, scale: 1 }}
+        transition={{ delay: 0.65, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+      />
+
+      {/* ── Logo ── */}
+      <motion.div
+        className="relative z-10"
+        initial={{ opacity: 0, scale: 0.75, filter: 'blur(24px)' }}
+        animate={isOut
+          ? { opacity: 0, scale: 1.15, filter: 'blur(16px)' }
+          : { opacity: 1, scale: 1, filter: 'blur(0px)' }}
+        transition={isOut
+          ? { duration: 0.25 }
+          : { delay: 0.4, duration: 1.0, ease: [0.22, 1, 0.36, 1] }}
+      >
+        <img src="/logo.png" alt="WEXOR" className="h-20 sm:h-28 w-auto" draggable={false} />
+        {/* Soft glow underneath logo */}
+        <div
+          className="absolute inset-0 -z-10 rounded-full"
+          style={{ filter: 'blur(32px)', background: 'rgba(139,92,246,0.4)', transform: 'scale(1.4)' }}
+        />
+      </motion.div>
+
+      {/* ── Tagline ── */}
+      <motion.p
+        className="relative z-10 mt-7 text-[10px] sm:text-xs tracking-[0.35em] uppercase font-mono"
+        style={{ color: 'rgba(161,161,170,0.55)' }}
+        initial={{ opacity: 0, y: 12 }}
+        animate={isOut ? { opacity: 0, y: -6 } : { opacity: 1, y: 0 }}
+        transition={{ delay: 1.1, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+      >
+        Agence Digitale · Design &amp; Développement
+      </motion.p>
+
+      {/* ── Progress ── */}
+      <motion.div
+        className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2.5"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: isOut ? 0 : 1 }}
+        transition={{ delay: 0.4, duration: 0.5 }}
+      >
+        <span className="text-[11px] font-mono tabular-nums" style={{ color: 'rgba(139,92,246,0.8)' }}>
+          {String(counter).padStart(3, '0')}<span style={{ color: 'rgba(255,255,255,0.18)' }}>%</span>
+        </span>
+        <div className="relative w-44 sm:w-64 h-[2px] rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.07)' }}>
           <motion.div
-            key="splash"
-            initial={{ y: 0 }}
-            animate={{ y: isOut ? '-100%' : 0 }}
-            transition={{ duration: 0.9, ease: [0.76, 0, 0.24, 1] }}
-            className="fixed inset-0 z-[100000] flex flex-col items-center justify-center overflow-hidden select-none"
-            style={{ backgroundColor: '#050510' }}
-          >
-            <Scanlines />
-            <Corner pos="tl" delay={0.9} isOut={isOut} />
-            <Corner pos="tr" delay={1.0} isOut={isOut} />
-            <Corner pos="bl" delay={1.1} isOut={isOut} />
-            <Corner pos="br" delay={1.2} isOut={isOut} />
+            className="absolute inset-y-0 left-0 rounded-full"
+            style={{ width: `${counter}%`, background: 'linear-gradient(90deg, #7c3aed, #ec4899)' }}
+          />
+          {/* Shimmer on bar */}
+          <motion.div
+            className="absolute inset-y-0 w-10 rounded-full"
+            style={{ background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.55), transparent)' }}
+            animate={{ x: ['-40px', '280px'] }}
+            transition={{ duration: 1.8, delay: 0.6, repeat: Infinity, repeatDelay: 0.4, ease: 'easeInOut' }}
+          />
+        </div>
+      </motion.div>
 
-            {/* Ambient glow */}
-            <motion.div
-              className="absolute rounded-full pointer-events-none z-[2]"
-              style={{ width: 800, height: 800, background: 'radial-gradient(circle, rgba(139,92,246,0.16) 0%, transparent 65%)', filter: 'blur(60px)' }}
-              animate={isOut ? { scale: 3, opacity: 0 } : { scale: [1, 1.12, 1], opacity: 1 }}
-              transition={isOut ? { duration: 0.5 } : { duration: 3.5, repeat: Infinity, ease: 'easeInOut' }}
-            />
+      {/* ── Corner labels ── */}
+      <motion.div
+        className="absolute top-8 right-10 hidden sm:block text-[9px] font-mono tracking-[0.25em] uppercase"
+        style={{ color: 'rgba(255,255,255,0.1)' }}
+        initial={{ opacity: 0 }} animate={isOut ? { opacity: 0 } : { opacity: 1 }}
+        transition={{ delay: 1.4, duration: 0.6 }}
+      >
+        v1.0
+      </motion.div>
+      <motion.div
+        className="absolute bottom-9 left-10 hidden sm:block text-[9px] font-mono tracking-[0.2em]"
+        style={{ color: 'rgba(255,255,255,0.08)' }}
+        initial={{ opacity: 0 }} animate={isOut ? { opacity: 0 } : { opacity: 1 }}
+        transition={{ delay: 1.5, duration: 0.6 }}
+      >
+        © 2026 WEXOR
+      </motion.div>
 
-            {/* Horizontal accent lines */}
-            <motion.div className="absolute left-0 right-0 h-px z-[2]"
-              style={{ top: '10%', background: 'linear-gradient(90deg, transparent, rgba(139,92,246,0.3), transparent)' }}
-              initial={{ scaleX: 0, opacity: 0 }}
-              animate={isOut ? { opacity: 0 } : { scaleX: 1, opacity: 1 }}
-              transition={{ delay: 0.6, duration: 0.8 }}
-            />
-            <motion.div className="absolute left-0 right-0 h-px z-[2]"
-              style={{ bottom: '10%', background: 'linear-gradient(90deg, transparent, rgba(236,72,153,0.3), transparent)' }}
-              initial={{ scaleX: 0, opacity: 0 }}
-              animate={isOut ? { opacity: 0 } : { scaleX: 1, opacity: 1 }}
-              transition={{ delay: 0.7, duration: 0.8 }}
-            />
-
-            {/* Letters with AnimatePresence layout logic */}
-            <div
-              className="relative z-[3] flex items-end justify-center w-full"
-              style={{ fontFamily: "'Etna', sans-serif", fontWeight: 900, fontSize: 'clamp(3.5rem,15vw,9rem)', letterSpacing: '-0.02em', height: 'clamp(5rem, 18vw, 12rem)' }}
-            >
-              <AnimatePresence mode="popLayout">
-                {/* W */}
-                {(step === 2 || step === 3) && (
-                  <motion.span
-                    key="W"
-                    layoutId="W"
-                    initial={{ opacity: 0, x: 50, filter: 'blur(10px)' }}
-                    animate={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
-                    exit={{ opacity: 0, x: -50, filter: 'blur(10px)' }}
-                    transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                    className="text-white relative"
-                  >
-                    W
-                    <Glow letter="W" />
-                  </motion.span>
-                )}
-
-                {/* E */}
-                {step === 2 && (
-                  <motion.span
-                    key="E"
-                    layoutId="E"
-                    initial={{ opacity: 0, x: 50, filter: 'blur(10px)' }}
-                    animate={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
-                    exit={{ opacity: 0, x: -50, filter: 'blur(10px)' }}
-                    transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                    className="text-white relative"
-                  >
-                    E
-                    <Glow letter="E" />
-                  </motion.span>
-                )}
-
-                {/* X */}
-                {(step === 1 || step === 2) && (
-                  <motion.span
-                    key="X"
-                    layoutId="X"
-                    initial={{ opacity: 0, scale: 0.5, filter: 'blur(20px)' }}
-                    animate={{ 
-                      opacity: 1, 
-                      scale: step === 1 ? 1.2 : 1, 
-                      filter: 'blur(0px)' 
-                    }}
-                    exit={{ opacity: 0, x: -100, filter: 'blur(10px)' }}
-                    transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                    className="text-white relative mx-1 sm:mx-2"
-                  >
-                    X
-                    <Glow letter="X" />
-                  </motion.span>
-                )}
-
-                {/* O */}
-                {step === 2 && (
-                  <motion.span
-                    key="O"
-                    layoutId="O"
-                    initial={{ opacity: 0, x: -50, filter: 'blur(10px)' }}
-                    animate={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
-                    exit={{ opacity: 0, x: -150, filter: 'blur(10px)' }}
-                    transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                    className="text-white relative"
-                  >
-                    O
-                    <Glow letter="O" />
-                  </motion.span>
-                )}
-
-                {/* R */}
-                {step === 2 && (
-                  <motion.span
-                    key="R"
-                    layoutId="R"
-                    initial={{ opacity: 0, x: -50, filter: 'blur(10px)' }}
-                    animate={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
-                    exit={{ opacity: 0, x: -200, filter: 'blur(10px)' }}
-                    transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                    className="text-white relative"
-                  >
-                    R
-                    <Glow letter="R" />
-                  </motion.span>
-                )}
-
-                {/* DOT */}
-                {step === 3 && (
-                  <motion.span
-                    key="dot"
-                    layoutId="dot"
-                    initial={{ opacity: 0, scale: 0, rotate: -90, x: 20 }}
-                    animate={{ opacity: 1, scale: 1, rotate: 0, x: 0 }}
-                    transition={{ duration: 0.5, ease: 'backOut', delay: 0.4 }}
-                    className="rounded-full flex-shrink-0"
-                    style={{
-                      width: 'clamp(12px,1.5vw,24px)', height: 'clamp(12px,1.5vw,24px)',
-                      background: 'linear-gradient(135deg, #8b5cf6, #ec4899)',
-                      boxShadow: '0 0 20px rgba(139,92,246,0.9)',
-                      alignSelf: 'flex-end',
-                      marginBottom: 'clamp(1rem,3vw,2rem)',
-                      marginLeft: '0.2rem',
-                    }}
-                  />
-                )}
-              </AnimatePresence>
-            </div>
-
-            {/* Light Sweep Effect */}
-            <motion.div
-              className="absolute inset-0 z-[4] pointer-events-none"
-              initial={{ x: '-100%' }}
-              animate={isOut ? {} : { x: '200%' }}
-              transition={{ delay: 1.5, duration: 1.5, ease: "easeInOut" }}
-              style={{
-                background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent)',
-                width: '50%',
-                skewX: '-20deg'
-              }}
-            />
-
-            {/* Typewriter tagline */}
-            <motion.div
-              className="relative z-[3] mt-8 h-5 flex items-center"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: isOut ? 0 : 1, y: isOut ? -10 : 0 }}
-              transition={{ delay: 1.6, duration: 0.4 }}
-            >
-              <span className="text-[10px] sm:text-xs tracking-[0.3em] uppercase"
-                style={{ color: 'rgba(161,161,170,0.65)', fontFamily: 'Inter, monospace' }}>
-                {tagline}
-              </span>
-              <motion.span
-                className="inline-block w-[2px] h-[13px] ml-[2px] rounded-full"
-                style={{ background: 'rgba(139,92,246,0.9)' }}
-                animate={isOut ? { opacity: 0 } : { opacity: [1, 0, 1] }}
-                transition={{ duration: 0.65, repeat: Infinity }}
-              />
-            </motion.div>
-
-
-            {/* Bottom: counter + progress */}
-            <motion.div
-              className="absolute bottom-10 left-1/2 -translate-x-1/2 z-[3] flex flex-col items-center gap-2"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: isOut ? 0 : 1 }}
-              transition={{ delay: 0.5, duration: 0.4 }}
-            >
-              <span className="text-xs font-mono" style={{ color: 'rgba(139,92,246,0.75)' }}>
-                {String(counter).padStart(3, '0')}<span style={{ color: 'rgba(255,255,255,0.2)' }}>%</span>
-              </span>
-              <div className="w-48 h-px bg-white/10 rounded-full overflow-hidden relative">
-                <motion.div className="h-full rounded-full"
-                  style={{ background: 'linear-gradient(90deg, #8b5cf6, #ec4899)', width: `${counter}%` }} />
-                <motion.div
-                  className="absolute inset-y-0 w-10 rounded-full"
-                  style={{ background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent)' }}
-                  animate={{ x: ['-100%', '220px'] }}
-                  transition={{ duration: 1.6, delay: 0.5, repeat: Infinity, ease: 'easeInOut', repeatDelay: 0.3 }}
-                />
-              </div>
-            </motion.div>
-
-            {/* Top-right label */}
-            <motion.div className="absolute top-8 right-8 sm:right-16 z-[3] text-[10px] font-mono tracking-widest uppercase hidden sm:block"
-              style={{ color: 'rgba(255,255,255,0.14)' }}
-              initial={{ opacity: 0 }} animate={isOut ? { opacity: 0 } : { opacity: 1 }}
-              transition={{ delay: 1.6, duration: 0.5 }}
-            >v1.0</motion.div>
-
-            {/* Bottom-left copyright */}
-            <motion.div className="absolute bottom-9 left-8 sm:left-16 z-[3] text-[10px] font-mono tracking-widest hidden sm:block"
-              style={{ color: 'rgba(255,255,255,0.11)' }}
-              initial={{ opacity: 0 }} animate={isOut ? { opacity: 0 } : { opacity: 1 }}
-              transition={{ delay: 1.7, duration: 0.5 }}
-            >© 2026 WEXOR</motion.div>
-          </motion.div>
-        </>
-      )}
-    </AnimatePresence>
+      {/* ── Horizontal accent lines ── */}
+      {['top', 'bottom'].map((pos) => (
+        <motion.div
+          key={pos}
+          className="absolute left-0 right-0 h-px pointer-events-none"
+          style={{
+            [pos]: '8%',
+            background: pos === 'top'
+              ? 'linear-gradient(90deg, transparent, rgba(139,92,246,0.25), transparent)'
+              : 'linear-gradient(90deg, transparent, rgba(236,72,153,0.2), transparent)',
+          }}
+          initial={{ scaleX: 0, opacity: 0 }}
+          animate={isOut ? { opacity: 0 } : { scaleX: 1, opacity: 1 }}
+          transition={{ delay: pos === 'top' ? 0.5 : 0.65, duration: 1.0, ease: [0.22, 1, 0.36, 1] }}
+        />
+      ))}
+    </motion.div>
   )
 }
