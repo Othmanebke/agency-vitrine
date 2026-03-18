@@ -71,14 +71,14 @@ export default function Nav() {
             }}
           />
 
-          <div className="px-4 flex items-center justify-between" style={{ height: '56px' }}>
+          <div className="px-4 flex items-center justify-between" style={{ height: '64px' }}>
             {/* Logo */}
             <a
               href="/"
               onClick={(e) => handleNav(e, { path: '/' })}
-              className="flex items-center gap-2 group py-2"
+              className="flex items-center gap-2 group"
             >
-              <img src="/logo.png" alt="WEXOR Logo" className="h-14 w-auto hover:scale-105 origin-left hover:brightness-125 transition-all duration-300" />
+              <img src="/logo.png" alt="WEXOR Logo" className="h-11 w-auto hover:scale-105 origin-left hover:brightness-125 transition-all duration-300" />
             </a>
 
             {/* Desktop links */}
