@@ -296,7 +296,7 @@ export default function App() {
       <ScrollProgressBar />
       <CursorGlow />
       <GlobalBackground />
-      <ShootingStars />
+      {path === '/' && <ShootingStars />}
       <ChatBot />
       <CookieBanner />
       <AnimatePresence mode="wait">
