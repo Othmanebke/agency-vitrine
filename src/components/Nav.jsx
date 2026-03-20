@@ -49,7 +49,7 @@ export default function Nav() {
         initial={{ y: -80, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-        className="sticky top-0 z-50 px-4 pt-2.5 pb-3"
+        className="sticky top-0 z-50 px-4 pt-2 pb-2"
       >
         {/* Glass pill container — compact */}
         <div
@@ -71,14 +71,14 @@ export default function Nav() {
             }}
           />
 
-          <div className="px-4 flex items-center justify-between" style={{ height: '72px' }}>
+          <div className="px-4 flex items-center justify-between" style={{ height: '48px' }}>
             {/* Logo */}
             <a
               href="/"
               onClick={(e) => handleNav(e, { path: '/' })}
               className="flex items-center gap-2 group"
             >
-              <img src="/logo.png" alt="WEXOR Logo" className="h-[60px] w-auto hover:scale-105 origin-left hover:brightness-125 transition-all duration-300" />
+              <img src="/logo.png" alt="WEXOR Logo" className="h-[34px] w-auto hover:scale-105 origin-left hover:brightness-125 transition-all duration-300" />
             </a>
 
             {/* Desktop links */}
