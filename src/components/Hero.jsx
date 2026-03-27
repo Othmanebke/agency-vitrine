@@ -129,6 +129,57 @@ const it = {
   visible: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] } }
 }
 
+/* ── Shooting stars ── */
+const STARS = Array.from({ length: 12 }, (_, i) => ({
+  id: i,
+  // right side only: start between 40% and 95% horizontally
+  startX: 40 + Math.random() * 55,
+  startY: Math.random() * 60,
+  length: 80 + Math.random() * 120,   // px length of the tail
+  duration: 1.2 + Math.random() * 2,  // animation duration
+  delay: Math.random() * 7,           // stagger
+  angle: 30 + Math.random() * 20,     // degrees (diagonal)
+  opacity: 0.5 + Math.random() * 0.5,
+}))
+
+function ShootingStars({ shouldReduce }) {
+  if (shouldReduce) return null
+  return (
+    <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden>
+      {STARS.map(s => (
+        <motion.div
+          key={s.id}
+          className="absolute"
+          style={{
+            left: `${s.startX}%`,
+            top: `${s.startY}%`,
+            width: s.length,
+            height: 1.5,
+            borderRadius: 9999,
+            background: `linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(200,180,255,${s.opacity}) 40%, rgba(255,255,255,${s.opacity}) 70%, rgba(255,255,255,0) 100%)`,
+            rotate: `${s.angle}deg`,
+            transformOrigin: 'right center',
+          }}
+          initial={{ opacity: 0, scaleX: 0, x: 0, y: 0 }}
+          animate={{
+            opacity: [0, s.opacity, s.opacity, 0],
+            scaleX: [0, 1, 1, 0],
+            x: [0, s.length * 0.6],
+            y: [0, s.length * 0.35],
+          }}
+          transition={{
+            duration: s.duration,
+            delay: s.delay,
+            repeat: Infinity,
+            repeatDelay: 3 + Math.random() * 5,
+            ease: 'easeOut',
+          }}
+        />
+      ))}
+    </div>
+  )
+}
+
 export default function Hero() {
   const shouldReduce = useReducedMotion()
 
@@ -146,6 +197,9 @@ export default function Hero() {
           ].join(', '),
         }}
       />
+
+      {/* Shooting stars — droite du hero */}
+      <ShootingStars shouldReduce={shouldReduce} />
 
       {/* ── Contenu principal ── */}
       <div className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 pt-14 pb-16">
