@@ -6,7 +6,6 @@ import {
   useMotionValue,
   useSpring,
   useInView,
-  useTransform,
 } from 'framer-motion'
 
 /* ── Cycling word ── */
@@ -92,14 +91,33 @@ function MagneticButton({ href, className, children, onClick }) {
   )
 }
 
-/* ── Data ── */
+/* ── Stats ── */
 const stats = [
   { value: '+10', label: 'Clients accompagnés' },
   { value: '100%', label: 'Satisfaction client' },
   { value: '48h', label: 'Délai de réponse max' },
 ]
 
+/* ── Logo marquee ── */
 const logos = ['React', 'Next.js', 'Vercel', 'Figma', 'Framer', 'WordPress', 'Tailwind', 'SEO']
+
+function LogoStrip() {
+  const doubled = [...logos, ...logos]
+  return (
+    <div
+      className="relative overflow-hidden"
+      style={{ maskImage: 'linear-gradient(to right, transparent, black 12%, black 88%, transparent)' }}
+    >
+      <div className="flex items-center gap-12 animate-marquee w-max" style={{ animationDuration: '26s' }}>
+        {doubled.map((name, i) => (
+          <span key={i} className="shrink-0 text-xs font-semibold text-zinc-600 tracking-widest uppercase whitespace-nowrap hover:text-zinc-400 transition-colors">
+            {name}
+          </span>
+        ))}
+      </div>
+    </div>
+  )
+}
 
 /* ── Stagger variants ── */
 const wrap = {
@@ -111,177 +129,12 @@ const it = {
   visible: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] } }
 }
 
-/* ── Logo marquee ── */
-function LogoStrip() {
-  const doubled = [...logos, ...logos]
-  return (
-    <div
-      className="relative overflow-hidden"
-      style={{ maskImage: 'linear-gradient(to right, transparent, black 12%, black 88%, transparent)' }}
-    >
-      <div className="flex items-center gap-10 animate-marquee w-max" style={{ animationDuration: '26s' }}>
-        {doubled.map((name, i) => (
-          <span key={i} className="shrink-0 text-xs font-semibold text-zinc-600 tracking-widest uppercase whitespace-nowrap hover:text-zinc-400 transition-colors">
-            {name}
-          </span>
-        ))}
-      </div>
-    </div>
-  )
-}
-
-/* ──────────────────────────────────────────────
-   Purple ribbon wave — structure from maquette 1
-   but with the site's violet/purple palette
-   No white, no bright solid: dark > purple > pink
-────────────────────────────────────────────── */
-function PurpleWave() {
-  const shouldReduce = useReducedMotion()
-  return (
-    <div
-      className="absolute inset-y-0 right-0 w-1/2 pointer-events-none hidden md:block"
-      aria-hidden
-    >
-      {/* ambient glow behind the wave */}
-      <div
-        className="absolute inset-0"
-        style={{
-          background:
-            'radial-gradient(ellipse 80% 70% at 85% 45%, rgba(139,92,246,0.2) 0%, rgba(236,72,153,0.07) 55%, transparent 80%)',
-        }}
-      />
-
-      <svg
-        viewBox="0 0 600 700"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        className="absolute inset-0 w-full h-full"
-        preserveAspectRatio="xMidYMid slice"
-      >
-        <defs>
-          {/* Main ribbon: dark edge → vivid purple → fades to bgnd */}
-          <linearGradient id="pw1" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%"   stopColor="rgba(15,5,40,0.0)"   />
-            <stop offset="25%"  stopColor="rgba(109,40,217,0.55)" />
-            <stop offset="55%"  stopColor="rgba(139,92,246,0.90)" />
-            <stop offset="78%"  stopColor="rgba(168,85,247,0.65)" />
-            <stop offset="100%" stopColor="rgba(15,5,40,0.0)"   />
-          </linearGradient>
-          {/* Second ribbon: pink accent */}
-          <linearGradient id="pw2" x1="100%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%"   stopColor="rgba(236,72,153,0.0)"  />
-            <stop offset="35%"  stopColor="rgba(219,39,119,0.45)" />
-            <stop offset="65%"  stopColor="rgba(236,72,153,0.70)" />
-            <stop offset="100%" stopColor="rgba(139,92,246,0.0)"  />
-          </linearGradient>
-          {/* Inner dark shadow (3-D valley) */}
-          <linearGradient id="pw3" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%"   stopColor="rgba(5,2,20,0.0)"    />
-            <stop offset="50%"  stopColor="rgba(30,10,80,0.55)" />
-            <stop offset="100%" stopColor="rgba(5,2,20,0.0)"    />
-          </linearGradient>
-          {/* Highlight streak gradient */}
-          <linearGradient id="pwH" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%"   stopColor="rgba(200,180,255,0.0)"  />
-            <stop offset="45%"  stopColor="rgba(200,180,255,0.7)"  />
-            <stop offset="100%" stopColor="rgba(200,180,255,0.0)"  />
-          </linearGradient>
-          <filter id="fb"><feGaussianBlur stdDeviation="1.5"/></filter>
-        </defs>
-
-        {/* ── Back shadow ── */}
-        <motion.path
-          d="M600 -30 C460 55,180 95,55 275 C-35 410,105 568,310 618 C455 650,580 590,600 545 Z"
-          fill="url(#pw3)"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1.6, delay: 0.1 }}
-        />
-
-        {/* ── Main ribbon ── */}
-        <motion.path
-          d="M600 -30 C470 48,195 88,68 265 C-28 400,100 555,308 612 C452 645,588 582,600 542 Z"
-          fill="url(#pw1)"
-          initial={{ opacity: 0, scale: 0.97 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1.8, ease: [0.22, 1, 0.36, 1], delay: 0.0 }}
-        />
-
-        {/* ── Pink accent ribbon ── */}
-        <motion.path
-          d="M600 80 C500 150,295 192,175 322 C85 430,178 552,385 600 C515 630,600 572,600 542 Z"
-          fill="url(#pw2)"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 2, delay: 0.3 }}
-        />
-
-        {/* ── Inner dark valley (3-D depth read) ── */}
-        <motion.path
-          d="M600 170 C530 215,358 255,268 365 C190 460,288 542,465 570 C560 582,600 548,600 530 Z"
-          fill="rgba(5,2,20,0.45)"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 2, delay: 0.5 }}
-        />
-
-        {/* ── Top highlight streak ── */}
-        <motion.path
-          d="M592 -10 C468 58,210 96,75 262"
-          stroke="url(#pwH)"
-          strokeWidth="2"
-          fill="none"
-          filter="url(#fb)"
-          initial={{ pathLength: 0, opacity: 0 }}
-          animate={{ pathLength: 1, opacity: 1 }}
-          transition={{ duration: 2.6, ease: [0.22, 1, 0.36, 1], delay: 0.4 }}
-        />
-
-        {/* ── Secondary inner highlight ── */}
-        <motion.path
-          d="M600 110 C515 162,330 210,235 335"
-          stroke="rgba(180,140,255,0.3)"
-          strokeWidth="1"
-          fill="none"
-          filter="url(#fb)"
-          initial={{ pathLength: 0, opacity: 0 }}
-          animate={{ pathLength: 1, opacity: 1 }}
-          transition={{ duration: 2.8, ease: [0.22, 1, 0.36, 1], delay: 0.8 }}
-        />
-      </svg>
-
-      {/* Floating glow orbs layered on top of the wave */}
-      <motion.div
-        className="absolute rounded-full"
-        style={{
-          width: 260, height: 260,
-          top: '12%', right: '8%',
-          background: 'radial-gradient(circle, rgba(139,92,246,0.25) 0%, transparent 65%)',
-          filter: 'blur(36px)',
-        }}
-        animate={shouldReduce ? {} : { scale: [1, 1.1, 1], opacity: [0.7, 1, 0.7] }}
-        transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }}
-      />
-      <motion.div
-        className="absolute rounded-full"
-        style={{
-          width: 180, height: 180,
-          bottom: '18%', right: '18%',
-          background: 'radial-gradient(circle, rgba(236,72,153,0.2) 0%, transparent 65%)',
-          filter: 'blur(28px)',
-        }}
-        animate={shouldReduce ? {} : { scale: [1, 1.15, 1], opacity: [0.5, 0.9, 0.5] }}
-        transition={{ duration: 9, repeat: Infinity, ease: 'easeInOut', delay: 3 }}
-      />
-    </div>
-  )
-}
-
 /* ─────────────────────────────────────────
-   HERO  — structure from mockup 1
-   Left-aligned content (max 48% on desktop)
-   Purple wave on the right
-   Fully responsive
+   HERO
+   - Layout left-aligned, pleine largeur
+   - Pas de déco à droite
+   - Fond sobre avec juste un glow subtil
+   - Structure identique à la maquette 1
 ───────────────────────────────────────── */
 export default function Hero() {
   const shouldReduce = useReducedMotion()
@@ -289,31 +142,29 @@ export default function Hero() {
   return (
     <section className="relative w-full min-h-screen flex flex-col justify-center overflow-hidden bg-[#050510]">
 
-      {/* Left ambient glow */}
+      {/* Glow de fond très subtil — centré/gauche */}
       <div
         aria-hidden
         className="absolute inset-0 pointer-events-none"
         style={{
-          background:
-            'radial-gradient(ellipse 55% 60% at 0% 55%, rgba(139,92,246,0.1) 0%, transparent 65%)',
+          background: [
+            'radial-gradient(ellipse 60% 55% at 20% 55%, rgba(139,92,246,0.13) 0%, transparent 65%)',
+            'radial-gradient(ellipse 40% 40% at 75% 30%, rgba(236,72,153,0.06) 0%, transparent 60%)',
+          ].join(', '),
         }}
       />
 
-      {/* Purple wave — right half, desktop only */}
-      <PurpleWave />
-
-      {/* ── Content ── */}
+      {/* ── Contenu principal ── */}
       <div className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 pt-28 pb-16">
 
         <motion.div
           variants={shouldReduce ? {} : wrap}
           initial="hidden"
           animate="visible"
-          /* on desktop: max 48% width so wave shows; on mobile: full width */
-          className="flex flex-col md:max-w-[48%]"
+          className="flex flex-col"   /* pleine largeur, pas de max-w */
         >
 
-          {/* Badge — mirrors mockup "✦ AI Infrastructure Platform" */}
+          {/* Badge */}
           <motion.div
             variants={shouldReduce ? {} : it}
             className="inline-flex items-center gap-2 self-start px-3.5 py-1.5 rounded-full border border-white/15 bg-white/[0.05] text-zinc-300 text-xs font-medium mb-8 backdrop-blur-sm"
@@ -324,13 +175,11 @@ export default function Hero() {
             Agence digitale — Sites, Identité &amp; SEO
           </motion.div>
 
-          {/* ── Headline ── 
-              Responsive: scales from mobile to desktop
-              Uses clamp-like Tailwind classes — no overflow possible  */}
+          {/* Titre — clamp responsive, jamais trop grand */}
           <motion.h1
             variants={shouldReduce ? {} : it}
             className="font-black leading-[1.04] tracking-tight text-white"
-            style={{ fontSize: 'clamp(2.4rem, 6vw, 5.5rem)' }}
+            style={{ fontSize: 'clamp(2.6rem, 7vw, 6rem)' }}
           >
             <span className="block">On crée des sites</span>
             <span className="block mt-1">
@@ -338,15 +187,15 @@ export default function Hero() {
             </span>
           </motion.h1>
 
-          {/* Subtitle */}
+          {/* Sous-titre — max 520px pour rester lisible */}
           <motion.p
             variants={shouldReduce ? {} : it}
-            className="mt-6 text-sm sm:text-base md:text-lg text-zinc-400 leading-relaxed max-w-sm"
+            className="mt-6 text-sm sm:text-base md:text-lg text-zinc-400 leading-relaxed max-w-[520px]"
           >
             Sites sur-mesure, refonte, SEO et supports print — des expériences digitales pensées pour faire grandir ta marque.
           </motion.p>
 
-          {/* CTAs — structure from mockup: outline left, filled right */}
+          {/* CTAs */}
           <motion.div
             variants={shouldReduce ? {} : it}
             className="mt-8 flex flex-wrap gap-3"
@@ -380,35 +229,32 @@ export default function Hero() {
             </motion.a>
           </motion.div>
 
-          {/* ── "Powering 5000+" area — mirrors mockup bottom-left ── */}
+          {/* Stats — style "Powering 5000+ AI teams" de la maquette */}
           <motion.div
             variants={shouldReduce ? {} : it}
-            className="mt-10 flex items-start gap-4"
+            className="mt-10 flex flex-wrap items-center gap-6 sm:gap-10"
           >
-            {/* Label */}
-            <div className="shrink-0 leading-snug">
-              <p className="text-white text-sm font-semibold">
-                <CountUp value="+10" />&nbsp;clients
-              </p>
-              <p className="text-zinc-500 text-xs">accompagnés avec succès</p>
-            </div>
-            {/* Divider */}
-            <div className="w-px h-10 bg-white/10 mt-0.5" />
-            {/* Micro stats */}
-            <div className="flex flex-col gap-0.5">
-              <p className="text-white text-sm font-semibold"><CountUp value="100%" /> satisfaction</p>
-              <p className="text-zinc-500 text-xs">Réponse garantie sous&nbsp;<CountUp value="48h" /></p>
-            </div>
+            {stats.map((s, i) => (
+              <React.Fragment key={s.label}>
+                {i > 0 && <div className="hidden sm:block w-px h-8 bg-white/10" />}
+                <div>
+                  <div className="text-white text-lg font-black">
+                    <CountUp value={s.value} />
+                  </div>
+                  <div className="text-zinc-500 text-xs mt-0.5">{s.label}</div>
+                </div>
+              </React.Fragment>
+            ))}
           </motion.div>
 
         </motion.div>
 
-        {/* ── Logo strip — full width, bottom (like logos in mockup) ── */}
+        {/* Logo strip en bas — séparé par une ligne fine comme dans la maquette */}
         <motion.div
-          className="mt-16 border-t border-white/[0.06] pt-8"
+          className="mt-14 border-t border-white/[0.06] pt-8"
           initial={shouldReduce ? {} : { opacity: 0 }}
           animate={shouldReduce ? {} : { opacity: 1 }}
-          transition={{ delay: 1.1, duration: 0.8 }}
+          transition={{ delay: 1.0, duration: 0.8 }}
         >
           <LogoStrip />
         </motion.div>
