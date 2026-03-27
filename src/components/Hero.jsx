@@ -16,18 +16,14 @@ function CyclingWord() {
   if (shouldReduce) return <span className="text-gradient">{WORDS[0]}</span>
 
   return (
-    <span
-      className="inline-block relative"
-      aria-live="polite"
-      aria-atomic="true"
-    >
+    <span className="inline-block relative" aria-live="polite" aria-atomic="true">
       <AnimatePresence mode="wait">
         <motion.span
           key={WORDS[index]}
-          initial={{ opacity: 0, y: 28, filter: 'blur(10px)', scale: 0.95 }}
-          animate={{ opacity: 1, y: 0, filter: 'blur(0px)', scale: 1 }}
-          exit={{ opacity: 0, y: -28, filter: 'blur(10px)', scale: 0.95 }}
-          transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+          initial={{ opacity: 0, y: 28, filter: 'blur(10px)' }}
+          animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          exit={{ opacity: 0, y: -28, filter: 'blur(10px)' }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
           className="text-gradient inline-block"
         >
           {WORDS[index]}
@@ -70,22 +66,20 @@ function MagneticButton({ href, className, children, onClick }) {
   const y = useMotionValue(0)
   const springX = useSpring(x, { stiffness: 250, damping: 18 })
   const springY = useSpring(y, { stiffness: 250, damping: 18 })
-  const handleMouseMove = (e) => {
-    if (shouldReduce || !ref.current) return
-    const rect = ref.current.getBoundingClientRect()
-    x.set((e.clientX - rect.left - rect.width / 2) * 0.35)
-    y.set((e.clientY - rect.top - rect.height / 2) * 0.35)
-  }
-  const handleMouseLeave = () => { x.set(0); y.set(0) }
   return (
     <motion.a
       ref={ref}
       href={href}
       style={{ x: springX, y: springY }}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      whileHover={shouldReduce ? {} : { scale: 1.06, boxShadow: '0 0 60px rgba(139,92,246,0.55), 0 0 120px rgba(236,72,153,0.2)' }}
-      whileTap={{ scale: 0.95 }}
+      onMouseMove={(e) => {
+        if (shouldReduce || !ref.current) return
+        const rect = ref.current.getBoundingClientRect()
+        x.set((e.clientX - rect.left - rect.width / 2) * 0.35)
+        y.set((e.clientY - rect.top - rect.height / 2) * 0.35)
+      }}
+      onMouseLeave={() => { x.set(0); y.set(0) }}
+      whileHover={shouldReduce ? {} : { scale: 1.05 }}
+      whileTap={{ scale: 0.96 }}
       onClick={onClick}
       className={className}
     >
@@ -102,246 +96,269 @@ const stats = [
 ]
 
 const logos = [
-  { name: 'React', icon: '⚛' },
-  { name: 'Next.js', icon: '▲' },
-  { name: 'Framer', icon: '◈' },
-  { name: 'Vercel', icon: '◭' },
-  { name: 'WordPress', icon: '⊕' },
-  { name: 'Figma', icon: '◉' },
-  { name: 'SEO', icon: '⌖' },
-  { name: 'Tailwind', icon: '✦' },
+  'React', 'Next.js', 'Vercel', 'Figma', 'Framer', 'WordPress', 'Tailwind', 'SEO',
 ]
 
 /* ── Stagger variants ── */
-const containerVariants = {
+const container = {
   hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.11, delayChildren: 0.05 }
-  }
+  visible: { opacity: 1, transition: { staggerChildren: 0.1, delayChildren: 0.05 } }
+}
+const child = {
+  hidden: { opacity: 0, y: 30, filter: 'blur(10px)' },
+  visible: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] } }
 }
 
-const childVariants = {
-  hidden: { opacity: 0, y: 32, filter: 'blur(10px)' },
-  visible: {
-    opacity: 1,
-    y: 0,
-    filter: 'blur(0px)',
-    transition: { duration: 0.72, ease: [0.22, 1, 0.36, 1] }
-  }
-}
-
-/* ── Abstract wave shape (SVG) ── */
+/* ── 3D-look Wave Shape (SVG + CSS) ── */
 function WaveShape() {
+  const shouldReduce = useReducedMotion()
   return (
-    <div
-      className="absolute right-0 top-0 w-[55%] h-full pointer-events-none"
-      aria-hidden
-    >
-      {/* Ambient glow behind shape */}
+    <div className="absolute inset-y-0 right-0 w-[52%] pointer-events-none overflow-hidden" aria-hidden>
+      {/* Outer ambient glow */}
       <div
         className="absolute inset-0"
         style={{
-          background: 'radial-gradient(ellipse 80% 60% at 70% 50%, rgba(139,92,246,0.18) 0%, rgba(236,72,153,0.08) 50%, transparent 75%)',
+          background: 'radial-gradient(ellipse 70% 80% at 85% 50%, rgba(139,92,246,0.15) 0%, rgba(236,72,153,0.06) 50%, transparent 75%)',
         }}
       />
 
-      {/* Main SVG wave */}
+      {/* Main sculptured wave — mimics the 3D smooth ribbon from the mockup */}
       <svg
-        viewBox="0 0 700 600"
+        viewBox="0 0 620 700"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         className="absolute inset-0 w-full h-full"
         preserveAspectRatio="xMidYMid slice"
       >
         <defs>
-          <linearGradient id="waveGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="rgba(139,92,246,0.9)" />
-            <stop offset="60%" stopColor="rgba(168,85,247,0.6)" />
-            <stop offset="100%" stopColor="rgba(236,72,153,0.0)" />
+          {/* Main wave gradient — light center like a lit 3D surface */}
+          <linearGradient id="wg1" x1="0%" y1="20%" x2="100%" y2="80%">
+            <stop offset="0%" stopColor="rgba(200,180,255,0.0)" />
+            <stop offset="30%" stopColor="rgba(160,130,255,0.55)" />
+            <stop offset="55%" stopColor="rgba(220,210,255,0.85)" />
+            <stop offset="75%" stopColor="rgba(160,130,255,0.50)" />
+            <stop offset="100%" stopColor="rgba(100,70,200,0.08)" />
           </linearGradient>
-          <linearGradient id="waveGrad2" x1="100%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stopColor="rgba(236,72,153,0.7)" />
-            <stop offset="50%" stopColor="rgba(139,92,246,0.4)" />
-            <stop offset="100%" stopColor="rgba(99,102,241,0.0)" />
+          {/* Shadow edge gradient */}
+          <linearGradient id="wg2" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="rgba(80,40,160,0.0)" />
+            <stop offset="40%" stopColor="rgba(120,60,200,0.4)" />
+            <stop offset="100%" stopColor="rgba(60,20,120,0.7)" />
           </linearGradient>
-          <linearGradient id="waveGrad3" x1="0%" y1="100%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="rgba(99,102,241,0.6)" />
-            <stop offset="100%" stopColor="rgba(139,92,246,0.0)" />
+          {/* Highlight streak */}
+          <linearGradient id="wg3" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="rgba(255,255,255,0.0)" />
+            <stop offset="45%" stopColor="rgba(255,255,255,0.9)" />
+            <stop offset="100%" stopColor="rgba(255,255,255,0.0)" />
           </linearGradient>
-          <filter id="waveBlur">
-            <feGaussianBlur stdDeviation="2.5" />
+          {/* Soft blur filter for the glow layers */}
+          <filter id="softBlur" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="4" />
+          </filter>
+          <filter id="tinyBlur">
+            <feGaussianBlur stdDeviation="1.2" />
           </filter>
         </defs>
 
-        {/* Background glow blob */}
-        <ellipse cx="420" cy="310" rx="280" ry="200" fill="rgba(139,92,246,0.06)" />
-
-        {/* Wave ribbon 1 — main */}
+        {/* ── Layer 1: Back shadow face ── */}
         <motion.path
-          d="M 700 0 C 500 80, 200 120, 80 300 C -20 440, 200 540, 400 580 C 550 610, 680 550, 700 500 Z"
-          fill="url(#waveGrad1)"
-          opacity="0.85"
-          initial={{ pathLength: 0, opacity: 0 }}
-          animate={{ pathLength: 1, opacity: 0.85 }}
-          transition={{ duration: 2.2, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
+          d="M 620 -20
+             C 480 60, 200 100, 60 280
+             C -30 410, 100 560, 300 620
+             C 440 660, 580 600, 620 550
+             Z"
+          fill="url(#wg2)"
+          opacity={0.5}
+          initial={{ opacity: 0, scale: 0.96 }}
+          animate={{ opacity: 0.5, scale: 1 }}
+          transition={{ duration: 1.6, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
         />
 
-        {/* Wave ribbon 2 — mid layer */}
+        {/* ── Layer 2: Main lit face ── */}
         <motion.path
-          d="M 700 100 C 480 160, 260 180, 160 340 C 80 460, 260 560, 460 580 C 600 595, 700 530, 700 500 Z"
-          fill="url(#waveGrad2)"
-          opacity="0.6"
-          initial={{ pathLength: 0, opacity: 0 }}
-          animate={{ pathLength: 1, opacity: 0.6 }}
-          transition={{ duration: 2.5, ease: [0.22, 1, 0.36, 1], delay: 0.5 }}
+          d="M 620 -20
+             C 500 50, 220 90, 90 260
+             C -10 400, 110 550, 320 610
+             C 460 645, 590 580, 620 530
+             Z"
+          fill="url(#wg1)"
+          initial={{ opacity: 0, scale: 0.97 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1.8, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
         />
 
-        {/* Wave ribbon 3 — accent layer */}
+        {/* ── Layer 3: Second wave ribbon (like the maquette has 2-3 layered ridges) ── */}
         <motion.path
-          d="M 700 200 C 560 240, 380 260, 300 370 C 220 480, 380 560, 560 570 C 650 576, 700 540, 700 500 Z"
-          fill="url(#waveGrad3)"
-          opacity="0.5"
+          d="M 620 80
+             C 520 140, 300 180, 180 320
+             C 90 430, 180 550, 380 600
+             C 510 630, 620 570, 620 530
+             Z"
+          fill="rgba(140, 100, 255, 0.30)"
           initial={{ opacity: 0 }}
-          animate={{ opacity: 0.5 }}
-          transition={{ duration: 2, delay: 0.8 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 2, delay: 0.4 }}
         />
 
-        {/* Highlight streak on top edge of wave */}
+        {/* ── Layer 4: Darker inner valley (3D depth) ── */}
         <motion.path
-          d="M 700 0 C 500 80, 200 120, 80 300"
-          stroke="rgba(255,255,255,0.35)"
-          strokeWidth="1.5"
-          fill="none"
-          filter="url(#waveBlur)"
-          initial={{ pathLength: 0, opacity: 0 }}
-          animate={{ pathLength: 1, opacity: 1 }}
-          transition={{ duration: 2.8, ease: [0.22, 1, 0.36, 1], delay: 0.6 }}
+          d="M 620 160
+             C 540 210, 360 250, 280 360
+             C 200 460, 290 540, 460 570
+             C 560 583, 620 545, 620 520
+             Z"
+          fill="rgba(60, 20, 120, 0.45)"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 2, delay: 0.6 }}
         />
 
-        {/* Inner highlight — gleam */}
+        {/* ── Highlight streak — bright ridge on the lit edge ── */}
         <motion.path
-          d="M 700 80 C 540 140, 300 200, 200 330 C 130 430, 260 510, 440 560"
-          stroke="rgba(255,255,255,0.12)"
-          strokeWidth="0.8"
+          d="M 610 0
+             C 490 70, 230 110, 95 275"
+          stroke="url(#wg3)"
+          strokeWidth="2.5"
+          fill="none"
+          filter="url(#tinyBlur)"
+          initial={{ pathLength: 0, opacity: 0 }}
+          animate={{ pathLength: 1, opacity: 1 }}
+          transition={{ duration: 2.4, ease: [0.22, 1, 0.36, 1], delay: 0.5 }}
+        />
+
+        {/* ── Inner secondary highlight ── */}
+        <motion.path
+          d="M 620 120
+             C 530 170, 340 220, 250 340"
+          stroke="rgba(255,255,255,0.25)"
+          strokeWidth="1.2"
+          fill="none"
+          filter="url(#tinyBlur)"
+          initial={{ pathLength: 0, opacity: 0 }}
+          animate={{ pathLength: 1, opacity: 1 }}
+          transition={{ duration: 2.8, ease: [0.22, 1, 0.36, 1], delay: 0.9 }}
+        />
+
+        {/* ── Bottom edge fade ── */}
+        <motion.path
+          d="M 150 580
+             C 260 620, 450 640, 620 620"
+          stroke="rgba(160,120,255,0.3)"
+          strokeWidth="1"
           fill="none"
           initial={{ pathLength: 0, opacity: 0 }}
           animate={{ pathLength: 1, opacity: 1 }}
-          transition={{ duration: 3, ease: [0.22, 1, 0.36, 1], delay: 1 }}
+          transition={{ duration: 2, delay: 1.2 }}
         />
       </svg>
 
-      {/* Floating orbs inside the wave area */}
+      {/* Subtle floating glow orbs inside wave area */}
       <motion.div
         className="absolute rounded-full"
         style={{
-          width: 280,
-          height: 280,
-          top: '15%',
-          right: '15%',
-          background: 'radial-gradient(circle, rgba(139,92,246,0.22) 0%, transparent 70%)',
-          filter: 'blur(30px)',
+          width: 320, height: 320,
+          top: '10%', right: '5%',
+          background: 'radial-gradient(circle, rgba(180,140,255,0.18) 0%, transparent 65%)',
+          filter: 'blur(40px)',
         }}
-        animate={{ scale: [1, 1.12, 1], opacity: [0.6, 1, 0.6] }}
-        transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }}
+        animate={shouldReduce ? {} : { scale: [1, 1.08, 1], opacity: [0.7, 1, 0.7] }}
+        transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
       />
       <motion.div
         className="absolute rounded-full"
         style={{
-          width: 180,
-          height: 180,
-          bottom: '20%',
-          right: '20%',
-          background: 'radial-gradient(circle, rgba(236,72,153,0.18) 0%, transparent 70%)',
-          filter: 'blur(25px)',
+          width: 200, height: 200,
+          bottom: '15%', right: '15%',
+          background: 'radial-gradient(circle, rgba(236,72,153,0.14) 0%, transparent 65%)',
+          filter: 'blur(30px)',
         }}
-        animate={{ scale: [1, 1.18, 1], opacity: [0.5, 0.9, 0.5] }}
-        transition={{ duration: 9, repeat: Infinity, ease: 'easeInOut', delay: 3 }}
+        animate={shouldReduce ? {} : { scale: [1, 1.15, 1], opacity: [0.5, 0.85, 0.5] }}
+        transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut', delay: 3 }}
       />
     </div>
   )
 }
 
 /* ── Logo marquee ── */
-function LogoMarquee() {
+function LogoStrip() {
   const doubled = [...logos, ...logos]
   return (
-    <div className="flex items-center gap-3 overflow-hidden" style={{ maskImage: 'linear-gradient(to right, transparent, black 8%, black 92%, transparent)' }}>
-      <div className="flex gap-6 animate-marquee shrink-0" style={{ animationDuration: '22s' }}>
-        {doubled.map((l, i) => (
-          <div
+    <div
+      className="relative overflow-hidden"
+      style={{ maskImage: 'linear-gradient(to right, transparent, black 10%, black 90%, transparent)' }}
+    >
+      <div className="flex items-center gap-10 animate-marquee shrink-0 w-max" style={{ animationDuration: '24s' }}>
+        {doubled.map((name, i) => (
+          <span
             key={i}
-            className="flex items-center gap-2 shrink-0 px-3 py-1.5 rounded-full border border-white/10 bg-white/[0.04] backdrop-blur-sm"
+            className="shrink-0 text-sm font-semibold text-zinc-500 tracking-wide whitespace-nowrap hover:text-zinc-300 transition-colors duration-300"
           >
-            <span className="text-zinc-400 text-sm">{l.icon}</span>
-            <span className="text-zinc-400 text-xs font-medium whitespace-nowrap">{l.name}</span>
-          </div>
+            {name}
+          </span>
         ))}
       </div>
     </div>
   )
 }
 
-/* ─── Main Hero ─── */
+/* ─── Hero ─── */
 export default function Hero() {
   const shouldReduce = useReducedMotion()
 
   return (
-    <section
-      className="relative min-h-screen flex flex-col justify-center overflow-hidden"
-    >
-      {/* Background gradient noise */}
+    <section className="relative min-h-screen flex flex-col justify-center overflow-hidden bg-[#050510]">
+
+      {/* Subtle left ambient */}
       <div
         className="absolute inset-0 pointer-events-none"
         aria-hidden
         style={{
-          background: 'radial-gradient(ellipse 60% 50% at 10% 60%, rgba(139,92,246,0.12) 0%, transparent 60%)',
+          background: 'radial-gradient(ellipse 50% 60% at 5% 55%, rgba(139,92,246,0.1) 0%, transparent 65%)',
         }}
       />
 
-      {/* Abstract wave shape — right side */}
+      {/* 3D Wave — right side */}
       <WaveShape />
 
-      {/* ── Content ── */}
-      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 w-full pt-28 pb-16">
+      {/* ── Main content ── */}
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-8 lg:px-16 pt-32 pb-24">
         <motion.div
-          variants={shouldReduce ? {} : containerVariants}
+          variants={shouldReduce ? {} : container}
           initial="hidden"
           animate="visible"
-          className="flex flex-col max-w-3xl"
+          className="flex flex-col max-w-[52%]"
         >
           {/* Badge */}
           <motion.div
-            variants={shouldReduce ? {} : childVariants}
-            className="inline-flex items-center gap-2 self-start px-4 py-1.5 rounded-full border border-violet-500/30 bg-violet-500/10 text-violet-300 text-xs font-medium mb-8"
+            variants={shouldReduce ? {} : child}
+            className="inline-flex items-center gap-2 self-start px-4 py-1.5 rounded-full border border-white/15 bg-white/[0.06] text-zinc-300 text-xs font-medium mb-10 backdrop-blur-sm"
           >
-            <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3l14 9-14 9V3z" />
+            <svg className="w-3 h-3 text-violet-400" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
             </svg>
             Agence digitale — Sites, Identité &amp; SEO
           </motion.div>
 
-          {/* Headline */}
-          <motion.div variants={shouldReduce ? {} : childVariants}>
-            <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-[5.5rem] xl:text-[6.5rem] leading-[1.03] tracking-tight font-black">
-              <span className="block text-white">On crée des sites</span>
-              <span className="block mt-2">
-                <CyclingWord />
-              </span>
-            </h1>
-          </motion.div>
+          {/* Headline — massive, white, like the mockup */}
+          <motion.h1
+            variants={shouldReduce ? {} : child}
+            className="text-[4rem] sm:text-[5rem] lg:text-[6.5rem] xl:text-[7.5rem] font-black leading-[1.0] tracking-tight text-white"
+          >
+            <span className="block">On crée des</span>
+            <span className="block">sites&nbsp;<CyclingWord /></span>
+          </motion.h1>
 
-          {/* Sub-headline */}
+          {/* Subtitle */}
           <motion.p
-            variants={shouldReduce ? {} : childVariants}
-            className="mt-7 text-base md:text-lg text-zinc-400 max-w-xl leading-relaxed"
+            variants={shouldReduce ? {} : child}
+            className="mt-8 text-base md:text-lg text-zinc-400 leading-relaxed max-w-md"
           >
             Sites sur-mesure, refonte, SEO et supports print — des expériences digitales pensées pour faire grandir ta marque.
           </motion.p>
 
-          {/* CTAs */}
+          {/* CTAs — style maquette: outline + filled */}
           <motion.div
-            variants={shouldReduce ? {} : childVariants}
+            variants={shouldReduce ? {} : child}
             className="mt-10 flex flex-wrap gap-4"
           >
             <MagneticButton
@@ -351,9 +368,8 @@ export default function Hero() {
                 history.pushState({}, '', '/contact')
                 window.dispatchEvent(new PopStateEvent('popstate'))
               }}
-              className="group relative inline-flex items-center gap-2.5 px-7 py-3.5 rounded-full font-semibold text-sm text-white bg-gradient-to-r from-violet-600 to-pink-500 shadow-lg shadow-violet-500/30 overflow-hidden transition-all duration-300"
+              className="group relative inline-flex items-center gap-2.5 px-7 py-3.5 rounded-full text-sm font-semibold text-white bg-white/10 border border-white/25 backdrop-blur-sm hover:bg-white/15 hover:border-white/40 transition-all duration-300 overflow-hidden"
             >
-              <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
               <span className="relative">Demander un devis</span>
               <svg className="relative w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -362,54 +378,59 @@ export default function Hero() {
 
             <motion.a
               href="#services"
-              whileHover={shouldReduce ? {} : { scale: 1.04, borderColor: 'rgba(255,255,255,0.3)' }}
+              whileHover={shouldReduce ? {} : { scale: 1.04 }}
               whileTap={{ scale: 0.97 }}
-              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-semibold text-sm border border-white/15 text-white/80 hover:text-white hover:bg-white/5 transition-all duration-300"
+              className="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-full text-sm font-semibold text-white bg-gradient-to-r from-violet-600 to-pink-500 shadow-lg shadow-violet-500/25 hover:shadow-violet-500/40 transition-all duration-300"
             >
               Voir nos services
             </motion.a>
           </motion.div>
 
-          {/* Divider */}
+          {/* Divider + stats + label — like "Powering 5000+ AI teams" in the mockup */}
           <motion.div
-            variants={shouldReduce ? {} : childVariants}
-            className="mt-14 mb-5 flex items-center gap-3"
+            variants={shouldReduce ? {} : child}
+            className="mt-14 pt-10 border-t border-white/8"
           >
-            <div className="h-px flex-1 bg-gradient-to-r from-white/10 to-transparent max-w-xs" />
-            <span className="text-zinc-600 text-xs uppercase tracking-widest font-medium">Stack &amp; Outils</span>
-          </motion.div>
-
-          {/* Logo marquee */}
-          <motion.div variants={shouldReduce ? {} : childVariants}>
-            <LogoMarquee />
+            <div className="flex items-start gap-10">
+              {/* Left label */}
+              <div className="shrink-0">
+                <p className="text-zinc-500 text-xs leading-snug">
+                  Faisant confiance<br />à nos clients
+                </p>
+              </div>
+              {/* Stats */}
+              <div className="flex gap-8 flex-wrap">
+                {stats.map(s => (
+                  <div key={s.label}>
+                    <div className="text-2xl font-black text-white tabular-nums">
+                      <CountUp value={s.value} />
+                    </div>
+                    <div className="text-zinc-500 text-xs mt-0.5">{s.label}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
           </motion.div>
 
         </motion.div>
 
-        {/* ── Stats row — bottom left ── */}
+        {/* Logo strip — full width, at the bottom like the mockup */}
         <motion.div
-          className="mt-16 flex flex-wrap gap-8 sm:gap-14"
-          initial={shouldReduce ? {} : { opacity: 0, y: 24 }}
-          animate={shouldReduce ? {} : { opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 1.0, ease: [0.22, 1, 0.36, 1] }}
+          className="mt-16"
+          initial={shouldReduce ? {} : { opacity: 0 }}
+          animate={shouldReduce ? {} : { opacity: 1 }}
+          transition={{ delay: 1.1, duration: 1 }}
         >
-          {stats.map((s, i) => (
-            <div key={s.label} className="flex flex-col">
-              <div className="text-3xl sm:text-4xl font-black text-gradient tabular-nums">
-                <CountUp value={s.value} />
-              </div>
-              <div className="text-xs text-zinc-500 mt-1.5 leading-tight">{s.label}</div>
-            </div>
-          ))}
+          <LogoStrip />
         </motion.div>
       </div>
 
       {/* Scroll indicator */}
       <motion.div
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 text-zinc-600 z-10"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-1.5 text-zinc-600"
         initial={shouldReduce ? {} : { opacity: 0 }}
         animate={shouldReduce ? {} : { opacity: 1 }}
-        transition={{ delay: 1.6, duration: 0.8 }}
+        transition={{ delay: 1.8 }}
       >
         <motion.div
           animate={shouldReduce ? {} : { y: [0, 10, 0] }}
