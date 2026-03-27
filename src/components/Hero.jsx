@@ -129,13 +129,6 @@ const it = {
   visible: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] } }
 }
 
-/* ─────────────────────────────────────────
-   HERO
-   - Layout left-aligned, pleine largeur
-   - Pas de déco à droite
-   - Fond sobre avec juste un glow subtil
-   - Structure identique à la maquette 1
-───────────────────────────────────────── */
 export default function Hero() {
   const shouldReduce = useReducedMotion()
 
@@ -155,7 +148,7 @@ export default function Hero() {
       />
 
       {/* ── Contenu principal ── */}
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 pt-28 pb-16">
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 pt-20 pb-16">
 
         <motion.div
           variants={shouldReduce ? {} : wrap}
@@ -229,34 +222,40 @@ export default function Hero() {
             </motion.a>
           </motion.div>
 
-          {/* Stats — style "Powering 5000+ AI teams" de la maquette */}
+          {/* Stats + Logo strip sur la même ligne — comme dans la maquette */}
           <motion.div
             variants={shouldReduce ? {} : it}
-            className="mt-10 flex flex-wrap items-center gap-6 sm:gap-10"
+            className="mt-10 border-t border-white/[0.06] pt-8 flex flex-col sm:flex-row sm:items-center gap-6"
           >
-            {stats.map((s, i) => (
-              <React.Fragment key={s.label}>
-                {i > 0 && <div className="hidden sm:block w-px h-8 bg-white/10" />}
-                <div>
-                  <div className="text-white text-lg font-black">
-                    <CountUp value={s.value} />
+            {/* Stats à gauche */}
+            <div className="flex flex-wrap items-center gap-6 sm:gap-8 shrink-0">
+              {stats.map((s, i) => (
+                <React.Fragment key={s.label}>
+                  {i > 0 && <div className="hidden sm:block w-px h-8 bg-white/10" />}
+                  <div>
+                    <div className="text-white text-lg font-black">
+                      <CountUp value={s.value} />
+                    </div>
+                    <div className="text-zinc-500 text-xs mt-0.5">{s.label}</div>
                   </div>
-                  <div className="text-zinc-500 text-xs mt-0.5">{s.label}</div>
-                </div>
-              </React.Fragment>
-            ))}
+                </React.Fragment>
+              ))}
+            </div>
+
+            {/* Séparateur vertical */}
+            <div className="hidden sm:block w-px h-10 bg-white/10 shrink-0" />
+
+            {/* Logo strip à droite — même hauteur que les stats */}
+            <motion.div
+              className="flex-1 min-w-0"
+              initial={shouldReduce ? {} : { opacity: 0 }}
+              animate={shouldReduce ? {} : { opacity: 1 }}
+              transition={{ delay: 1.0, duration: 0.8 }}
+            >
+              <LogoStrip />
+            </motion.div>
           </motion.div>
 
-        </motion.div>
-
-        {/* Logo strip en bas — séparé par une ligne fine comme dans la maquette */}
-        <motion.div
-          className="mt-14 border-t border-white/[0.06] pt-8"
-          initial={shouldReduce ? {} : { opacity: 0 }}
-          animate={shouldReduce ? {} : { opacity: 1 }}
-          transition={{ delay: 1.0, duration: 0.8 }}
-        >
-          <LogoStrip />
         </motion.div>
 
       </div>
