@@ -129,50 +129,61 @@ const it = {
   visible: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] } }
 }
 
-/* ── Shooting stars ── */
-const STARS = Array.from({ length: 12 }, (_, i) => ({
+/* ── Light streams — particules qui coulent de gauche → droite ── */
+const STREAMS = Array.from({ length: 14 }, (_, i) => ({
   id: i,
-  // right side only: start between 40% and 95% horizontally
-  startX: 40 + Math.random() * 55,
-  startY: Math.random() * 60,
-  length: 80 + Math.random() * 120,   // px length of the tail
-  duration: 1.2 + Math.random() * 2,  // animation duration
-  delay: Math.random() * 7,           // stagger
-  angle: 30 + Math.random() * 20,     // degrees (diagonal)
-  opacity: 0.5 + Math.random() * 0.5,
+  // démarre à gauche de la zone droite (35-55%) pour traverser vers la droite
+  startX: 35 + Math.random() * 20,
+  // hauteur variée sur toute la section
+  top: 5 + Math.random() * 88,
+  // largeur du trait lumineux
+  width: 120 + Math.random() * 220,
+  // épaisseur : fins au centre, épais rarement
+  height: Math.random() < 0.3 ? 2 : 1,
+  duration: 2.5 + Math.random() * 3,
+  delay: Math.random() * 8,
+  // couleur : violet ou pink ou blanc selon index
+  color: i % 3 === 0
+    ? 'rgba(220,180,255,'
+    : i % 3 === 1
+    ? 'rgba(244,114,182,'
+    : 'rgba(255,255,255,',
+  opacity: 0.25 + Math.random() * 0.45,
 }))
 
-function ShootingStars({ shouldReduce }) {
+function LightStreams({ shouldReduce }) {
   if (shouldReduce) return null
   return (
     <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden>
-      {STARS.map(s => (
+      {STREAMS.map(s => (
         <motion.div
           key={s.id}
           className="absolute"
           style={{
+            top: `${s.top}%`,
             left: `${s.startX}%`,
-            top: `${s.startY}%`,
-            width: s.length,
-            height: 1.5,
+            width: s.width,
+            height: s.height,
             borderRadius: 9999,
-            background: `linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(200,180,255,${s.opacity}) 40%, rgba(255,255,255,${s.opacity}) 70%, rgba(255,255,255,0) 100%)`,
-            rotate: `${s.angle}deg`,
-            transformOrigin: 'right center',
+            /* fade in depuis gauche, corps lumineux, fade out à droite */
+            background: `linear-gradient(90deg,
+              rgba(255,255,255,0) 0%,
+              ${s.color}${(s.opacity * 0.4).toFixed(2)}) 20%,
+              ${s.color}${s.opacity.toFixed(2)}) 55%,
+              ${s.color}${(s.opacity * 0.6).toFixed(2)}) 80%,
+              rgba(255,255,255,0) 100%)`,
           }}
-          initial={{ opacity: 0, scaleX: 0, x: 0, y: 0 }}
+          initial={{ opacity: 0, x: -s.width * 0.3 }}
           animate={{
-            opacity: [0, s.opacity, s.opacity, 0],
-            scaleX: [0, 1, 1, 0],
-            x: [0, s.length * 0.6],
-            y: [0, s.length * 0.35],
+            opacity: [0, 1, 1, 0],
+            x: [0, s.width * 1.2],
           }}
           transition={{
             duration: s.duration,
             delay: s.delay,
             repeat: Infinity,
-            repeatDelay: 3 + Math.random() * 5,
-            ease: 'easeOut',
+            repeatDelay: 1 + Math.random() * 4,
+            ease: [0.25, 0.46, 0.45, 0.94],
           }}
         />
       ))}
@@ -198,8 +209,8 @@ export default function Hero() {
         }}
       />
 
-      {/* Shooting stars — droite du hero */}
-      <ShootingStars shouldReduce={shouldReduce} />
+      {/* Light streams — droite du hero */}
+      <LightStreams shouldReduce={shouldReduce} />
 
       {/* ── Contenu principal ── */}
       <div className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 pt-14 pb-16">
