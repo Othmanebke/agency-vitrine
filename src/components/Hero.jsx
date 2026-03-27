@@ -148,7 +148,7 @@ export default function Hero() {
       />
 
       {/* ── Contenu principal ── */}
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 pt-20 pb-16">
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 pt-14 pb-16">
 
         <motion.div
           variants={shouldReduce ? {} : wrap}
@@ -209,17 +209,18 @@ export default function Hero() {
               </svg>
             </MagneticButton>
 
-            <motion.a
-              href="#services"
+            <motion.button
+              type="button"
+              onClick={() => window.dispatchEvent(new CustomEvent('openChatbot'))}
               whileHover={shouldReduce ? {} : { scale: 1.04 }}
               whileTap={{ scale: 0.97 }}
               className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm font-semibold text-white bg-gradient-to-r from-violet-600 to-pink-500 shadow-lg shadow-violet-500/25 hover:shadow-violet-500/40 transition-all duration-300"
             >
-              Devis gratuit
               <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
               </svg>
-            </motion.a>
+              Discuter avec l'IA
+            </motion.button>
           </motion.div>
 
           {/* Stats + Logo strip sur la même ligne — comme dans la maquette */}

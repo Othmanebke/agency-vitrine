@@ -89,12 +89,20 @@ export default function ChatBot() {
     return () => clearTimeout(t)
   }, [])
 
+  // Écoute l'événement global pour ouvrir depuis n'importe où (ex: bouton Hero)
+  useEffect(() => {
+    const handler = () => { setOpen(true); setPulsed(false) }
+    window.addEventListener('openChatbot', handler)
+    return () => window.removeEventListener('openChatbot', handler)
+  }, [])
+
   // Premier message quand on ouvre
   useEffect(() => {
     if (!open || messages.length > 0) return
     pushBot(TREE.start.bot)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open])
+
 
   // Auto-scroll
   useEffect(() => {
