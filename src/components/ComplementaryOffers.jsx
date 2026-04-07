@@ -3,34 +3,35 @@ import { motion, useReducedMotion } from 'framer-motion'
 
 const brandingPlans = [
   {
-    name: 'Identité Essentielle',
-    price: '400 – 800€',
-    desc: 'Pour lancer ton identité visuelle',
+    name: 'Pack Canva Pro',
+    price: '150 – 350€',
+    desc: 'Création rapide, rendu propre & moderne',
     features: [
-      'Logo principal + variantes',
-      'Charte couleurs & typographies',
-      '2 supports print (flyer, carte)',
-      'Fichiers HD livrés (PNG, SVG, PDF)',
+      'Logo principal + 2 variantes',
+      'Palette couleurs & typographies',
+      "Jusqu'à 3 supports print (flyer, carte, affiche)",
+      'Templates réseaux sociaux inclus',
+      'Fichiers HD livrés (PNG, PDF)',
       'Révisions illimitées',
     ],
     highlight: false,
-    tools: 'Canva Pro / Adobe Express',
+    tools: 'Canva Pro',
   },
   {
-    name: 'Pack Branding Complet',
-    price: '1 200 – 2 000€',
-    desc: 'Identité complète & supports professionnels',
+    name: 'Pack Adobe CC',
+    price: '600 – 1 200€',
+    desc: 'Identité vectorielle pro, fichiers sources inclus',
     features: [
-      'Logo complet (principal, icône, noir/blanc)',
+      'Logo vectoriel complet (principal, icône, N&B)',
       'Charte graphique complète',
       "Jusqu'à 5 supports print sur-mesure",
       'Templates réseaux sociaux',
       "Guide d'utilisation de la marque",
-      'Révisions illimitées',
+      'Fichiers sources livrés (AI, PSD, INDD)',
     ],
     highlight: true,
-    badge: 'Populaire',
-    tools: 'Suite Adobe CC (Illustrator, Photoshop, InDesign)',
+    badge: 'Recommandé',
+    tools: 'Adobe Illustrator · Photoshop · InDesign',
   },
 ]
 
@@ -39,76 +40,6 @@ export default function ComplementaryOffers() {
 
   return (
     <section className="max-w-6xl mx-auto px-6 pb-24">
-
-      {/* ─── Refonte Banner ─── */}
-      <motion.div
-        initial={shouldReduce ? {} : { opacity: 0, y: 24 }}
-        whileInView={shouldReduce ? {} : { opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-        className="mb-20"
-      >
-        <div className="group relative rounded-3xl overflow-hidden p-[1px]">
-          {/* Aurora border */}
-          <motion.div
-            className="absolute -inset-[1px] rounded-3xl opacity-50 group-hover:opacity-100 transition-opacity duration-700"
-            style={{
-              background: 'linear-gradient(135deg, #7c3aed, #ec4899, #6366f1, #7c3aed)',
-              backgroundSize: '300% 300%',
-            }}
-            animate={shouldReduce ? {} : { backgroundPosition: ['0% 0%', '100% 100%', '0% 0%'] }}
-            transition={{ duration: 6, repeat: Infinity, ease: 'linear' }}
-          />
-
-          <div className="relative bg-[#0c0716] rounded-[calc(1.5rem-1px)] p-8 md:p-12 flex flex-col md:flex-row items-center gap-8 md:gap-12">
-            <div className="flex-1">
-              <span className="inline-block px-4 py-1.5 rounded-full bg-gradient-to-r from-violet-600 to-pink-500 text-white text-xs font-bold shadow-lg shadow-violet-500/40 mb-5 uppercase tracking-widest">
-                Service Spécial
-              </span>
-              <h3 className="text-3xl md:text-4xl font-black text-white mb-3 tracking-tight">
-                Refonte de site<br />
-                <span className="bg-gradient-to-r from-violet-400 to-pink-400 bg-clip-text text-transparent">
-                  existant
-                </span>
-              </h3>
-              <p className="text-zinc-400 text-base leading-relaxed max-w-md">
-                Ton site vieilli freine ta croissance ? On le modernise de fond en comble :
-                design, performances, SEO et conversion. Résultat garanti.
-              </p>
-            </div>
-
-            <div className="flex flex-col items-center md:items-end gap-5 flex-shrink-0">
-              <div className="text-center md:text-right">
-                <p className="text-sm text-zinc-500 mb-1">Tarification</p>
-                <p className="text-5xl font-black text-white tracking-tighter">Sur devis</p>
-                <p className="text-zinc-500 text-sm mt-1">Après un bref échange gratuit</p>
-              </div>
-              <a
-                href="/contact"
-                onClick={(e) => {
-                  e.preventDefault()
-                  history.pushState({}, '', '/contact')
-                  window.dispatchEvent(new PopStateEvent('popstate'))
-                }}
-                className="group/btn relative flex items-center gap-2 px-8 py-4 rounded-xl font-bold text-white overflow-hidden transition-all duration-300 bg-white/5 border border-white/10 hover:border-violet-500/50"
-              >
-                <div className="absolute inset-0 bg-gradient-to-r from-violet-600 to-pink-500 opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300" />
-                <span className="relative z-10 flex items-center gap-2">
-                  Demander un devis
-                  <svg
-                    className="w-5 h-5 group-hover/btn:translate-x-1 transition-transform"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                  </svg>
-                </span>
-              </a>
-            </div>
-          </div>
-        </div>
-      </motion.div>
 
       {/* ─── Pack Branding, Logos & Print ─── */}
       <motion.div
