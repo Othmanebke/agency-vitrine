@@ -1,6 +1,6 @@
-import React, { useRef, useState } from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
 import { createPortal } from 'react-dom'
-import { motion, useScroll, useTransform, useSpring, useReducedMotion, AnimatePresence } from 'framer-motion'
+import { motion, useReducedMotion, AnimatePresence } from 'framer-motion'
 import Nav from '../components/Nav'
 import Footer from '../components/Footer'
 import { useSEO } from '../hooks/useSEO'
@@ -348,9 +348,10 @@ function StackMarquee() {
 }
 
 export default function PortfolioPage() {
-  const containerRef = useRef(null)
   const shouldReduce = useReducedMotion()
   const [selectedProject, setSelectedProject] = useState(null)
+  const [currentIndex, setCurrentIndex] = useState(0)
+  const [direction, setDirection] = useState(0)
 
   useSEO({
     title: 'Portfolio — Wexor | Sites, Refontes, Branding & SEO',
@@ -358,18 +359,43 @@ export default function PortfolioPage() {
     path: '/portfolio',
   })
 
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ['start start', 'end end']
-  })
+  const goNext = useCallback(() => {
+    setDirection(1)
+    setCurrentIndex(i => (i + 1) % projects.length)
+  }, [])
 
-  const totalItems = projects.length
+  const goPrev = useCallback(() => {
+    setDirection(-1)
+    setCurrentIndex(i => (i - 1 + projects.length) % projects.length)
+  }, [])
 
-  const xPercent = useTransform(scrollYProgress, [0, 1], [0, -(totalItems - 1) * 100])
-  const smoothX = useSpring(xPercent, { stiffness: 80, damping: 25 })
+  useEffect(() => {
+    if (shouldReduce) return
+    const handleKey = (e) => {
+      if (selectedProject) return
+      if (e.key === 'ArrowLeft') goPrev()
+      if (e.key === 'ArrowRight') goNext()
+    }
+    window.addEventListener('keydown', handleKey)
+    return () => window.removeEventListener('keydown', handleKey)
+  }, [goPrev, goNext, selectedProject, shouldReduce])
 
-  const titleOpacity = useTransform(scrollYProgress, [0, 0.05], [1, 0])
-  const titleY = useTransform(scrollYProgress, [0, 0.05], [0, -50])
+  const slideVariants = {
+    enter: (dir) => ({
+      x: dir > 0 ? '110%' : '-110%',
+      opacity: 0,
+    }),
+    center: {
+      x: 0,
+      opacity: 1,
+      transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] },
+    },
+    exit: (dir) => ({
+      x: dir > 0 ? '-110%' : '110%',
+      opacity: 0,
+      transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] },
+    }),
+  }
 
   return (
     <div className="min-h-screen text-white bg-[#050510]">
@@ -391,48 +417,90 @@ export default function PortfolioPage() {
             ))}
           </section>
         ) : (
-          <section ref={containerRef} style={{ height: `${totalItems * 100}vh` }} className="relative w-full bg-[#050510]">
-            {/* Sticky container that stays in view while we scroll vertically */}
-            <div className="sticky top-0 h-screen w-full flex flex-col justify-center overflow-hidden pt-20">
-
-              {/* Sticky Header positioned at the top */}
-              <motion.div
-                className="w-full px-[5vw] md:px-[20vw] lg:px-[25vw] mb-4 md:mb-8 lg:mb-10 z-20 flex flex-col md:flex-row md:items-end justify-between gap-6"
-              >
-                <div>
-                  <div className="flex items-center gap-3 mb-2 md:mb-3">
-                    <div className="w-2 h-2 rounded-full bg-violet-500 animate-pulse" />
-                    <p className="text-[10px] md:text-xs uppercase tracking-widest text-violet-400 font-semibold font-mono">Nos réalisations</p>
-                  </div>
-                  <h2 className="text-3xl md:text-5xl lg:text-6xl font-black text-white tracking-tighter">
-                    PORTFOLIO
-                  </h2>
+          <section className="relative w-full bg-[#050510] min-h-screen flex flex-col pt-20">
+            {/* Header */}
+            <div className="w-full px-[5vw] md:px-[8vw] lg:px-[10vw] mb-6 md:mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
+              <div>
+                <div className="flex items-center gap-3 mb-2 md:mb-3">
+                  <div className="w-2 h-2 rounded-full bg-violet-500 animate-pulse" />
+                  <p className="text-[10px] md:text-xs uppercase tracking-widest text-violet-400 font-semibold font-mono">Nos réalisations</p>
                 </div>
-                <p className="text-zinc-400 max-w-sm text-sm md:text-base mb-2 md:text-right">
-                  Scrollez horizontalement ou vers le bas pour explorer nos projets.
-                </p>
-              </motion.div>
+                <h2 className="text-3xl md:text-5xl lg:text-6xl font-black text-white tracking-tighter">
+                  PORTFOLIO
+                </h2>
+              </div>
+              <p className="text-zinc-400 text-sm md:text-base mb-2 md:text-right font-mono">
+                {String(currentIndex + 1).padStart(2, '0')} / {String(projects.length).padStart(2, '0')}
+              </p>
+            </div>
 
-              {/* The horizontal sliding deck, slightly shorter to accommodate the header */}
-              <motion.div
-                style={{ x: useTransform(smoothX, v => `${v / totalItems}%`) }}
-                className="flex items-center w-max z-10 pb-10"
+            {/* Carousel slide area */}
+            <div className="flex-1 flex items-center justify-center overflow-hidden pb-6">
+              <AnimatePresence custom={direction} mode="wait">
+                <motion.div
+                  key={currentIndex}
+                  custom={direction}
+                  variants={slideVariants}
+                  initial="enter"
+                  animate="center"
+                  exit="exit"
+                >
+                  <PortfolioCarouselCard
+                    project={projects[currentIndex]}
+                    onSelect={() => setSelectedProject(projects[currentIndex])}
+                  />
+                </motion.div>
+              </AnimatePresence>
+            </div>
+
+            {/* Navigation */}
+            <div className="flex items-center justify-center gap-5 pb-12">
+              <motion.button
+                onClick={goPrev}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="flex items-center gap-2 px-6 py-3 rounded-full border border-white/20 bg-white/5 text-white hover:bg-white/10 hover:border-white/40 transition-all duration-300 backdrop-blur-md font-semibold text-sm"
+                aria-label="Projet précédent"
               >
-                {/* Left padding so the first card is centered: (100vw - 50vw)/2 = 25vw */}
-                <div className="w-[7.5vw] md:w-[20vw] lg:w-[25vw] flex-shrink-0" />
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+                </svg>
+                Précédent
+              </motion.button>
 
-                {projects.map((project) => (
-                  <PortfolioCarouselCard key={project.id} project={project} onSelect={() => setSelectedProject(project)} />
+              <div className="flex items-center gap-2">
+                {projects.map((p, i) => (
+                  <motion.button
+                    key={p.id}
+                    onClick={() => { setDirection(i > currentIndex ? 1 : -1); setCurrentIndex(i) }}
+                    animate={{
+                      width: i === currentIndex ? 24 : 8,
+                      background: i === currentIndex ? projects[currentIndex].accent : 'rgba(255,255,255,0.2)',
+                    }}
+                    transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                    className="h-2 rounded-full"
+                    aria-label={`Aller au projet ${p.title}`}
+                  />
                 ))}
+              </div>
 
-                {/* Right padding so the last card is centered */}
-                <div className="w-[7.5vw] md:w-[20vw] lg:w-[25vw] flex-shrink-0" />
-              </motion.div>
+              <motion.button
+                onClick={goNext}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="flex items-center gap-2 px-6 py-3 rounded-full border border-white/20 bg-white/5 text-white hover:bg-white/10 hover:border-white/40 transition-all duration-300 backdrop-blur-md font-semibold text-sm"
+                aria-label="Projet suivant"
+              >
+                Suivant
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+              </motion.button>
             </div>
           </section>
         )}
 
-        {/* Tech Stack Marquee kept from original page */}
+        {/* Tech Stack Marquee */}
         <StackMarquee />
       </main>
 

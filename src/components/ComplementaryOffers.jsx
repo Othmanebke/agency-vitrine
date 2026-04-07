@@ -1,43 +1,41 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
 
-const monthlyPlans = [
+const brandingPlans = [
   {
-    name: 'Starter',
-    monthlyPrice: 450,
-    annualTotal: 4500,
-    desc: 'Idéal pour maintenir une présence active',
+    name: 'Identité Essentielle',
+    price: '400 – 800€',
+    desc: 'Pour lancer ton identité visuelle',
     features: [
-      '8 posts / mois',
-      'Design visuel soigné',
-      '2 réseaux sociaux',
-      'Rapport mensuel basique',
+      'Logo principal + variantes',
+      'Charte couleurs & typographies',
+      '2 supports print (flyer, carte)',
+      'Fichiers HD livrés (PNG, SVG, PDF)',
       'Révisions illimitées',
     ],
     highlight: false,
+    tools: 'Canva Pro / Adobe Express',
   },
   {
-    name: 'Pro',
-    monthlyPrice: 1200,
-    annualTotal: 12000,
-    desc: 'Pour booster ta visibilité et tes ventes',
+    name: 'Pack Branding Complet',
+    price: '1 200 – 2 000€',
+    desc: 'Identité complète & supports professionnels',
     features: [
-      '20 posts / mois',
-      'Création de contenu & stories',
-      '4 réseaux sociaux',
-      'Stratégie & reporting avancé',
-      'Community management',
-      'Campagnes paid incluses',
+      'Logo complet (principal, icône, noir/blanc)',
+      'Charte graphique complète',
+      "Jusqu'à 5 supports print sur-mesure",
+      'Templates réseaux sociaux',
+      "Guide d'utilisation de la marque",
+      'Révisions illimitées',
     ],
     highlight: true,
     badge: 'Populaire',
+    tools: 'Suite Adobe CC (Illustrator, Photoshop, InDesign)',
   },
 ]
 
 export default function ComplementaryOffers() {
-  const [billing, setBilling] = useState('monthly')
   const shouldReduce = useReducedMotion()
-  const isAnnual = billing === 'annual'
 
   return (
     <section className="max-w-6xl mx-auto px-6 pb-24">
@@ -112,57 +110,30 @@ export default function ComplementaryOffers() {
         </div>
       </motion.div>
 
-      {/* ─── Flyers & Réseaux Plans ─── */}
+      {/* ─── Pack Branding, Logos & Print ─── */}
       <motion.div
         initial={shouldReduce ? {} : { opacity: 0, y: 20 }}
         whileInView={shouldReduce ? {} : { opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
       >
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6">
-          <div>
-            <div className="inline-block mb-4 px-4 py-1.5 rounded-full border border-pink-500/30 bg-pink-500/10 text-pink-300 font-mono text-xs tracking-widest uppercase">
-              Forfaits mensuels
-            </div>
-            <h3 className="text-3xl md:text-4xl font-black text-white tracking-tight mb-2">
-              Flyers &{' '}
-              <span className="bg-gradient-to-r from-pink-400 to-violet-400 bg-clip-text text-transparent">
-                Réseaux
-              </span>
-            </h3>
-            <p className="text-zinc-400 max-w-md">
-              Contenu visuel régulier pour alimenter tes réseaux et captiver ta communauté.
-            </p>
+        <div className="mb-10">
+          <div className="inline-block mb-4 px-4 py-1.5 rounded-full border border-pink-500/30 bg-pink-500/10 text-pink-300 font-mono text-xs tracking-widest uppercase">
+            Création visuelle
           </div>
-
-          {/* Billing toggle */}
-          <div className="flex items-center gap-3 flex-shrink-0">
-            <span className={`text-sm font-medium transition-colors ${!isAnnual ? 'text-white' : 'text-zinc-500'}`}>
-              Mensuel
+          <h3 className="text-3xl md:text-4xl font-black text-white tracking-tight mb-2">
+            Branding, Logos &{' '}
+            <span className="bg-gradient-to-r from-pink-400 to-violet-400 bg-clip-text text-transparent">
+              Print
             </span>
-            <button
-              onClick={() => setBilling(isAnnual ? 'monthly' : 'annual')}
-              className="relative w-14 h-7 rounded-full transition-colors duration-300 flex-shrink-0"
-              style={{ background: isAnnual ? 'rgba(139,92,246,0.6)' : 'rgba(255,255,255,0.1)' }}
-              role="switch"
-              aria-checked={isAnnual}
-              aria-label="Basculer entre mensuel et annuel"
-            >
-              <motion.div
-                className="absolute top-0.5 w-6 h-6 rounded-full bg-white shadow-md"
-                animate={{ x: isAnnual ? 28 : 2 }}
-                transition={{ type: 'spring', stiffness: 500, damping: 35 }}
-              />
-            </button>
-            <span className={`text-sm font-medium transition-colors ${isAnnual ? 'text-white' : 'text-zinc-500'}`}>
-              Annuel
-            </span>
-            <AnimatedBadge show={isAnnual} text="2 mois offerts" />
-          </div>
+          </h3>
+          <p className="text-zinc-400 max-w-md">
+            Identité visuelle forte, supports print impeccables et assets pour tes réseaux — créés sur Canva Pro ou la suite Adobe.
+          </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
-          {monthlyPlans.map((plan, i) => (
+          {brandingPlans.map((plan, i) => (
             <motion.div
               key={plan.name}
               initial={shouldReduce ? {} : { opacity: 0, y: 20 }}
@@ -188,20 +159,10 @@ export default function ComplementaryOffers() {
                     : 'bg-[#0c0716] border-white/5 hover:border-white/20'
                 }`}
               >
-                {plan.badge && !isAnnual && (
+                {plan.badge && (
                   <span className="absolute -top-3 right-8 px-4 py-1 rounded-full bg-pink-500 text-white text-xs font-bold shadow-lg shadow-pink-500/40">
                     {plan.badge}
                   </span>
-                )}
-
-                {isAnnual && (
-                  <motion.span
-                    initial={{ opacity: 0, y: -8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="absolute -top-3 left-8 px-3 py-1 rounded-full bg-emerald-500 text-white text-xs font-bold shadow-lg shadow-emerald-500/40"
-                  >
-                    2 mois offerts
-                  </motion.span>
                 )}
 
                 <div className="mb-6">
@@ -210,36 +171,10 @@ export default function ComplementaryOffers() {
                 </div>
 
                 <div className="mb-8">
-                  <div className="flex items-baseline gap-1">
-                    <motion.span
-                      key={`${plan.name}-${billing}`}
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                      className="text-5xl font-black tracking-tighter text-white"
-                    >
-                      {isAnnual
-                        ? plan.annualTotal.toLocaleString('fr-FR')
-                        : plan.monthlyPrice.toLocaleString('fr-FR')}€
-                    </motion.span>
-                    <span className="text-zinc-500 font-medium">
-                      {isAnnual ? '/an' : '/mois'}
-                    </span>
-                  </div>
-
-                  {isAnnual && (
-                    <motion.p
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      className="text-emerald-400 text-sm mt-1.5"
-                    >
-                      soit {Math.round(plan.annualTotal / 12)}€/mois — économie de{' '}
-                      {(plan.monthlyPrice * 2).toLocaleString('fr-FR')}€
-                    </motion.p>
-                  )}
+                  <span className="text-4xl font-black tracking-tighter text-white">{plan.price}</span>
                 </div>
 
-                <ul className="flex-1 space-y-3 mb-8">
+                <ul className="flex-1 space-y-3 mb-6">
                   {plan.features.map((f) => (
                     <li key={f} className="flex items-start gap-3 text-sm text-zinc-300">
                       <svg
@@ -248,17 +183,14 @@ export default function ComplementaryOffers() {
                         stroke="currentColor"
                         viewBox="0 0 24 24"
                       >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2.5}
-                          d="M5 13l4 4L19 7"
-                        />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
                       </svg>
                       {f}
                     </li>
                   ))}
                 </ul>
+
+                <p className="text-xs text-zinc-600 font-mono mb-6">{plan.tools}</p>
 
                 <a
                   href="/contact"
@@ -273,7 +205,7 @@ export default function ComplementaryOffers() {
                       : 'bg-white/5 border border-white/10 text-white hover:bg-white/10'
                   }`}
                 >
-                  Choisir le pack {plan.name}
+                  Démarrer ce projet
                 </a>
               </motion.div>
             </motion.div>
@@ -284,16 +216,3 @@ export default function ComplementaryOffers() {
   )
 }
 
-function AnimatedBadge({ show, text }) {
-  if (!show) return null
-  return (
-    <motion.span
-      initial={{ opacity: 0, scale: 0.8 }}
-      animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.8 }}
-      className="px-2.5 py-1 rounded-full bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 text-xs font-bold"
-    >
-      {text}
-    </motion.span>
-  )
-}
