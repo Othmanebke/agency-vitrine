@@ -4,7 +4,6 @@ import { useSEO } from '../hooks/useSEO'
 import Nav from '../components/Nav'
 import Hero from '../components/Hero'
 import Testimonials from '../components/Testimonials'
-import FAQ from '../components/FAQ'
 import Footer from '../components/Footer'
 import {
   MagneticTitle,
@@ -144,8 +143,8 @@ const services = [
     size: 'standard',
   },
   {
-    title: 'Flyers & supports print',
-    desc: 'Création de flyers, cartes de visite, brochures et visuels print professionnels pour ta marque.',
+    title: 'Identité visuelle & print',
+    desc: 'Logo, flyer, charte graphique et supports print disponibles sur devis pour compléter ton image de marque.',
     icon: IconPrint,
     span: 'md:col-span-1 md:row-span-1',
     size: 'standard',
@@ -463,8 +462,6 @@ export default function Home() {
         </section>
 
         <Testimonials />
-
-        <FAQ />
 
         {/* ─── Final Marketing Statement ─── */}
         <section className="relative max-w-5xl mx-auto px-6 py-32 text-center">

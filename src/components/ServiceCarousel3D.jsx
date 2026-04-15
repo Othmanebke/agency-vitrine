@@ -5,79 +5,90 @@ import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 const services = [
   {
     id: 0,
-    title: 'Site Vitrine',
-    category: 'Présence Web',
-    price: 'À partir de 500€',
+    title: 'Pack Starter',
+    category: 'Site 1 page',
+    price: '300€',
     accent: '#8b5cf6',
     accentRgb: '139,92,246',
     description:
-      'Un site vitrine professionnel qui présente ton activité avec élégance et convertit tes visiteurs en clients. Design sur-mesure, rapide et optimisé pour Google.',
+      'Un site vitrine 1 page professionnel pour lancer ton activité rapidement. Design moderne, responsive et mis en ligne en moins d\'une semaine.',
     features: [
-      'Design sur-mesure unique',
-      'Responsive mobile first',
-      'SEO on-page complet',
+      'Site vitrine 1 page',
+      'Design moderne et responsive',
       'Formulaire de contact',
-      'Google Analytics configuré',
-      'Formation CMS incluse',
+      'Mise en ligne incluse',
+      'SEO de base',
+      '1 modification incluse',
     ],
-    stack: ['React', 'Next.js', 'WordPress'],
+    cta: 'Demander ce pack',
+    stack: ['5 à 7 jours ouvrés', '1 retour inclus'],
   },
   {
     id: 1,
-    title: 'Pack WordPress',
-    category: 'CMS',
-    price: 'À partir de 1 200€',
+    title: 'Pack Site Vitrine',
+    category: 'Site 1 à 5 pages',
+    price: '500€',
     accent: '#21759b',
     accentRgb: '33,117,155',
     description:
-      'Site complet sous WordPress avec thème premium personnalisé, plugins essentiels configurés et prise en main autonome. Idéal pour les PME et indépendants.',
+      'Site vitrine complet jusqu\'à 5 pages, logo simple, mini charte graphique et flyer inclus. Tout pour lancer une présence digitale complète et cohérente.',
     features: [
-      'Thème premium personnalisé',
-      'Plugins SEO & sécurité',
-      'Blog & actualités intégré',
-      'Formulaires avancés',
-      'Optimisation vitesse',
-      'Formation incluse',
+      'Site vitrine 1 à 5 pages',
+      'Design moderne et épuré',
+      'Responsive mobile / tablette',
+      'Formulaire de contact',
+      'SEO de base + mise en ligne',
+      'Création d\'un logo simple',
+      'Mini charte graphique',
+      'Création d\'un flyer',
+      '2 retours inclus',
     ],
-    stack: ['WordPress', 'WooCommerce', 'Elementor'],
+    cta: 'Demander ce pack',
+    stack: ['7 à 10 jours ouvrés', '2 retours inclus'],
   },
   {
     id: 2,
-    title: 'Application Web',
-    category: 'Développement',
-    price: 'À partir de 2 500€',
+    title: 'Pack WordPress Business',
+    category: 'CMS sur mesure',
+    price: '2 000€',
     accent: '#f59e0b',
     accentRgb: '245,158,11',
     description:
-      "Application web sur-mesure : SaaS, dashboard, marketplace ou plateforme métier. Stack moderne, architecture scalable et expérience utilisateur premium.",
+      'Site WordPress complet jusqu\'à 10 pages, logo, charte graphique, flyer et mini formation inclus. La solution complète pour les PME et indépendants.',
     features: [
-      'Architecture sur-mesure',
-      'Authentification & rôles',
-      'Dashboard utilisateur',
-      'API REST intégrée',
-      'Base de données cloud',
-      'CI/CD & déploiement inclus',
+      'Site WordPress jusqu\'à 10 pages',
+      'Thème personnalisé',
+      'Interface admin simplifiée',
+      'Formulaires avancés',
+      'SEO de base + sécurisation',
+      'Logo + charte graphique complète',
+      'Flyer ou support marketing',
+      'Mini formation incluse',
+      '3 retours inclus',
     ],
-    stack: ['Next.js', 'React', 'Supabase'],
+    cta: 'Demander ce pack',
+    stack: ['2 à 3 semaines', '3 retours inclus'],
   },
   {
     id: 3,
-    title: 'Refonte Web',
-    category: 'Transformation',
-    price: 'Sur devis',
+    title: 'Application Web',
+    category: 'Développement',
+    price: 'À partir de 4 000€',
     accent: '#ec4899',
     accentRgb: '236,72,153',
     description:
-      "Ton site vieilli freine ta croissance ? On le modernise de fond en comble : design, performances, SEO et taux de conversion. Résultat mesurable garanti.",
+      'Application web sur-mesure : SaaS, dashboard, marketplace ou plateforme métier. Stack moderne, architecture scalable et UI/UX premium. Tarif établi sur devis selon le projet.',
     features: [
-      'Audit complet offert',
-      'Nouveau design premium',
-      'Migration de contenu',
-      'Optimisation Core Web Vitals',
-      'SEO technique avancé',
-      'Support post-refonte',
+      'Analyse du besoin + cahier des charges',
+      'Frontend moderne (React / Next.js)',
+      'Backend adapté au projet',
+      'Base de données + authentification',
+      'Architecture scalable',
+      'UI / UX personnalisé',
+      'Logo + charte graphique complète',
     ],
-    stack: ['Sur-mesure', 'Devis gratuit'],
+    cta: 'Demander un devis',
+    stack: ['Sur devis', 'React / Next.js'],
   },
 ]
 
@@ -198,7 +209,7 @@ function ServiceModal({ service, onClose }) {
           {/* Features */}
           <div className="mb-6">
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: service.accent }}>
-              Inclus dans ce service
+              Ce qui est inclus
             </p>
             <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
               {service.features.map((f) => (
@@ -242,7 +253,7 @@ function ServiceModal({ service, onClose }) {
               boxShadow: `0 8px 32px rgba(${service.accentRgb},0.3)`,
             }}
           >
-            Démarrer ce projet
+            {service.cta}
             <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
             </svg>
